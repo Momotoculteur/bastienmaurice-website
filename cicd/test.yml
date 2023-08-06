@@ -1,0 +1,4 @@
+coucou:
+  stage: test
+  script:
+    - echo 'coucou'

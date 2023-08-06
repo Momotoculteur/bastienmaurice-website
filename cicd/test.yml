@@ -1,5 +1,5 @@
 coucou:
   stage: test
-  image: docker.io/library/alpine:latest
+  image: docker.io/library/busybox:latest
   script:
     - echo 'coucou'

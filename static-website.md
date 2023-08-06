@@ -9,8 +9,11 @@ Cheminement du tuto :
 - Terraform
 - AWS Cli
 - Compte AWS avec les bon IAM et roles défini
+- Un site statique déjà buildé
 
-## 1. Hebergement - AWS S3 Bucket
+## 1. Hebergement 
+### 1.1 AWS S3 Bucket
+S3 pour Simple Storage Service te propose d'heberger n'importe quel type de données. Tu vois ton disque dur avec la vue de ton File explorer ? Ben c'est la même chose. On va se servir de ce service d'amazon pour envoyer les fichiers statiques et les render dans le browser du client.
 
 ## 2. DNS
 Alors ici, deux cas de figures possibles : 
@@ -26,12 +29,14 @@ On va ensuite rajouter la notre afin que le nom de domaine que vous avez acheté
 - Type: il existe plusieurs types de record, ici on veut pointer un nom de domaine vers une adresse et non une IP, on choisi donc le type **A**
 
 
-
 ### 2.2 AWS Route53
 
 
 ### Nom de domaine par un autre provider
 C'est ce que j'ai fais initialement ; Prendre mon nom de domaine sur un bon vieux OVH, ou j'ai déjà mon vieu Wordpress.
 
-## CDN - AWS CloudFront
-Ici en bonus, on peut aller plus loin et ajouter un CDN ; Celui-ci va permettre de répliquer notre contenu dans des serveurs un peu partout dans le monde, améliorant ainsi la disponibilité et latence de notre site. Ceci est donc clairement optionnel.
+## 3 CDN
+Ici en bonus, on peut aller plus loin et ajouter un CDN ; Celui-ci va permettre de répliquer notre contenu dans des serveurs un peu partout dans le monde, améliorant ainsi la disponibilité et latence de notre site. Ceci est donc clairement optionnel. Cloudflare en es un des plus connu.
+
+### 3.1 AWS CloudFront
+Histoire de rester sur la même stack, je vous propose de test celui d'amazon.

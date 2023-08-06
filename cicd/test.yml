@@ -1,4 +1,5 @@
 coucou:
   stage: test
+  image: docker.io/library/alpine:latest
   script:
     - echo 'coucou'

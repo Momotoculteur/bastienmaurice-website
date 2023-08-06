@@ -3,3 +3,8 @@ include:
 
 stages:
   - test
+
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"

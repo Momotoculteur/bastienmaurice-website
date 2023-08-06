@@ -1,4 +1,6 @@
 coucou:
   stage: test
+  tag: 
+    - momotoculteur
   script:
     - echo 'coucou'

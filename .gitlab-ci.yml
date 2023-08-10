@@ -1,8 +1,7 @@
 include:
-  - cicd/test.yml
-
+  - cicd/build.yml
 stages:
-  - test
+  - build
 
 
 workflow:

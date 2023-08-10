@@ -2,14 +2,19 @@ Je vous propose d'heberger un simple site web statique sur AWS, pour un coût en
 
 Et on va faire le tout bien propre, avec du Terraform.
 
-Cheminement du tuto : 
-1- Terraform du S3 Bucket
 
 ## 0. Pré-requis
+Tools :
 - Terraform
 - AWS Cli
+
+Compte:
 - Compte AWS avec les bon IAM et roles défini
+
+Projet:
+- Un repository avec un projet terraform déjà initialisé/paramétré, auquel tu peux déjà faire tes plan/apply
 - Un site statique déjà buildé
+
 
 ## 1. Hebergement 
 ### 1.1 AWS S3 Bucket

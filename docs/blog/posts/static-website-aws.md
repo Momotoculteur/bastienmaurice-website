@@ -1,3 +1,22 @@
+---
+date: 2023-08-11
+authors: [bmaurice]
+title: Créer un site avec AWS Bucket S3, AWS Zone53, AWS CloudFront
+description: >
+  test maurice
+categories:
+  - Terraform
+tags:
+  - Terraform
+---
+
+# Créer un site avec AWS Bucket S3, AWS Zone53, AWS CloudFront
+
+Je te montre comment deploy un site static sur AWS avec toute ton infrastructure as code avec Terraform :)   
+Au programme du Bucket S3, Route 53 et CloudFront au programme.
+
+<!-- more -->
+
 Je vous propose d'heberger un simple site web statique sur AWS, pour un coût entre 1$ et 3$ le tout. Ce tuto est d'ailleurs écrit avec l'expérience obtenu en faisant ce propre blog :)
 
 Et on va faire le tout bien propre, avec du Terraform.

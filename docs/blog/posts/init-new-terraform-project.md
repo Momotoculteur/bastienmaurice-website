@@ -68,7 +68,7 @@ Dans mon cas on va faire avec un service managé par AWS qui te rend ultra simpl
 ### 2.1.1 Définition du provider
 On commence par ajouter le provider  
 
-```terraform 
+```terraform linenums="1"
 # main.tf
 provider {
     region = "eu-west-3"
@@ -78,7 +78,7 @@ provider {
 ### 2.1.2 Création du S3 Bucket
 On ajoute notre S3 bucket
 
-```terraform
+```terraform linenums="1"
 # main.tf
 ressource "aws_s3_bucket" "tf_state" {
     bucket = "blog-state"
@@ -92,7 +92,7 @@ ressource "aws_s3_bucket" "tf_state" {
 
 ### 3.1.3 Ajout du versionning
 On active le versionning sur notre bucket
-```terraform
+```terraform linenums="1"
 # main.tf
 ressource "aws_s3_bucket_versionning" "versionning" {
     versionning_configuration {
@@ -103,7 +103,7 @@ ressource "aws_s3_bucket_versionning" "versionning" {
 
 ### 3.1.4 Activation de l'encryptage
 Histoire d'augmenter le niveau de sécurité, on encrypte notre tf.state
-```terraform
+```terraform linenums="1"
 #main.tf
 ressource "aws_s3_bucket_side_encryption_configuration" "encryption" {
     bucket = aws_s3_bucket.tf_state.id
@@ -118,7 +118,7 @@ ressource "aws_s3_bucket_side_encryption_configuration" "encryption" {
 
 ### 3.1.4 Rendre le S3 privé
 On va rendre le bucket en mode privée afin d'éviter que de mauvaises personnes mal-intentioné récup des infos sensible :
-```terraform
+```terraform linenums="1"
 # main.tf
 ressource "aws_s3_bucket_public_access_block" "s3_access" {
     bucket = aws_s3_bucket.tf_state.id
@@ -131,7 +131,7 @@ ressource "aws_s3_bucket_public_access_block" "s3_access" {
 
 ### 3.1.5 Gestion du locking
 On ajoute une table sous DynamoDB pour gérer le vérouillage du tf.state. C'est une DB géré par Amazon en mode distribué pour des paires clé-valeur. Une sorte de redis qui devrait d'avantage te parler.
-```terraform
+```terraform linenums="1"
 # main.tf
 ressource "aws_dynamod_table" "tf_lock" {
     name = "blog-lock"
@@ -150,7 +150,7 @@ A partir de là, tu peux commencer à faire un *terraform init*. Tu vas avoir to
 #### 3.2.1 Ajout du backend S3
 On touche du doigt la fin du chapitre. C'est ici que l'on va target Amazon pour save notre tf.state.
 
-```terraform
+```terraform linenums="1"
 # main.tf
 terraform {
     backend "s3" {

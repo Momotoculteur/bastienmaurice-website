@@ -3,6 +3,7 @@ site_author: Bastien MAURICE
 site_url: http://bastienmaurice.fr
 copyright: Copyright &copy; 2023 - 2023 Bastien MAURICE
 extra:
+  generator: false
   social:
     - icon: fontawesome/brands/linkedin-in
       link: https://www.linkedin.com/in/bmaurice10/
@@ -39,6 +40,7 @@ theme:
     - content.action.view
     - content.code.annotate
     - content.code.copy
+    - content.code.select
     - content.tooltips
     - navigation.instant
     - navigation.instant.prefetch
@@ -93,7 +95,7 @@ plugins:
 
 
 nav:
-  - Home: index.md
+  - Accueil: index.md
   - Blog:
     - blog/index.md
 
@@ -115,15 +117,20 @@ markdown_extensions:
   - pymdownx.betterem:
       smart_enable: all
   - pymdownx.caret
+  - pymdownx.critic
   - pymdownx.details
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
-  - pymdownx.highlight
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.mark
   - pymdownx.smartsymbols
+  - pymdownx.snippets
   - pymdownx.superfences
   - pymdownx.tabbed:
       alternate_style: true

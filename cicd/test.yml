@@ -1,5 +1,0 @@
-coucou:
-  stage: test
-  image: docker.io/library/busybox:latest
-  script:
-    - echo 'coucou'

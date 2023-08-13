@@ -8,6 +8,7 @@ categories:
   - Terraform
 tags:
   - Terraform
+comments: true
 ---
 
 # Créer un site avec AWS Bucket S3, AWS Zone53, AWS CloudFront

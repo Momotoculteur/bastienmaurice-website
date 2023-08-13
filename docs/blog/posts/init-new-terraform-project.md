@@ -8,6 +8,7 @@ categories:
   - Terraform
 tags:
   - Terraform
+comments: true
 ---
 
 #Best practices pour la gestion du tf.state 
@@ -176,5 +177,4 @@ Comme tu as pu le voir, tu as quelques manips à faire :
 Petit tips, si tu veux supprimer ton infra existante, tâche de faire ces étapes à l'envers ; à savoir :
 1. Supprimer le remote backend de la configuration terraform, et re-run le *terraform init* pour avoir ton tf.state en local
 2. Lance ton *terraform destroy* pour supprimer ton bucket S3 et ton DynamoDB
-
 

@@ -58,6 +58,21 @@ theme:
     - search.share
     - search.suggest
 plugins:
+  - git-revision-date-localized:
+      enable_creation_date: true
+      exclude:
+        - index.md
+  - git-authors:
+      show_contribution: true
+      show_line_count: true
+      show_email_address: true
+      count_empty_lines: true
+      sort_authors_by: name
+      authorship_threshold_percent: 10
+      exclude:
+          - index.md
+      enabled: true
+      strict: true
   - search:
       lang:
         - fr

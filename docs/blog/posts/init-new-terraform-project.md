@@ -25,23 +25,23 @@ Et si tu veux faire les choses bien, je peux te montrer quelques good practices 
 
 Je te montre ça sur du AWS, mais tu peux faire exactement la même chose sur les autres clouds provider. Seul le noms des ressources vont changer de l'un à l'autre !
 
-## 0. Pré-requis
+## Pré-requis
 Tools : 
 - Terraform
 
-## 1. tf.state
-### 1.1 C'est quoi ?
+## tf.state
+### C'est quoi ?
 Quand tu vas définir la création, la mise à jour ou la suppression de ressource via des fichiers Terraform, lui même doit savoir dans quel ordre réaliser ces instructions. Les ressources ayant des specifications différentes, et des dépénendances entre elle plus ou moins forte, Terraform va se faire un bon gros fichier JSON resencent l'ensemble de ces instructions dans le bon ordre.
 
-### 1.2 Quels sont les soucis de ce tf.state ?
+### Quels sont les soucis de ce tf.state ?
 Aucun pour une utilisation simple. Realisant moi même en solo ce blog, je peux très bien faire un simple terraform init et commencer à dév mon infra sans soucis, le tout en local. Mais quid sur un vrai projet avec plusieurs dev travaillant ensemble ? C'est là ou les choses vont se compliquer.
 
 - Partager le tf.state à plusieurs : Si chacun des membres de l'équipe doit mettre à jour cet infra, ils doivent pouvoir avoir librement accès à ce fichier
 - Verouiller le tf.state : Soucis de bosser à plusieurs, c'est que ce fichier ne doit être utiliser que par une seule et unique personne sur un instant T. Si tu essayes de faire un accès concurrent à ce fichier tu peux finir avec une corruption du tf.state et mettre en peril ton infra
 - Isoler le tf.state : Plus ton infra grandi, plus les plan/apply risque d'être long. Isoler en une multitude de plus petits tf.state te permet de travailler plus vite, et surtout en cas de soucis de ne pas casser toute ton infra.
 
-### 1.3 Comment partager ce tf.state ? 
-#### 1.3.1 Git ? Non !
+### Comment partager ce tf.state ? 
+#### Git ? Non !
 
 Tu le sais déjà, mais on va être obliger à un moment donné d'utiliser Git. Mais cela n'est pas possible car cela engendre plusieurs problèmes :
 
@@ -49,13 +49,13 @@ Tu le sais déjà, mais on va être obliger à un moment donné d'utiliser Git. 
 - Verouillage: Impossible de verouiller un fichier à un accès concurrentiel, qui empêcherais donc 2 membres d'une même équipe d'y accéder au même moment
 - Secret: Et enfin le plus important, c'est que ce fichier tf.state contient tout les infos de ton infra en texte clair. Ce qui signifie que tout secret, token, ou données sensible peut être leak sur ton git.
 
-#### 1.3.2 Remote backend ? OUI !
+#### Remote backend ? OUI !
 C'est le feu car ça résolve les 3 problématiques que je viens de vous exposer :
 - Erreur manuelle: Terraform va automatiquement charger le tf.state a chaque fois que tu effecue un terraform plan ou apply, et automatiquement renvoyer sur le remote backend le nouveau tf.state fraichement crée
 - Verouillage: la plupart des remotes backend supportent nativement le locking. Et si quelqu'un d'autre à aquéri le lock à un instant T, tu vas devoir attendre qu'il ait fini. Il existe une commande, plutôt cet argument ci: *-lock-timeout=<temps>* qui te permet de dire à terraform d'attendre jusqu'a cette période là pour effectuer ta commande
 - Secret: La plupart des remotes backend supportent aussi nativement l'encryptage, de configurer les permissions d'accès et donc de définir quel utilisateur à le droit
 
-#### 1.3.3 Exemple avec un AWS S3 bucket
+#### Exemple avec un AWS S3 bucket
 Dans mon cas on va faire avec un service managé par AWS qui te rend ultra simple cet ajout là, le S3. Qu'apporte t-il ?
 - Service managé, donc ballek de maintenir une infra supplémentaire pour ce cas d'usage
 - Niveau durabilité et disponibilité, on est à 99,99.....%, donc tu crains pas d'avoir des soucis pour y acceder à tout heure
@@ -64,8 +64,8 @@ Dans mon cas on va faire avec un service managé par AWS qui te rend ultra simpl
 - Versionnage: te permet de définir des incrementations de versions du tf.state, pratique donc de rollback sur une ancienne version si tu casses ton infra !
 - Pas bien cher, tu va fit avec le free tier si tu veux tester pour t'entrainer !
 
-## 2. Let's code !
-### 2.1.1 Définition du provider
+## Let's code !
+### Définition du provider
 On commence par ajouter le provider  
 
 ```terraform linenums="1"
@@ -75,7 +75,7 @@ provider {
 }
 ```
 
-### 2.1.2 Création du S3 Bucket
+### Création du S3 Bucket
 On ajoute notre S3 bucket
 
 ```terraform linenums="1"
@@ -90,7 +90,7 @@ ressource "aws_s3_bucket" "tf_state" {
 }
 ```
 
-### 3.1.3 Ajout du versionning
+### Ajout du versionning
 On active le versionning sur notre bucket
 ```terraform linenums="1"
 # main.tf
@@ -101,7 +101,7 @@ ressource "aws_s3_bucket_versionning" "versionning" {
 }
 ```
 
-### 3.1.4 Activation de l'encryptage
+### Activation de l'encryptage
 Histoire d'augmenter le niveau de sécurité, on encrypte notre tf.state
 ```terraform linenums="1"
 #main.tf
@@ -116,7 +116,7 @@ ressource "aws_s3_bucket_side_encryption_configuration" "encryption" {
 }
 ```
 
-### 3.1.4 Rendre le S3 privé
+### Rendre le S3 privé
 On va rendre le bucket en mode privée afin d'éviter que de mauvaises personnes mal-intentioné récup des infos sensible :
 ```terraform linenums="1"
 # main.tf
@@ -129,7 +129,7 @@ ressource "aws_s3_bucket_public_access_block" "s3_access" {
 }
 ```
 
-### 3.1.5 Gestion du locking
+### Gestion du locking
 On ajoute une table sous DynamoDB pour gérer le vérouillage du tf.state. C'est une DB géré par Amazon en mode distribué pour des paires clé-valeur. Une sorte de redis qui devrait d'avantage te parler.
 ```terraform linenums="1"
 # main.tf
@@ -144,10 +144,10 @@ ressource "aws_dynamod_table" "tf_lock" {
 }
 ```
 
-### 3.2 Initialisation de l'infra - part1
+### Initialisation de l'infra - part1
 A partir de là, tu peux commencer à faire un *terraform init*. Tu vas avoir ton S3 Bucket et ta table sous DynamoDB. Mais on à encore la sauvegarde du tf.state en local. Allons le modifier pour target sur Amazon dans la partie suivante.
 
-#### 3.2.1 Ajout du backend S3
+#### Ajout du backend S3
 On touche du doigt la fin du chapitre. C'est ici que l'on va target Amazon pour save notre tf.state.
 
 ```terraform linenums="1"
@@ -164,11 +164,11 @@ terraform {
 }
 ```
 
-### 3.2 Initialisation de l'infra - part2
+### Initialisation de l'infra - part2
 Tu vas pouvoir refaire un second *terraform init*. A partir de là terraform va te dire que tu as déjà un tf.state en local, et va te demander si tu souhaites desormais l'avoir sur ton s3 en partant de ton actuel. Finito, tu as bien ton tf.state sur AWS et qui suit les bonnes pratiques :)
 
 
-### 3.3 Résumé de l'init du backend
+### Résumé de l'init du backend
 Comme tu as pu le voir, tu as quelques manips à faire : 
 1.  Ecrire une première partie de l'infra sous terraform pour créer ton bucket S3 et ta table sous DynamoDB avec un tf.state en local
 2. Ajouter un remote backend et le configure pour qu'il puisse utiliser le S3 et ta DB précédement crée, et refaire un *terraform init* pour copier ton tf.state local que tu as déjà utilisé.

@@ -35,4 +35,5 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions
           aws-region: eu-west-3
+          role-session-name: githubactions
       - run: aws s3 sync public/* s3://bastienmaurice.fr/

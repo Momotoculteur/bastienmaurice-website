@@ -2,6 +2,7 @@
 site_name: Un dév random
 site_author: Bastien MAURICE
 site_url: http://bastienmaurice.fr
+site_dir: public
 copyright: Copyright &copy; 2023 - 2023 Bastien MAURICE
 site_description: |
   Initialement développeur en génie logiciel de part ma formation, je suis aujourd'hui avec quelques années d'expériences 

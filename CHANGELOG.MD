@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add CI/CD build job
 - Add CI/CD deploy job
+- Configure AWS S3 Role/access
 
 ## [0.0.1] - 2023-08-14
 ### Added

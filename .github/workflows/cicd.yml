@@ -15,7 +15,7 @@ jobs:
         env:
           AGENT_TOOLSDIRECTORY: ${{ runner.tool_cache }}
         with:
-          python-version: 3.x
+          python-version: "3.11"
       - run: pip install -r requirements.txt
       - run: mkdocs build
       - run: echo "build_id=$(date --utc '+%V')" >> $GITHUB_ENV 

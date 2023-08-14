@@ -1,0 +1,6 @@
+mkdocs
+mkdocs-material==9.2.0b3
+mkdocs-blog-plugin
+mkdocs-material-extensions
+mkdocs-minify-plugin
+mkdocs-git-revision-date-localized-plugin

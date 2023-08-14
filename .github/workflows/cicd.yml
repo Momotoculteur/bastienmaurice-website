@@ -1,0 +1,40 @@
+name: cicd
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master 
+
+jobs: 
+
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - run: pip install -r requirements.txt
+      - run: mkdocs build
+      - run: echo "build_id=$(date --utc '+%V')" >> $GITHUB_ENV 
+      - uses: actions/cache/save@v3
+        id: build_id
+        with: 
+          key: mkdocs-material-${{ env.build_id }}
+          path: './build'
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache/restore@v3
+        id: build_id
+        with:
+          path: './build'
+          key: mkdocs-material-${{ env.build_id }}
+      - uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::288002323060:role/github-actions
+          aws-region: eu-west-3
+      - run: aws s3 sync public/* s3://bastienmaurice.fr/

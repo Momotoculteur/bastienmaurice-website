@@ -1,0 +1,36 @@
+name: cicd
+on:
+  push:
+    branches:
+      - master 
+
+jobs: 
+
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+      - run: pip install -r requirements.txt
+      - run: mkdocs build
+      - run: echo "build_id=$(date --utc '+%V')" >> $GITHUB_ENV 
+      - uses: actions/cache/save@v3
+        id: build_id
+        with: 
+          key: mkdocs-material-${{ env.build_id }}
+          path: './build'
+
+  deploy:
+    runs-on: self-hosted
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache/restore@v3
+        id: build_id
+        with:
+          path: './build'
+          key: mkdocs-material-${{ env.build_id }}
+      
+    

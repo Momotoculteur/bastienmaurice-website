@@ -8,14 +8,11 @@ on:
 jobs: 
   build:
     runs-on: self-hosted
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
-        env:
-          AGENT_TOOLSDIRECTORY: ${{ runner.tool_cache }}
         with:
-          python-version: "3.11"
+          python-version: "3.11.4"
       - run: pip install -r requirements.txt
       - run: mkdocs build
       - run: echo "build_id=$(date --utc '+%V')" >> $GITHUB_ENV 

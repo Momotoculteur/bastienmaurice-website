@@ -33,7 +33,6 @@ jobs:
           key: mkdocs-material-${{ github.event.repository.updated_at}}
       - uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: arn:aws:iam::288002323060:role/github-actions
           aws-region: eu-west-3
       - run: aws s3 sync public/* s3://bastienmaurice.fr/

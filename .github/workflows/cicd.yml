@@ -33,7 +33,6 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/cache/restore@v3
         id: build_id
         with:
@@ -44,4 +43,4 @@ jobs:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions
           aws-region: eu-west-3
           role-session-name: githubactions
-      - run: aws s3 sync --delete ./${{ env.BUILD_DIR }}/* s3://${{ env.BUCKET_NAME }}/
+      - run: aws s3 sync --delete ./${{ env.BUILD_DIR }} s3://${{ env.BUCKET_NAME }}/

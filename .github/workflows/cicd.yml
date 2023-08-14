@@ -27,7 +27,7 @@ jobs:
         id: build_id
         with: 
           key: mkdocs-material-${{ github.event.repository.updated_at}}
-          path: './$BUILD_DIR'
+          path: './${{ env.BUILD_DIR }}'
 
   deploy:
     runs-on: self-hosted
@@ -37,11 +37,11 @@ jobs:
       - uses: actions/cache/restore@v3
         id: build_id
         with:
-          path: './$BUILD_DIR'
+          path: './${{ env.BUILD_DIR }}'
           key: mkdocs-material-${{ github.event.repository.updated_at}}
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions
           aws-region: eu-west-3
           role-session-name: githubactions
-      - run: aws s3 sync --delete ./$BUILD_DIR/* s3://$BUCKET_NAME/
+      - run: aws s3 sync --delete ./${{ env.BUILD_DIR }}/* s3://${{ env.BUCKET_NAME }}/

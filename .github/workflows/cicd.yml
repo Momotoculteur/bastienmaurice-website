@@ -5,36 +5,42 @@ on:
     branches:
       - master 
 
-jobs: 
+permissions:
+  id-token: write   
+  contents: read 
 
+env:
+  BUILD_DIR: "public"
+  BUCKET_NAME: "bastienmaurice.fr"
+
+jobs: 
   build:
     runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: 3.x
+          python-version: "3.11.4"
       - run: pip install -r requirements.txt
       - run: mkdocs build
-      - run: echo "build_id=$(date --utc '+%V')" >> $GITHUB_ENV 
       - uses: actions/cache/save@v3
         id: build_id
         with: 
-          key: mkdocs-material-${{ env.build_id }}
-          path: './build'
+          key: mkdocs-material-${{ github.event.repository.updated_at}}
+          path: './${{ env.BUILD_DIR }}'
 
   deploy:
     runs-on: self-hosted
     needs: build
     steps:
-      - uses: actions/checkout@v3
       - uses: actions/cache/restore@v3
         id: build_id
         with:
-          path: './build'
-          key: mkdocs-material-${{ env.build_id }}
+          path: './${{ env.BUILD_DIR }}'
+          key: mkdocs-material-${{ github.event.repository.updated_at}}
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions
           aws-region: eu-west-3
-      - run: aws s3 sync public/* s3://bastienmaurice.fr/
+          role-session-name: githubactions
+      - run: aws s3 sync --delete ./${{ env.BUILD_DIR }} s3://${{ env.BUCKET_NAME }}/

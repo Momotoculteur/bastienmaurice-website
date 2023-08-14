@@ -4,4 +4,3 @@ mkdocs-blog-plugin
 mkdocs-material-extensions
 mkdocs-minify-plugin
 mkdocs-git-revision-date-localized-plugin
-mkdocs-git-authors-plugin

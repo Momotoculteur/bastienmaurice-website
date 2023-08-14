@@ -44,4 +44,4 @@ jobs:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions
           aws-region: eu-west-3
           role-session-name: githubactions
-      - run: aws s3 sync ./$BUILD_DIR/* s3://$BUCKET_NAME/
+      - run: aws s3 sync --delete ./$BUILD_DIR/* s3://$BUCKET_NAME/

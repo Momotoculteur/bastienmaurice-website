@@ -9,6 +9,10 @@ permissions:
   id-token: write   
   contents: read 
 
+env:
+  BUILD_DIR: "public"
+  BUCKET_NAME: "bastienmaurice.fr"
+
 jobs: 
   build:
     runs-on: self-hosted
@@ -23,7 +27,7 @@ jobs:
         id: build_id
         with: 
           key: mkdocs-material-${{ github.event.repository.updated_at}}
-          path: './build'
+          path: './$BUILD_DIR'
 
   deploy:
     runs-on: self-hosted
@@ -33,11 +37,11 @@ jobs:
       - uses: actions/cache/restore@v3
         id: build_id
         with:
-          path: './build'
+          path: './$BUILD_DIR'
           key: mkdocs-material-${{ github.event.repository.updated_at}}
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions
           aws-region: eu-west-3
           role-session-name: githubactions
-      - run: aws s3 sync ./public/* s3://bastienmaurice.fr/
+      - run: aws s3 sync ./$BUILD_DIR/* s3://$BUCKET_NAME/

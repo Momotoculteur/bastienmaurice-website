@@ -15,11 +15,10 @@ jobs:
           python-version: "3.11.4"
       - run: pip install -r requirements.txt
       - run: mkdocs build
-      - run: echo "build_id=$(date --utc '+%V')" >> $GITHUB_ENV 
       - uses: actions/cache/save@v3
         id: build_id
         with: 
-          key: mkdocs-material-${{ env.build_id }}
+          key: mkdocs-material-${{ github.event.repository.updated_at}}
           path: './build'
 
   deploy:
@@ -31,7 +30,7 @@ jobs:
         id: build_id
         with:
           path: './build'
-          key: mkdocs-material-${{ env.build_id }}
+          key: mkdocs-material-${{ github.event.repository.updated_at}}
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions

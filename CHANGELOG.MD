@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.0.3] - 2023-08-15
 ### Added
-- CICD communication with AWS :
+- Article: CICD communication with AWS :
     - Create OIDC provider for token generation
     - Create Role with S3 access
     - Create AssumeRole

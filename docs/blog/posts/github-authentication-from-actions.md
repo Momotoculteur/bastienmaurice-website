@@ -27,10 +27,10 @@ Comment parametrer sa pipeline et ses credentials pour communiquer vers AWS depu
 Je continue de développer ce blog ci, et vains le moment ou j'ai voulu initialiser une première version de pipeline, avec Github Action. Je souhaite que pour toute PR qui est mergé sur ma branche master, que cela trigger un workflow.
 
 ## Pré-requis
-Repo :  
+**Repo :**  
 - un répo configuré avec les github actions d'activé
 
-Tools :  
+**Tool :**  
 - AWS compte déjà configuré
 
 
@@ -110,7 +110,7 @@ jobs:
 ```
 
 - **actions/checkout**: une action me permettant de checkout mon répository, sur ma branche ou tourne la pipeline, sur mon runner
-- **actions/setup-python**: une action qui m'install python
+- **actions/setup-python**: une action qui m'install python  
 
 Par la suite je lance **pip** pour m'install mes dependances nécéssaire à mon projet python.  
 Je build mon application Mkdocs, avec une commande de base de ce framerwork.
@@ -166,18 +166,21 @@ Il existe plusieurs façons de faire pour créer une authentication entre ta pip
 | Assume Role using WebIdentity Token File credentials            |                     | ✔                | ✔                         | |
 | Assume Role using existing credentials | | ✔ | | ✔ |
 
-Ma première authentication du genre à été bête méchant. Récuperer un access_id et un secret depuis mon compte. Mais il existe deux soucis pour cette façon de faire. Alors oui je te l'accorde ça prends 2 copié collé et c'est très simple et rapide, mais pas la façon la plus secure de faire. De un, tu prends tes credentials de ton compte root. Tu te les fais voler d'un façon ou d'une autre, RIP. Le second points négatifs est que ce sont des crédentials que tu set une seule et une unique fois en var d'environnement de pipeline. Ils ne changent jamais et donc laisse une authentication à long terme.
+Ma première authentication du genre à été bête méchant. Récuperer un access_id et un secret depuis mon compte. Mais il existe deux soucis pour cette façon de faire. Alors oui je te l'accorde ça prends 2 copié collé et c'est très simple et rapide, mais pas la façon la plus secure de faire. De un, tu prends tes credentials de ton compte root. Tu te les fais voler d'un façon ou d'une autre, RIP. Le second points négatifs est que ce sont des crédentials que tu set une seule et une unique fois en var d'environnement de pipeline. Ils ne changent jamais et donc laisse une authentication à long terme.  
 
-Pour ce tutoriel là, je te propose d'utiliser un OIDC. Flemme de t'expliquer ce que c'est, mais ça te permet d'avoir une authorité qui va aller intéroger AWS depuis ta pipeline, demander un token, qui lui sera temporaire. De plus, aucun credentials n'a besoin d'être configuré dans ton repository à la mano. La seule chose qui va apparaître dans ta pipeline sont :
-- la région ou tourne tes services AWS
-- un assume role id
+Pour ce tutoriel là, je te propose d'utiliser un OIDC. Flemme de t'expliquer ce que c'est, mais ça te permet d'avoir une authorité qui va aller intéroger AWS depuis ta pipeline, demander un token, qui lui sera temporaire. De plus, aucun credentials n'a besoin d'être configuré dans ton repository à la mano.  
+
+La seule chose qui va apparaître dans ta pipeline sont :  
+- **la région ou tourne tes services AWS**  
+- **un assume role id**  
 
 ## Création du rôle 
-On peut desormais demander un token via l'identity provider configuré précédement. On va maintenant créer un rôle. Celui-ci défini un ensemble de droit d'accès à certaines ressources. Mais celui-ci ne peut être appeler que sous certaines conditions.
-Pour cela, on va devoir définir : 
-- D'une politque
-- De droits
+On peut desormais demander un token via l'identity provider configuré précédement. On va maintenant créer un rôle. Celui-ci défini un ensemble de droit d'accès à certaines ressources. Mais celui-ci ne peut être appeler que sous certaines conditions.  
 
+Pour cela, on va devoir définir :  
+- **D'une politque**  
+- **De droits**  
+ 
 ### Ajout de la policy
 Ici on défini une politique
 

@@ -1,17 +1,25 @@
 ---
 date: 2023-08-11
 authors: [bmaurice]
-title: Créer un site avec AWS Bucket S3, AWS Zone53, AWS CloudFront
-description: >
-  test maurice
+title: Créer un site web statique avec AWS Bucket S3, AWS Zone53 (DNS), AWS CloudFront (CDN) et Terraform (IAC)
 categories:
   - Terraform
+  - AWS
 tags:
   - Terraform
+  - AWS
+  - Zone53
+  - Cloudfront
+  - S3
+  - CDN
+  - DNS
+  - site
+  - statique
+  - Infra as code
 comments: true
 ---
 
-# Créer un site avec AWS Bucket S3, AWS Zone53, AWS CloudFront
+# Créer un site web statique avec AWS Bucket S3, AWS Zone53 (DNS), AWS CloudFront (CDN) et Terraform (IAC)
 
 Je te montre comment deploy un site static sur AWS avec toute ton infrastructure as code avec Terraform :)   
 Au programme du Bucket S3, Route 53 et CloudFront au programme.
@@ -24,8 +32,8 @@ Et on va faire le tout bien propre, avec du Terraform.
 
 
 ## Pré-requis
-Tools :
-- Terraform
+Tools :  
+- Terraform  
 - AWS Cli
 
 Compte:

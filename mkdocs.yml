@@ -1,5 +1,5 @@
 # Infos projet
-site_name: Un dév random
+site_name: Bastien MAURICE
 site_author: Bastien MAURICE
 site_url: http://bastienmaurice.fr
 site_dir: public
@@ -150,7 +150,11 @@ markdown_extensions:
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+       custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tasklist:

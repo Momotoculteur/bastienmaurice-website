@@ -1,17 +1,21 @@
 ---
 date: 2023-08-11
 authors: [bmaurice]
-title: Best practices pour la gestion du tf.state
+title: Les bonnes pratiques pour l'initialisation d'un nouveau projet Terraform (tf.state)
 description: >
   test maurice
 categories:
   - Terraform
 tags:
   - Terraform
+  - Infra as code
+  - State
+  - Remote backend
+  - Provider
 comments: true
 ---
 
-#Best practices pour la gestion du tf.state 
+# Les bonnes pratiques pour l'initialisation d'un nouveau projet Terraform (tf.state)
 
 Je te montre les best practices pour ton Terraform State, en minimisant les erreurs manuelles, le leak de secrets, la gestion du locking. Bref, comment gérer le partage du tf.state dans une équiep de dév.  
 Cas concret avec un remote backend sur du AWS Bucket S3 et DynamoDB.
@@ -27,7 +31,7 @@ Et si tu veux faire les choses bien, je peux te montrer quelques good practices 
 Je te montre ça sur du AWS, mais tu peux faire exactement la même chose sur les autres clouds provider. Seul le noms des ressources vont changer de l'un à l'autre !
 
 ## Pré-requis
-Tools : 
+Tools :  
 - Terraform
 
 ## tf.state

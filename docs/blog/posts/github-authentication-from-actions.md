@@ -26,6 +26,7 @@ Comment parametrer sa pipeline et ses credentials pour communiquer vers AWS depu
 
 Je continue de développer ce blog ci, et vains le moment ou j'ai voulu initialiser une première version de pipeline, avec Github Action. Je souhaite que pour toute PR qui est mergé sur ma branche master, que cela trigger un workflow.
 
+
 ## Pré-requis
 **Repo :**  
 - un répo configuré avec les github actions d'activé
@@ -42,11 +43,6 @@ Je continue de développer ce blog ci, et vains le moment ou j'ai voulu initiali
 
 ## Création de notre CICD (workflow, Github Action)
 Pour l'exemple on va se baser sur le même exemple que j'ai fais pour automatiser ce site là. C'est un site sous MkDocs. On veut : 
-``` mermaid
-graph LR
-  A[master branch] --> |pr trigger workflow| B{build job}
-  B{build job} -->|passed| C{deploy}
-```
 
 ### Main/Common
 ```yaml linenums="1"
@@ -142,7 +138,7 @@ C'est ici, le job le plus important. C'est ici que je vous montre comment config
 - **actions/cache/restore**: on récupère ici mon site web, du job précédent  
 
 - **aws-actions/configure-aws-credentials**: c'est l'action de AWS. Voici les params obligatoires à décrire:
-```yaml
+```yaml linenums="1"
 - uses: aws-actions/configure-aws-credentials@v2
   with:
     role-to-assume: arn:aws:iam::788:role/ton_role # l'IAM de l'assume role que tu créeras plus tard dans le tuto
@@ -172,29 +168,72 @@ Pour ce tutoriel là, je te propose d'utiliser un OIDC. Flemme de t'expliquer ce
 
 La seule chose qui va apparaître dans ta pipeline sont :  
 - **la région ou tourne tes services AWS**  
-- **un assume role id**  
+- **un assume role id (arn)**  
 
-## Création du rôle 
+
+### Depuis la console AWS
+1. On ouvre le service IAM
+2. Onglet identity provider, créer un nouveau avec les infos suivantes:
+    - **Type**: OpenID Connect
+    - **Provider url**: token.actions.githubusercontent.com
+    - **Public**: sts.amazonaws.com
+
+
+### Depuis terraform
+[a remplir maggle]
+
+## Création de l'IAM rôle qui va être assume par Github Actions
 On peut desormais demander un token via l'identity provider configuré précédement. On va maintenant créer un rôle. Celui-ci défini un ensemble de droit d'accès à certaines ressources. Mais celui-ci ne peut être appeler que sous certaines conditions.  
 
 Pour cela, on va devoir définir :  
-- **D'une politque**  
-- **De droits**  
+- **Des autorisations**: j'entends par là qu'a droit de pouvoir lister des ressources, d'en créer, d'en modifier. supprimer,etc. Cela est valable pour toute ressource et service dans ton provider
+- **Un assume role**: ici on va définir une liaison entre une ressource (ici ton iden)
  
-### Ajout de la policy
-Ici on défini une politique
 
-### Ajout des accès
-Pour l'exemple de ce tuto et de mon blog, je souhaite lui donner le full accès au service S3Bucket.
+### Depuis la console AWS
+Ici on défini une politique pour assumer ce role. Ici on va donner le rôle précédement crée
+1. On ouvre le service IAM
+2. Crée un rôle
+    - **Type**: web identity
+    - **Identity provider**: token.actions.githubusercontent.com
+    - **Audience**: sts.amazonaws.com
+3. On ajoute les permissions. Ce sont les droits que vont avoir tes github actions, au sein de ton cloud provider. Pour l'exemple de cette pipeline qui ajout du contenu sur un S3 Bucket, j'ajoute seulement *AmazonS3FullAccess*
+4. On ajoute une trust policy, celle-ci est un fichier JSON qui te défini pleins de chose.
+```json linenums="1"
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow", // L'action ici est une autorisation
+            "Principal": {
+                "Federated": "<iam_arn_de_ton_oidc_provider>" //
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity", // te permet d'assumer un role si ton web identity t'y autorise
+            "Condition": {
+                "StringEquals": { // on veut une valeur égale strict
+                    "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+                },
+                "StringLike": { // on veut une valeur qui respecte la condi, ici une * qui reprendre 'all'
+                    "token.actions.githubusercontent.com:sub": "repo:Momotoculteur/bastienmaurice-website:*" // ici on target mon compte Github, sur un répo spécifique, dans sa globalité. Ce qui veut dire toute branche
+                }
+            }
+        }
+    ]
+}
+```
 
+Example de policy pour une branche spécifique :
+```json linenums="1"
+"token.actions.githubusercontent.com:sub": "repo:<mon_compte_github>/<mon_repo>:ref:refs/heads/<ma_remote_branch>"
+```
 
-## Création d'un IAM assume rôle
-Maintenant que l'on a notre rôle, on va créer un **assume role**. Cela permet de matcher
+### Depuis terraform
+[a remplir maggle]
 
-!!! info "Github Self Hosted Runners"
-    Ne pas oublier d'update l'IAM de l'assume role de ta pipeline quand tu appelles la github action AWS pour setter les credentials: 
-    ```yaml
-    - uses: aws-actions/configure-aws-credentials@v2
-      with:
-        role-to-assume: <iam_de_ton_assume_role_crée>
-    ```
+## Update de l'IAM assume role de notre pipeline 
+Maintenant que l'on a un identity provider, un rôle avec des droits, et un assume rôle défini sur ce rôle, on est bon. On n'a plus qu'a update une prop de l'action AWS dans notre pipeline pour setter les credentials. On récupère l'ARN de notre rôle et on l'ajoute comme ci-dessous :
+```yaml linenums="1"
+- uses: aws-actions/configure-aws-credentials@v2
+  with:
+    role-to-assume: <arn_iam_de_ton_role_crée>
+```

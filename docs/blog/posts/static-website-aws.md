@@ -75,3 +75,7 @@ Ici en bonus, on peut aller plus loin et ajouter un CDN ; Celui-ci va permettre 
 Histoire de rester sur la même stack, je vous propose de test celui d'amazon.
 
 
+## Problèmes courants
+### Nom de domaine transféré
+Si tu as souhaité faire un transfert de domaine avant de te lancer sur ce tuto, tu peux tomber sur un soucis.
+En effet, une fois le transfert fini vers ton nouveau cloud provider, il se peut qu'il ait gardé en configuration tes anciens DNS déclaré par ton ancien fournisseur. Le soucis ? Impossible de faire la validation de tes certificats, vu que ton ancienne zone DNS est supprimé.

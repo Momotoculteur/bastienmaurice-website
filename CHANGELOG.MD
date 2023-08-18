@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Article tf.state
 - Divers fix
+- Update gha assume role wit new one terraformed
 
 ## [0.0.3] - 2023-08-15
 ### Added

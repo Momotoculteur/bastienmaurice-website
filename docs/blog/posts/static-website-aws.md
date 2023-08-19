@@ -19,7 +19,7 @@ tags:
 comments: true
 ---
 
-# Créer un site web statique avec AWS Bucket S3, AWS Zone53 (DNS), AWS CloudFront (CDN) et Terraform (IAC)
+# Créer un site web statique avec AWS Bucket S3, AWS Zone53 (DNS), AWS CloudFront (CDN) via Terraform (IAC)
 
 Je te montre comment deploy un site static sur AWS avec toute ton infrastructure as code avec Terraform :)   
 Au programme du Bucket S3, Route 53 et CloudFront au programme.
@@ -43,12 +43,163 @@ Projet:
 - Un repository avec un projet terraform déjà initialisé/paramétré, auquel tu peux déjà faire tes plan/apply
 - Un site statique déjà buildé
 
-
-## Hebergement 
-### AWS S3 Bucket
+ 
+## Hebergement - AWS S3 Bucket
 S3 pour Simple Storage Service te propose d'heberger n'importe quel type de données. Tu vois ton disque dur avec la vue de ton File explorer ? Ben c'est la même chose. On va se servir de ce service d'amazon pour envoyer les fichiers statiques et les render dans le browser du client.
 
-## DNS
+### Locals nécéssaire
+On commence par crér un fichier contenant des var locals que l'on risque d'utiliser souvent pour la suite du tuto 
+```terraform linenums="1"
+# locals.tf
+
+locals {
+  domain_name         = "bastienmaurice.fr"
+  bucket_name         = "bastienmaurice.fr"
+ 
+  commonTags = {
+    createdBy     = "terraform"
+    orga          = "Momotoculteur"
+    repositoryFor = "bastienmaurice-website"
+  }
+}
+```
+
+Ici, le commonTags est juste recommandé pour se retrouver dans ta console d'AWS et faire la différence entre des ressources crées par terraform, et celle crée manuellement pour du testing.
+On créer deux var :
+- **domain_name** : nom de ton domaine, de ton site web.
+- **bucket_name** : nom du bucket. Doit être identique à ton nom de domaine
+
+
+### Bucket principal pour l'hebergement
+On focus ici sur ton bucket principal. C'est lui que tu vas remplir des fichiers de ton site web.
+```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket" "root_bucket" {
+  bucket = local.bucket_name
+  tags = local.commonTags
+}
+```
+
+On rajoute la partie ownership :
+```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket_ownership_controls" "root_owner" {
+  bucket = aws_s3_bucket.root_bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+```
+
+On va modifier la partie Public Access Block (ACL). Cela va nous permettre de rendre dans un second temps le bucket public. On ne peux mofidier cette visibilité sans désactiver ces blocs ci :
+
+
+
+```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket_public_access_block" "root_access" {
+  bucket = aws_s3_bucket.root_bucket.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+```
+
+On peut maintenant modifier la visibilité de notre bucket, de privé à public:
+```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket_acl" "acl_root" {
+  bucket = aws_s3_bucket.root_bucket.id
+  acl    = "public-read"  # cette prop ne peut être modifié sans le bloc précédent
+  depends_on = [
+    aws_s3_bucket_ownership_controls.root_owner,
+    aws_s3_bucket_public_access_block.root_access
+  ]
+}
+```
+
+Ici on va activer le web hosting sur notre bucket, et mentionner la page principal et une page d'erreur :
+```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket_website_configuration" "config_root" {
+  bucket = aws_s3_bucket.root_bucket.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "error.html"
+  }
+
+}
+```
+
+Dernière étape, il faut que l'on ajoute une **Ressource based Policy**. Celle-ci va permettre à qui-quonque de lire le contenu de notre bucket S3 :
+```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket_policy" "policy_root" {
+  bucket = aws_s3_bucket.root_bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid       = "PublicReadGetObject"
+        Effect    = "Allow"
+        Principal = "*"
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = [
+          aws_s3_bucket.root_bucket.arn,
+          "${aws_s3_bucket.root_bucket.arn}/*",
+        ]
+      },
+    ]
+  })
+}
+```
+
+
+### Bucket secondaire pour la redirection
+Ici, ce bucket secondaire est optionnel. Sa seul tâche à pour but de rediriger les requêtes www.ton-site.fr à ton-site.fr. 
+Autant prendre ce cas d'utilisation 😀
+ 
+ ```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket" "www_bucket" {
+  bucket = "www.${local.bucket_name}"
+  tags = local.commonTags
+}
+```
+
+On paramètre la configuration du bucket afin d'activer la redirection vers le bucket principal :
+```terraform linenums="1"
+# s3.tf
+resource "aws_s3_bucket_website_configuration" "config_www" {
+  bucket = aws_s3_bucket.www_bucket.id
+  redirect_all_requests_to {  # on redirige toute requête 'www.' vers notre bucket principal
+    # a changer une fois le certif
+    protocol = "https"
+    host_name = local.domain_name
+  }
+}
+```
+Le **protocol** est à changer selon tes souhaits. Soit tu laisses en http, soit tu mets le https. Mais dans ce dernier cas, tu devras rajouter un certificat SSL pour activer cette liaison sécurisé
+
+
+
+## DNS - AWS Route 53
 Alors ici, deux cas de figures possibles : 
 - Soit vous vous la jouer gros rat et vous achetez votre nom de domaine au moins cher possible (ou vous en avez un sous le tapis qui prend déjà la poussière)
 - Soit vous voulez pousser l'aspect Terraform un poil plus loin et/ou tout céder à AWS, et dans ce cas-là on utilise Route53

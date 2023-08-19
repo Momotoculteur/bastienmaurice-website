@@ -1,17 +1,8 @@
-# Welcome to MkDocs
+# Blog [bastienmaurice.fr](bastienmaurice.fr)
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Axé sur la culture DevOps, le cloud, l'infrastructure
 
-## Commands
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+# Blog [deeplylearning.fr](deeplylearning.fr)
 
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Axé  sur le machine learning, deep learning et l'IA en général

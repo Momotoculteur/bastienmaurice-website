@@ -1,17 +1,21 @@
 ---
 date: 2023-08-11
 authors: [bmaurice]
-title: Best practices pour la gestion du tf.state
+title: Les bonnes pratiques pour l'initialisation d'un nouveau projet Terraform (tf.state)
 description: >
   test maurice
 categories:
   - Terraform
 tags:
   - Terraform
+  - Infra as code
+  - State
+  - Remote backend
+  - Provider
 comments: true
 ---
 
-#Best practices pour la gestion du tf.state 
+# Les bonnes pratiques pour l'initialisation d'un nouveau projet Terraform (tf.state)
 
 Je te montre les best practices pour ton Terraform State, en minimisant les erreurs manuelles, le leak de secrets, la gestion du locking. Bref, comment gérer le partage du tf.state dans une équiep de dév.  
 Cas concret avec un remote backend sur du AWS Bucket S3 et DynamoDB.
@@ -27,7 +31,7 @@ Et si tu veux faire les choses bien, je peux te montrer quelques good practices 
 Je te montre ça sur du AWS, mais tu peux faire exactement la même chose sur les autres clouds provider. Seul le noms des ressources vont changer de l'un à l'autre !
 
 ## Pré-requis
-Tools : 
+**Tools :**   
 - Terraform
 
 ## tf.state
@@ -67,75 +71,96 @@ Dans mon cas on va faire avec un service managé par AWS qui te rend ultra simpl
 
 ## Let's code !
 ### Définition du provider
-On commence par ajouter le provider  
+On commence par ajouter le provider : 
 
 ```terraform linenums="1"
-# main.tf
+# provider.tf
 provider {
     region = "eu-west-3"
 }
 ```
 
+!!! note "Authentication du provider"
+        Je le montre pas ici, mais tu dois permettre à Terraform de s'authentifier à ta console de management AWS. C'est pas la best practices, mais ici j'ai défini un **access_id** et **secret_id** généré depuis mon user root d'AWS dans un *./aws/* folder. Je ne défini pas de *profil_name* en particulier dans mon *provider*, donc il prend le default de base.
+
 ### Création du S3 Bucket
-On ajoute notre S3 bucket
+On défini notre S3 bucket. Il va nous permettre de garder sur disque notre tf.state.
 
 ```terraform linenums="1"
-# main.tf
-ressource "aws_s3_bucket" "tf_state" {
-    bucket = "blog-state"
+# state_s3.tf
+resource "aws_s3_bucket" "s3_state" {
+  bucket = local.bucket_state_name
+  tags   = local.commonTags
 
-    # te permet d'éviter les terraform destroy
-    lifecycle {
-        prevet_destroy = true
-    }
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+```
+
+!!! tips "lifecycle"
+        Je rajoute un hook ici, une sécurité si je fais par mégarde un **terraform destroy**. Sans trop faire gaffe je pourrais delete le contenu de tout le bucket. Ici on n'empêche d'apply le destroy
+
+J'ai utilisé des variables locales dans le code précédent, rien de particulier ici à préciser mais je te donne mes valeurs à titre d'example:
+```terraform linenums="1"
+# locals.tf
+locals {
+  bucket_state_name   = "bastienmaurice-website-infra-state"
+  dynamodb_state_name = "bastienmaurice-website-infra-state"
 }
 ```
 
 ### Ajout du versionning
-On active le versionning sur notre bucket
+On active le versionning sur notre bucket. Cela permet de générer un nouveau folder sur notre bucket pour chaque nouveau tf.state que l'on pousse, suite à une mise à jour de notre infrastructure. Pratique en cas de rollback à une version antérieur, si on casse tout à un certains moment ! 😉
 ```terraform linenums="1"
-# main.tf
-ressource "aws_s3_bucket_versionning" "versionning" {
-    versionning_configuration {
-        status = "Enabled"
-    }
+# state_s3.tf
+resource "aws_s3_bucket_versioning" "s3_versionning" {
+  bucket = aws_s3_bucket.s3_state.id
+
+  versioning_configuration {
+    status = "Enabled"
+  }
 }
 ```
 
 ### Activation de l'encryptage
-Histoire d'augmenter le niveau de sécurité, on encrypte notre tf.state
-```terraform linenums="1"
-#main.tf
-ressource "aws_s3_bucket_side_encryption_configuration" "encryption" {
-    bucket = aws_s3_bucket.tf_state.id
+Histoire d'augmenter le niveau de sécurité, on encrypte le contenu du bucket S3. Super important, car tout token, secret et autre donnée sensible se retrouve en plain text sur le tf.state. Bonjour le leak si une persionne malveillante arrive sur ton bucket ! 😅
 
-    rule {
-        apply_server_side_encryption_by_default {
-            sse_algorithm = "AES256"
-        }
+```terraform linenums="1"
+# state_s3.tf
+resource "aws_s3_bucket_server_side_encryption_configuration" "s3_encryption" {
+  bucket = aws_s3_bucket.s3_state.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "AES256"
     }
+  }
 }
 ```
 
 ### Rendre le S3 privé
 On va rendre le bucket en mode privée afin d'éviter que de mauvaises personnes mal-intentioné récup des infos sensible :
 ```terraform linenums="1"
-# main.tf
-ressource "aws_s3_bucket_public_access_block" "s3_access" {
-    bucket = aws_s3_bucket.tf_state.id
-    block_public_acls = true
-    block_public_policy = true
-    ignore_public_acls = true
-    restrict_public_buckets = true
+# state_s3.tf
+resource "aws_s3_bucket_public_access_block" "s3_access" {
+  bucket = aws_s3_bucket.s3_state.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 ```
 
 ### Gestion du locking
 On ajoute une table sous DynamoDB pour gérer le vérouillage du tf.state. C'est une DB géré par Amazon en mode distribué pour des paires clé-valeur. Une sorte de redis qui devrait d'avantage te parler.
 ```terraform linenums="1"
-# main.tf
-ressource "aws_dynamod_table" "tf_lock" {
-    name = "blog-lock"
+# state_dynamobdb.tf
+resource "aws_dynamodb_table" "tf_lock" {
+    name = local.dynamodb_state_name
+    tags = local.commonTags
+    
     billing_mode = "PAY_PER_REQUEST"
     hash_key = "LockID"
     attribute {
@@ -146,35 +171,51 @@ ressource "aws_dynamod_table" "tf_lock" {
 ```
 
 ### Initialisation de l'infra - part1
-A partir de là, tu peux commencer à faire un *terraform init*. Tu vas avoir ton S3 Bucket et ta table sous DynamoDB. Mais on à encore la sauvegarde du tf.state en local. Allons le modifier pour target sur Amazon dans la partie suivante.
+A partir de là, tu peux commencer à faire un **terraform init**, puis **terraform plan** et enfin **terraform apply**. Tu vas avoir ton S3 Bucket et ta table sous DynamoDB de crées. 
 
-#### Ajout du backend S3
-On touche du doigt la fin du chapitre. C'est ici que l'on va target Amazon pour save notre tf.state.
+!!! question
+        Bizarre, je ne vois aucun tf.state dans mon bucket qui défini mon infra actuelle
+        
+Et c'est normal ma gueule. On à encore la sauvegarde du tf.state en local, vu que ton provider initiallement crée au début du tutoriel target ton local.
+
+#### From Local Backend to Remote Backend
+On touche du doigt la fin du chapitre. C'est ici que l'on va modifier notre configuration de notre provider, afin de lui dire d'aller target le backend disponible en ligne sur notre S3
 
 ```terraform linenums="1"
-# main.tf
+# providers.tf
 terraform {
-    backend "s3" {
-        bucket = "blog-state"
-        key = "global/s3/terraform.tfstate"
-        region = "eu-west-3"
-
-        dynamodb_table = "blog-lock"
-        encrypt = true
+  required_providers { # Nouveau bloc
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.11.0"
     }
+  }
+
+  backend "s3" { # Nouveau bloc
+    bucket = "bastienmaurice-website-infra-state"
+    key    = "terraform/state/terraform.tfstate"
+    region = "eu-west-3"
+
+    dynamodb_table = "bastienmaurice-website-infra-state"
+    encrypt        = true
+  }
 }
 ```
+- **required_providers**: un bloc permettant de définir une version du prodiver que tu uitlises, très utile si tu bosses sur la même infra avec plusieurs dév dessus.  ça t'évitera des soucis de compatibilité et avoir une version commun  
+- **backend**: C'est ici que l'on target notre S3 fraichement crée. On y renseigne le nom de notre bucket qui contient notre tf.state, et aussi notre DynamoDB qui va gérer le locking de ce fichier, permettant les accès concurentiel et empêcher toute corruption de celui-ci
 
 ### Initialisation de l'infra - part2
-Tu vas pouvoir refaire un second *terraform init*. A partir de là terraform va te dire que tu as déjà un tf.state en local, et va te demander si tu souhaites desormais l'avoir sur ton s3 en partant de ton actuel. Finito, tu as bien ton tf.state sur AWS et qui suit les bonnes pratiques :)
+Tu vas pouvoir refaire un second *terraform init*. A partir de là terraform va te dire que tu as déjà un tf.state en local, et va te demander si tu souhaites desormais l'avoir sur ton s3 en partant de ton actuel. Tape *yes* et Finito, tu as bien ton tf.state sur AWS et qui suit les bonnes pratiques :)
 
 
-### Résumé de l'init du backend
+## Conclusion & résumé
 Comme tu as pu le voir, tu as quelques manips à faire : 
 1.  Ecrire une première partie de l'infra sous terraform pour créer ton bucket S3 et ta table sous DynamoDB avec un tf.state en local
 2. Ajouter un remote backend et le configure pour qu'il puisse utiliser le S3 et ta DB précédement crée, et refaire un *terraform init* pour copier ton tf.state local que tu as déjà utilisé.
 
 Petit tips, si tu veux supprimer ton infra existante, tâche de faire ces étapes à l'envers ; à savoir :
 1. Supprimer le remote backend de la configuration terraform, et re-run le *terraform init* pour avoir ton tf.state en local
-2. Lance ton *terraform destroy* pour supprimer ton bucket S3 et ton DynamoDB
+2. Premier terraform init/plan/apply.
+3. Lance ton *terraform destroy* pour supprimer ton bucket S3 et ton DynamoDB
+4. Second terraform init/plan/apply, avec migration de ton state local courant, vers le remote.
 

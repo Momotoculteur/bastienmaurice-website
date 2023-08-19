@@ -39,13 +39,12 @@ Je continue de développer ce blog ci, et vains le moment ou j'ai voulu initiali
     Pour t'éviter de cramer tes minutes gratos de github actions et de te retrouver à sec à ne plus pouvoir rien run, je te conseille de configurer ta machine pour heberger tes propres runners. T'as juste un .exe à éxecuter ça te prends 2min, et tu peux lancer autant de pipeline que tu veux sans te soucier de la consomation.
 
 
-
-
 ## Création de notre CICD (workflow, Github Action)
 Pour l'exemple on va se baser sur le même exemple que j'ai fais pour automatiser ce site là. C'est un site sous MkDocs. On veut : 
 
 ### Main/Common
 ```yaml linenums="1"
+# .github/workflows/cicd.yaml
 name: cicd
 on:
   workflow_dispatch:
@@ -72,6 +71,7 @@ env:
 
 Si tu veux la permission de request à travers tout ton workflow il te faut:
 ```yaml linenums="1"
+# .github/workflows/cicd.yaml
 permissions:
   id-token: write  # obligé pour request
   contents: read   # obligé pour action/checkout
@@ -79,6 +79,8 @@ permissions:
 
 Si tu veux request juste depuis un job:
 ```yaml linenums="1"
+# .github/workflows/cicd.yaml
+
 permissions:
   id-token: write  # obligé pour request
 ```
@@ -88,6 +90,8 @@ Plus tard je vais utiliser une props **runs-on** qui à pour value *self-hosted*
 
 ### Job Build
 ```yaml linenums="1"
+# .github/workflows/cicd.yaml
+
 jobs: 
   build:
     runs-on: self-hosted
@@ -118,27 +122,31 @@ Je build mon application Mkdocs, avec une commande de base de ce framerwork.
 C'est ici, le job le plus important. C'est ici que je vous montre comment configurer l'action github de AWS, afin de setter les credentials permettant de communiquer avec depuis le pipeline.
 
 ```yaml linenums="1"
- deploy:
-    runs-on: self-hosted
-    needs: build
-    steps:
-      - uses: actions/cache/restore@v3
-        id: build_id
-        with:
-          path: './${{ env.BUILD_DIR }}'
-          key: mkdocs-material-${{ github.event.repository.updated_at}}
-      - uses: aws-actions/configure-aws-credentials@v2
-        with:
-          role-to-assume: arn:aws:iam::288002323060:role/github-actions
-          aws-region: eu-west-3
-          role-session-name: githubactions
-      - run: aws s3 sync --delete ./${{ env.BUILD_DIR }} s3://${{ env.BUCKET_NAME }}/
+# .github/workflows/cicd.yaml
+
+deploy:
+  runs-on: self-hosted
+  needs: build
+  steps:
+    - uses: actions/cache/restore@v3
+      id: build_id
+      with:
+        path: './${{ env.BUILD_DIR }}'
+        key: mkdocs-material-${{ github.event.repository.updated_at}}
+    - uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::288002323060:role/github-actions
+        aws-region: eu-west-3
+        role-session-name: githubactions
+    - run: aws s3 sync --delete ./${{ env.BUILD_DIR }} s3://${{ env.BUCKET_NAME }}/
 ```
 
 - **actions/cache/restore**: on récupère ici mon site web, du job précédent  
 
 - **aws-actions/configure-aws-credentials**: c'est l'action de AWS. Voici les params obligatoires à décrire:
 ```yaml linenums="1"
+# .github/workflows/cicd.yaml
+
 - uses: aws-actions/configure-aws-credentials@v2
   with:
     role-to-assume: arn:aws:iam::788:role/ton_role # l'IAM de l'assume role que tu créeras plus tard dans le tuto
@@ -180,15 +188,34 @@ La seule chose qui va apparaître dans ta pipeline sont :
 
 
 ### Depuis terraform
-[a remplir maggle]
+On récupère les infos d'un certificat TLS :
+
+```terraform linenums="1"
+# github-actions-runners-roles.tf
+
+data "tls_certificate" "github" {
+  url = "https://token.actions.githubusercontent.com/.well-known/openid-configuration"
+}
+```
+
+On créer notre ressource concernant le provider :
+```terraform linenums="1"
+# github-actions-runners-roles.tf
+
+resource "aws_iam_openid_connect_provider" "github_actions_oidc_provider" {
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
+}
+```
 
 ## Création de l'IAM rôle qui va être assume par Github Actions
-On peut desormais demander un token via l'identity provider configuré précédement. On va maintenant créer un rôle. Celui-ci défini un ensemble de droit d'accès à certaines ressources. Mais celui-ci ne peut être appeler que sous certaines conditions.  
+On peut desormais demander un token via l'identity provider configuré précédement. 
 
-Pour cela, on va devoir définir :  
-- **Des autorisations**: j'entends par là qu'a droit de pouvoir lister des ressources, d'en créer, d'en modifier. supprimer,etc. Cela est valable pour toute ressource et service dans ton provider
-- **Un assume role**: ici on va définir une liaison entre une ressource (ici ton iden)
- 
+Il va nous falloir maintenant créer un rôle. On va devoir lui définir deux choses :  
+  - Une **Identity based policy** : celle-ci s'applique à un user, group ou rôle. Ici on souhaite ajouter des permissions d'accès à notre rôle. On va lui donner l'accès aux bucket S3, nous permettant d'upload notre site sur notre bucket.
+  - Une **Ressource based Policy** : celle-ci s'applique seulement aux ressources, ici à notre S3. On souhaite ici restreindre qui peut assume ce rôle ( et donc avoir accès aux S3 buckets ), qui ne concerne que des identités qui ont reçu un token valide entre Gitub/AWS de notre OIDC crée précédemment, et qu'enfin cela ne puisse s'appliquer qu'a un seul repository 
+  
 
 ### Depuis la console AWS
 Ici on défini une politique pour assumer ce role. Ici on va donner le rôle précédement crée
@@ -228,7 +255,69 @@ Example de policy pour une branche spécifique :
 ```
 
 ### Depuis terraform
-[a remplir maggle]
+On commence donc par crer le rôle, avec sa ressource based policy 
+```terraform linenums="1"
+# github-actions-runners-roles.tf
+
+resource "aws_iam_role" "github_action_role" {  # Création d'un rôle
+  name     = "github-actions-assume-role-access"
+
+  assume_role_policy = jsonencode({   # Création de la policy
+    Version = "2012-10-17"
+    Statement = [
+      {
+        "Effect" : "Allow", # On autorise une action
+        "Principal" : {
+          "Federated" : "${aws_iam_openid_connect_provider.github_actions_oidc_provider.arn}" # On défini que cela provient de notre OIDC
+        },
+        "Action" : "sts:AssumeRoleWithWebIdentity", # L'action est d'assumer ce rôle via un token valide de l'OIDC
+        "Condition" : {
+          "StringEquals" : {
+            "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com",  # Communique avec le service de token de AWS
+          },
+          "StringLike" : {
+            "token.actions.githubusercontent.com:sub" : ["repo:Momotoculteur/bastienmaurice-website:*"] # Ici on autorise d'assume le rôle de toute les branches d'un seul et unique répository github
+          }
+        }
+      }
+    ]
+  })
+}
+```  
+
+
+On a plus qu' attacher une idendity based policy à notre rôle. Maintenant que l'on a défini qui peut assume de rôle, on souhaite ajouter quel droit d'accès à notre rôle. Ici, on mentionne que l'on a tout les droits, à savoir lire un bucket, modifier, supprimer etc. Et cela concerne tout les bucket :
+```terraform linenums="1"
+# github-actions-runners-roles.tf
+
+resource "aws_iam_role_policy" "github_action_role_permissions" {
+  name = "github-actions-permissions"
+  role = aws_iam_role.github_action_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "s3:*"  # Droit de liste, update, supprimer, etc.
+        ]
+        Effect   = "Allow"
+        Resource = "*"  # A le droit sur tout les bucket du compte
+      },
+    ]
+  })
+}
+```
+
+On souhaite avoir en sortie de *terraform apply* l'arn à inscrire dans notre github action du role à assume:
+```terraform linenums="1"
+# github-actions-runners-roles.tf
+
+output "role_arn" {
+  value = aws_iam_role.github_action_role.arn
+}
+```
+
 
 ## Update de l'IAM assume role de notre pipeline 
 Maintenant que l'on a un identity provider, un rôle avec des droits, et un assume rôle défini sur ce rôle, on est bon. On n'a plus qu'a update une prop de l'action AWS dans notre pipeline pour setter les credentials. On récupère l'ARN de notre rôle et on l'ajoute comme ci-dessous :

@@ -1,7 +1,7 @@
 ---
 date: 2023-08-11
 authors: [bmaurice]
-title: Créer un site web statique avec AWS Bucket S3, AWS Zone53 (DNS), AWS CloudFront (CDN) et Terraform (IAC)
+title: Créer un site web statique HTTPS/SSL avec AWS Bucket S3, AWS Zone53 (DNS), AWS CloudFront (CDN) et Terraform (IAC)
 categories:
   - Terraform
   - AWS
@@ -16,10 +16,13 @@ tags:
   - site
   - statique
   - Infra as code
+  - SSL
+  - HTTPS
+  - certificate
 comments: true
 ---
 
-# Créer un site web statique avec AWS Bucket S3, AWS Zone53 (DNS), AWS CloudFront (CDN) via Terraform (IAC)
+# Créer un site web statique HTTPS/SSL avec AWS Bucket S3, AWS Zone53 (DNS), AWS CloudFront (CDN) et Terraform (IAC)
 
 Je te montre comment deploy un site static sur AWS avec toute ton infrastructure as code avec Terraform :)   
 Au programme du Bucket S3, Route 53 et CloudFront au programme.
@@ -219,11 +222,39 @@ On va ensuite rajouter la notre afin que le nom de domaine que vous avez acheté
 ### Nom de domaine par un autre provider
 C'est ce que j'ai fais initialement ; Prendre mon nom de domaine sur un bon vieux OVH, ou j'ai déjà mon vieu Wordpress.
 
-## CDN
+## Résumé & Fin - Partie 1 
+On arrive ici à la fin de la première partie. On a actuellement :
+- un bucket S3 qui sert de stockage de notre site web
+- une zone DNS qui nous permet d'utiliser le nom de domaine que l'on a acheté, et de transiter les visiteurs sur notre bucket S3
+
+L'atout majeur est que l'on reste sur une mise en place plutôt simple et rapide.
+
+## Partie 2 - Certificat SSL et connexion sécurisé via HTTPS
+Nous nous sommes arrêté sur un hebergement de site simple. Peut être même trop simple, car l'ensemble des données du bucket est entiérement public. Si l'on souhaite avoir quelque chose de plus secure pour la suite, je vous propose une seconde partie qui n'était pas prévue. On va générer un certificat SSL afin de garantir une connexion sécurité en HTTPS. Le tout bien sur via terraform 😀
+
+Il y aura quelques partie du code à refactorer seulement.
+
+## CDN - AWS Cloudfront
 Ici en bonus, on peut aller plus loin et ajouter un CDN ; Celui-ci va permettre de répliquer notre contenu dans des serveurs un peu partout dans le monde, améliorant ainsi la disponibilité et latence de notre site. Ceci est donc clairement optionnel. Cloudflare en es un des plus connu.
 
 ### AWS CloudFront
 Histoire de rester sur la même stack, je vous propose de test celui d'amazon.
+
+
+
+
+TODO
+
+1. Ecrire la partie terraform de la partie 1
+
+
+2. Faire les modifs tf suivante
+Changer route53 le record domain name de bastienmaurice => du website s3 au domain name de cloudfront
+
+S3
+desactiver stockage site sur le principal
+rendre bucker prive (acl): ACLs disabled (recommended)
+
 
 
 ## Problèmes courants

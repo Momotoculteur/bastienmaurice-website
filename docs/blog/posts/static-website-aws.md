@@ -202,7 +202,7 @@ Le **protocol** est à changer selon tes souhaits. Soit tu laisses en http, soit
 
 
 
-## DNS - AWS Route 53
+## DNS
 Alors ici, deux cas de figures possibles : 
 - Soit vous vous la jouer gros rat et vous achetez votre nom de domaine au moins cher possible (ou vous en avez un sous le tapis qui prend déjà la poussière)
 - Soit vous voulez pousser l'aspect Terraform un poil plus loin et/ou tout céder à AWS, et dans ce cas-là on utilise Route53
@@ -226,21 +226,28 @@ C'est ce que j'ai fais initialement ; Prendre mon nom de domaine sur un bon vieu
 On arrive ici à la fin de la première partie. On a actuellement :
 - un bucket S3 qui sert de stockage de notre site web
 - une zone DNS qui nous permet d'utiliser le nom de domaine que l'on a acheté, et de transiter les visiteurs sur notre bucket S3
+- une redirection des requêtes en *www.* vers notre nom de domaine principal, grace au second bucket
 
 L'atout majeur est que l'on reste sur une mise en place plutôt simple et rapide.
 
 ## Partie 2 - Certificat SSL et connexion sécurisé via HTTPS
 Nous nous sommes arrêté sur un hebergement de site simple. Peut être même trop simple, car l'ensemble des données du bucket est entiérement public. Si l'on souhaite avoir quelque chose de plus secure pour la suite, je vous propose une seconde partie qui n'était pas prévue. On va générer un certificat SSL afin de garantir une connexion sécurité en HTTPS. Le tout bien sur via terraform 😀
 
-Il y aura quelques partie du code à refactorer seulement.
+Il y aura quelques partie du code à refactorer seulement :
+- Rendre notre bucket principal privé, supprimer la ressource based policy présente, supprimer l'option de web static hosting
+- Créer un service de CDN. C'est lui qui va faire le lien et recevoir la requête des utilisateurs. Il va ensuite faire suivre au bucket et avoir un pont sécurité via ssl. Ce n'est plus le bucket lui même qui renvoit les pages.
+- Update notre DNS, et modifier le record actuel de notre nom de domaine pour qu'il pointe vers CloudFront et non plus vers le S3 bucket.
+- Ajouter une nouvelle ressource based policy au bucket, permettant seulement l'accès de son contenu depuis CloudFront
 
-## CDN - AWS Cloudfront
+## CDN
 Ici en bonus, on peut aller plus loin et ajouter un CDN ; Celui-ci va permettre de répliquer notre contenu dans des serveurs un peu partout dans le monde, améliorant ainsi la disponibilité et latence de notre site. Ceci est donc clairement optionnel. Cloudflare en es un des plus connu.
 
 ### AWS CloudFront
 Histoire de rester sur la même stack, je vous propose de test celui d'amazon.
 
+### Modification de la politique du S3 Bucket
 
+### Modification de Route53
 
 
 TODO
@@ -251,8 +258,10 @@ TODO
 2. Faire les modifs tf suivante
 Changer route53 le record domain name de bastienmaurice => du website s3 au domain name de cloudfront
 
-S3
+ 
+S3 principal
 desactiver stockage site sur le principal
+supprimer la policy courante + update de l'actuelle
 rendre bucker prive (acl): ACLs disabled (recommended)
 
 

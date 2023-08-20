@@ -28,10 +28,12 @@ Je continue de développer ce blog ci, et vains le moment ou j'ai voulu initiali
 
 
 ## Pré-requis
-**Repo :**  
+Repo :  
+
 - un répo configuré avec les github actions d'activé
 
-**Tool :**  
+Tool :  
+
 - AWS compte déjà configuré
 
 
@@ -64,10 +66,12 @@ env:
 - **on**: ici je défini que je puisse trigger ma pipeline soit depuis l'interface web, soit sur un merge d'une PR sur ma branche master
 
 - **env**: ici on s'en tape, ce n'est que des vars d'environnement propre à mon projet
-
+<br>
 !!! warning "Github Self Hosted Runners"
 
     permission: cette props est super importante. Si veux avoir la main pour requêter l'OIDC pour la demande de token JWT/jeton. 
+
+<br>
 
 Si tu veux la permission de request à travers tout ton workflow il te faut:
 ```yaml linenums="1"
@@ -76,6 +80,7 @@ permissions:
   id-token: write  # obligé pour request
   contents: read   # obligé pour action/checkout
 ```
+<br>
 
 Si tu veux request juste depuis un job:
 ```yaml linenums="1"
@@ -85,6 +90,7 @@ permissions:
   id-token: write  # obligé pour request
 ```
 
+<br>
 Plus tard je vais utiliser une props **runs-on** qui à pour value *self-hosted*. Ici je ne fais que run mes pipelines afin qu'elles target des runners qui sont labélisé *self-hosted*, qui tournent en local chez moi.
 
 
@@ -112,6 +118,7 @@ jobs:
 - **actions/checkout**: une action me permettant de checkout mon répository, sur ma branche ou tourne la pipeline, sur mon runner
 - **actions/setup-python**: une action qui m'install python  
 
+<br>
 Par la suite je lance **pip** pour m'install mes dependances nécéssaire à mon projet python.  
 Je build mon application Mkdocs, avec une commande de base de ce framerwork.
 
@@ -143,7 +150,10 @@ deploy:
 
 - **actions/cache/restore**: on récupère ici mon site web, du job précédent  
 
-- **aws-actions/configure-aws-credentials**: c'est l'action de AWS. Voici les params obligatoires à décrire:
+- **aws-actions/configure-aws-credentials**: c'est l'action de AWS. 
+<br>
+
+Voici les params obligatoires à décrire:
 ```yaml linenums="1"
 # .github/workflows/cicd.yaml
 
@@ -171,10 +181,12 @@ Il existe plusieurs façons de faire pour créer une authentication entre ta pip
 | Assume Role using existing credentials | | ✔ | | ✔ |
 
 Ma première authentication du genre à été bête méchant. Récuperer un access_id et un secret depuis mon compte. Mais il existe deux soucis pour cette façon de faire. Alors oui je te l'accorde ça prends 2 copié collé et c'est très simple et rapide, mais pas la façon la plus secure de faire. De un, tu prends tes credentials de ton compte root. Tu te les fais voler d'un façon ou d'une autre, RIP. Le second points négatifs est que ce sont des crédentials que tu set une seule et une unique fois en var d'environnement de pipeline. Ils ne changent jamais et donc laisse une authentication à long terme.  
+<br>
 
 Pour ce tutoriel là, je te propose d'utiliser un OIDC. Flemme de t'expliquer ce que c'est, mais ça te permet d'avoir une authorité qui va aller intéroger AWS depuis ta pipeline, demander un token, qui lui sera temporaire. De plus, aucun credentials n'a besoin d'être configuré dans ton repository à la mano.  
 
 La seule chose qui va apparaître dans ta pipeline sont :  
+
 - **la région ou tourne tes services AWS**  
 - **un assume role id (arn)**  
 
@@ -197,7 +209,7 @@ data "tls_certificate" "github" {
   url = "https://token.actions.githubusercontent.com/.well-known/openid-configuration"
 }
 ```
-
+<br>
 On créer notre ressource concernant le provider :
 ```terraform linenums="1"
 # github-actions-runners-roles.tf
@@ -212,7 +224,8 @@ resource "aws_iam_openid_connect_provider" "github_actions_oidc_provider" {
 ## Création de l'IAM rôle qui va être assume par Github Actions
 On peut desormais demander un token via l'identity provider configuré précédement. 
 
-Il va nous falloir maintenant créer un rôle. On va devoir lui définir deux choses :  
+Il va nous falloir maintenant créer un rôle. On va devoir lui définir deux choses :
+
   - Une **Identity based policy** : celle-ci s'applique à un user, group ou rôle. Ici on souhaite ajouter des permissions d'accès à notre rôle. On va lui donner l'accès aux bucket S3, nous permettant d'upload notre site sur notre bucket.
   - Une **Ressource based Policy** : celle-ci s'applique seulement aux ressources, ici à notre S3. On souhaite ici restreindre qui peut assume ce rôle ( et donc avoir accès aux S3 buckets ), qui ne concerne que des identités qui ont reçu un token valide entre Gitub/AWS de notre OIDC crée précédemment, et qu'enfin cela ne puisse s'appliquer qu'a un seul repository 
   
@@ -248,11 +261,13 @@ Ici on défini une politique pour assumer ce role. Ici on va donner le rôle pr�
     ]
 }
 ```
+<br>
 
 Example de policy pour une branche spécifique :
 ```json linenums="1"
 "token.actions.githubusercontent.com:sub": "repo:<mon_compte_github>/<mon_repo>:ref:refs/heads/<ma_remote_branch>"
 ```
+
 
 ### Depuis terraform
 On commence donc par crer le rôle, avec sa ressource based policy 
@@ -285,7 +300,7 @@ resource "aws_iam_role" "github_action_role" {  # Création d'un rôle
 }
 ```  
 
-
+<br>
 On a plus qu' attacher une idendity based policy à notre rôle. Maintenant que l'on a défini qui peut assume de rôle, on souhaite ajouter quel droit d'accès à notre rôle. Ici, on mentionne que l'on a tout les droits, à savoir lire un bucket, modifier, supprimer etc. Et cela concerne tout les bucket :
 ```terraform linenums="1"
 # github-actions-runners-roles.tf
@@ -308,6 +323,7 @@ resource "aws_iam_role_policy" "github_action_role_permissions" {
   })
 }
 ```
+<br>
 
 On souhaite avoir en sortie de *terraform apply* l'arn à inscrire dans notre github action du role à assume:
 ```terraform linenums="1"

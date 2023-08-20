@@ -355,12 +355,13 @@ sequenceDiagram
     Bucket www.blog.fr->>Bucket blog.fr: Redirige vers le bucket de web hosting principal
     Bucket blog.fr->>Visiteur: Renvoi le contenu demandé
 ```
-
-## Partie 2 - Certificat SSL et connexion sécurisé via HTTPS
-Nous nous sommes arrêté sur un hebergement de site simple. Peut être même trop simple, car l'ensemble des données du bucket est entiérement public. Si l'on souhaite avoir quelque chose de plus secure pour la suite, je vous propose une seconde partie qui n'était pas prévue. On va générer un certificat SSL afin de garantir une connexion sécurité en HTTPS. Le tout bien sur via terraform 😀
-
 <br>
 
+## Partie 2 - Certificat SSL pour une connexion sécurisé via HTTPS
+
+Nous nous sommes arrêté sur un hebergement de site simple. Peut être même trop simple, car l'ensemble des données du bucket est entiérement public. Si l'on souhaite avoir quelque chose de plus secure pour la suite, je vous propose une seconde partie qui n'était pas prévue. On va générer un certificat SSL afin de garantir une connexion sécurité en HTTPS. Le tout bien sur via terraform 😀  
+
+<br>
 Il y aura quelques partie du code à refactorer seulement :  
 
 - Supprimer dans notre bucket principal la ressource based policy présente, supprimer l'option de web static hosting  
@@ -373,7 +374,7 @@ Il y aura quelques partie du code à refactorer seulement :
 
 <br>
 
-Nouveau diagramme de séquence avec l'ajout des nouvelles ressources pour visiter **https://.blog.fr**
+Nouveau diagramme de séquence avec l'ajout des nouvelles ressources pour visiter **https://blog.fr**
 ```mermaid
 sequenceDiagram
     participant Visiteur
@@ -416,22 +417,298 @@ sequenceDiagram
     Bucket blog.fr->>Visiteur: Renvoi le contenu demandé
 ```
 
-## CDN
-Ici en bonus, on peut aller plus loin et ajouter un CDN ; Celui-ci va permettre de répliquer notre contenu dans des serveurs un peu partout dans le monde, améliorant ainsi la disponibilité et latence de notre site. Ceci est donc clairement optionnel. Cloudflare en es un des plus connu.
+## AWS CloudFront
+### Création du CDN
+La partie la plus complexe je pense du sujet. Je vais essayer de découper au mieu cette longue partie.  
+<br>
 
-### AWS CloudFront
-Histoire de rester sur la même stack, je vous propose de test celui d'amazon.
+On commence par définir ici une local qui contient juste un string. Cela sera juste le nom que je donne à mon origin. Tu peux mettre ce que tu souhaites car c'est juste un identifiant 
+```terraform linenums="1"
+# cloudfront.tf
 
-### Modification de la politique du S3 Bucket principal
+locals {
+  s3_origin_id = "primaryS3"
+}
+```
+<br>
 
-### Modification du protocol de redirection pour notre bucket secondaire
+On défini ici le nom d'un policy de cache. Celle-ci est managé par AWS eux-même, on la récupère juste en mentionnant son nom, que l'on utilisera plus tard dans notre CDN. Celle-ci en bref défini juste un ensemble de valeur de TTL, et autre métriques qui défini tes caches. Libre à toi d'optimiser tout cela aux petits oignons à tes souhaits, je laisse celle optimisé par Amazon pour les S3 dans mon cas
+```terraform linenums="1"
+# cloudfront.tf
+
+data "aws_cloudfront_cache_policy" "cache_policy" {
+  name = "Managed-CachingOptimized"
+}
+```
+<br>
+
+Je vais dispatcher en plusieurs bloc la même ressource afin de détailler au max les explications.
+C'est partie pour créer le Cloudfront ! 
+```terraform linenums="1"
+# cloudfront.tf
+
+resource "aws_cloudfront_distribution" "cloudfront" {
+   restrictions { # Permet de restreindre à certains pays l'accès à notre site web
+    geo_restriction {
+      restriction_type = "none" # On donne l'accès pour tous ici
+      locations        = []
+    }
+  }
+
+  # Ici on défini l'origine, c'est à dire d'ou provient le content que déssert Cloudfront. Ici on pointe vers notre bucket principal, 
+  # tout en mentionnant une politique d'accès
+  origin {
+    domain_name              = aws_s3_bucket.root_bucket.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.s3_root_bucket_oac.id
+    origin_id                = local.s3_origin_id
+  }
+
+  # Quelque hyper params à définir
+  enabled             = true
+  is_ipv6_enabled     = true
+  default_root_object = "index.html"  # le main de notre site web
+  aliases             = [local.domain_name]
+  price_class         = "PriceClass_100"  # Le moins cher, mais pas le plus rapide car on réplique pas dans plusieurs continents
+}
+```
+<br>
+
+Ici on renseigne le certificat que l'on a crée précédemment, avec une version de procotol, etc.
+```terraform linenums="1"
+# cloudfront.tf
+
+resource "aws_cloudfront_distribution" "cloudfront" {
+  viewer_certificate {
+    acm_certificate_arn      = aws_acm_certificate.certificate.arn
+    ssl_support_method       = "sni-only"
+    minimum_protocol_version = "TLSv1.2_2021"
+
+  }
+
+  custom_error_response {
+    error_caching_min_ttl = 3000
+    error_code            = 404
+  }
+}
+```
+<br>
+
+On s'attaque aux caches. On commence par ajouter un cache par defaut
+```terraform linenums="1"
+# cloudfront.tf
+
+resource "aws_cloudfront_distribution" "cloudfront" {
+   default_cache_behavior {
+    allowed_methods        = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods         = ["GET", "HEAD"]
+    target_origin_id       = local.s3_origin_id
+    viewer_protocol_policy = "redirect-to-https"
+    cache_policy_id        = data.aws_cloudfront_cache_policy.cache_policy.id
+  }
+}
+```
+<br>
+
+On ajoute un second cache qui doit être le principal pour notre site 
+```terraform linenums="1"
+# cloudfront.tf
+
+resource "aws_cloudfront_distribution" "cloudfront" {
+  ordered_cache_behavior {
+  path_pattern           = "/*" # Target tout le contenu du bucket
+  allowed_methods        = ["GET", "HEAD", "OPTIONS"]
+  cached_methods         = ["GET", "HEAD", "OPTIONS"]
+  target_origin_id       = local.s3_origin_id
+  viewer_protocol_policy = "redirect-to-https"
+  cache_policy_id        = data.aws_cloudfront_cache_policy.cache_policy.id
+  }
+}
+```
+<br>
+
+On créer une dernière ressource permettant de définir la restriction de l'origin du cloudfront. Cela fonctionne avec la modification de la policy que l'on va faire dans la partie juste après.Bucket, qui ne pourra être accessible que pour une entité qui à cette OAC.
+```terraform linenums="1"
+# cloudfront.tf
+
+resource "aws_cloudfront_origin_access_control" "s3_root_bucket_oac" {
+  name                              = "origin_access_website_bucket_s3"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+```
+
+### Modification des buckets S3
+#### Bucket secondaire & protocol de redirection
+Ici, une simple modification du protocol pour les redirections en **HTTPS** ce coup-ci :
+
+```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket_website_configuration" "config_www" {
+  bucket = aws_s3_bucket.www_bucket.id
+
+  redirect_all_requests_to {
+    protocol  = "https"
+    host_name = local.domain_name
+  }
+}
+```
+
+#### Bucket primaire policies & web hosting
+Initialement on avait donné l'accès en lecture à tout les objects contenu dans notre bucket principal pour n'importe qui. En gros le bucket était public. On va modifier cette **ressource based policy**. On souhaite donner un accès toujours en lecture de tout les objets contenu dans notre bucket. Mais ce coup-ci, la demande de lecture ne peut provenir que d'une distribution Cloudfront, et en l'occurence seulement celle que l'on a crée.
+
+```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket_policy" "policy_root" {
+  bucket = aws_s3_bucket.root_bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "AllowCloudFrontServicePrincipalReadOnly"
+        Effect = "Allow"
+        Principal : {
+          "Service" : "cloudfront.amazonaws.com"
+        },
+        Action = [
+          "s3:GetObject",
+        ]
+        Resource = [
+          "${aws_s3_bucket.root_bucket.arn}/*"
+        ],
+        Condition : {
+          StringEquals : {
+            "AWS:SourceArn" = [
+              aws_cloudfront_distribution.cloudfront.arn
+            ]
+          }
+        }
+      },
+    ]
+  })
+}
+```
+<br>
+
+On en profite à désactiver aussi le web hosting. En effet, on ne souhaite plus que cela soit le bucket lui même qui renvoi les objets au visiteur, mais que cela passe obligatoirement par Cloudfront pour profiter du HTTPS. Pour cela on doit supprimer cette ressource que l'on a crée initialement en parti 1 du tutoriel :
+```terraform linenums="1"
+# s3.tf
+
+resource "aws_s3_bucket_website_configuration" "config_root" {
+  bucket = aws_s3_bucket.root_bucket.id
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "error.html"
+  }
+
+}
+```
+
+!!! danger
+    Ne faîtes pas l'impasse sur cette étape, puisque tant que le **web hosting** restera **actif**, vous ne pourrez pas activer Cloudfront sur ce bucket.
 
 ### Modification du record principal sur Route53
+On va modifier le bucket principal qui héberge notre content. En effet, on va modifier le record pour la ligne mon-blog.fr de type A afin que son alias renvoi vers non plus le end point lui même du bucket, mais désormais par Cloudfront.
+```terraform linenums="1"
+# route53.tf
+
+resource "aws_route53_record" "r53_record_root" {
+  zone_id = aws_route53_zone.r53_zone.id
+  name    = local.domain_name
+  type    = "A"
+
+  alias {
+    name                   = aws_cloudfront_distribution.cloudfront.domain_name
+    zone_id                = aws_cloudfront_distribution.cloudfront.hosted_zone_id
+    evaluate_target_health = true
+  }
+}
+```
+
+## Certificat SSL via Amazon Certificate Manager (ACM)
+### Generation du certificat
+Première chose à faire est de créer un certificat 
+```terraform linenums="1"
+# acm.tf
+
+resource "aws_acm_certificate" "certificate" {
+  provider = aws.acm_provider
+  domain_name       = local.domain_name # Cibler notre bucket principal
+  validation_method = "DNS"             # On valide avec le DNS
+  tags = local.commonTags
+
+  lifecycle {
+    create_before_destroy = true # Petite sécurité histoire de ne pas le supprimer par erreur
+  }
+}
+```
+
+!!! warning
+    Toute ressource qui concerne acm doit être faîte avec un provider custom (voyez l'alias que j'utilise) qui target la région us-east-1. C'est la seul d'autorisé pour gérer les certicats
+<br>
+
+On ajoute alors un nouveau provider avec la bonne région pour ce type de ressource :
+```terraform linenums="1"
+# providers.tf
+
+provider "aws" {
+  alias = "acm_provider"
+  region = "us-east-1"
+}
+```
+
+!!! info
+    Ne t'inquiéte pas, aucun soucis que tu aies toute tes ressources dans une autre région que us-east-1
+
+### Validation du certificat via DNS dans Route53
+On doit maintenant valider le certificat. On a choisi la méthode par DNS pour plus de sécurité. Afin de prouver que vous êtes l'auteur de la demande, cette vérification est nécessaire. Et celle-ci consiste à ajouter un record dans votre hosted zone correspondant à une valeur généré lors de la demande de certificat.
+
+```terraform linenums="1"
+# route53.tf
+
+resource "aws_route53_record" "acm_certificat_cname" {
+  for_each = {
+    for dvo in aws_acm_certificate.certificate.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = aws_route53_zone.r53_zone.zone_id
+}
+```
+<br>
+
+On a plus qu'a créer une ressource afin de valider que ce record précédemment crée dans notre hosted zone correspond à notre certificat précédent :
+```terraform linenums="1"
+# acm.tf
+
+resource "aws_acm_certificate_validation" "certificate_validator" {
+  provider = aws.acm_provider
+  certificate_arn = aws_acm_certificate.certificate.arn
+  validation_record_fqdns = [for record in aws_route53_record.acm_certificat_cname : record.fqdn]
+}
+```
+
 
 ## TADAAAA ! HTTPS, et un site quasi HS
 Vous venez de finaliser l'ajout de votre Cloudfront, et vous avez enfin ce petit cadena vert qui prouve que votre ajout d'un certificat SSL renvoi vos visiteur vers un lien en HTTPS.
-Vous regardez votre page d'acceuil, tout roule. Mais essayer de vous balader sur les divers onglet de votre site. BAM, une erreur 403 qui pop de null part indiquand que la clée n'existe pas sur votre bucket.
+Vous regardez votre page d'acceuil, tout roule. Mais essayez de vous balader sur les divers onglets de votre site. BAM, une erreur 403 qui pop de null part indiquant que la clée n'existe pas sur votre bucket.
 
+<br>
 Petit example :
 
 **https://bastienmaurice.fr** : fonctionne  
@@ -441,7 +718,9 @@ Petit example :
 !!! question
     AWS CloudFront vient de tout péter notre site ? Par quel moyen ? Est-ce vraiment ce service là qui en est le responsable ? 🤔
 
+<br>
 Il semble que nous ayons un soucis pour l'affichage des répertoires.
+<br>
 
 En effet, CloudFront te permet de renseigner un object racine, notre index.html.
 Mais lorsque tu demandes un lien du style **https://bastienmaurice.fr/blog** et pointe donc vers un dossier et non un fichier, c'est donc normal d'avoir une erreur car le bucket ne peut te renvoyer que des fichiers.
@@ -451,6 +730,15 @@ Je te propose deux méthode pour fix ce soucis là.
 ### use_directory_urls (quick & dirty)
 On vient de voir que notre bucket ne peut render que des fichiers et en aucun cas un dossier. Pour cela on va ajouter une property dans notre **mkdocs.yml**
 
+Cela se résume à ce tableau ci :
+
+|Source file      | use_directory_urls: true  | use_directory_urls: false|
+---------------- | ------------------------- | -------------------------
+|index.md         | /                         | /index.html|
+|api-guide.md     | /api-guide/               | /api-guide.html|
+|about/license.md | /about/license/           | /about/license.html|
+
+
 Soit tu tournes sur une version basique de mkdocs et tu ajoutes :
 ```yaml linenums="1"
 #mkdocs.yml
@@ -459,13 +747,7 @@ use_directory_urls: false # on set le param à false
 ```
 
 
-Cela se résume à ce tableau ci :
-Source file      | use_directory_urls: true  | use_directory_urls: false
----------------- | ------------------------- | -------------------------
-index.md         | /                         | /index.html
-api-guide.md     | /api-guide/               | /api-guide.html
-about/license.md | /about/license/           | /about/license.html
-
+<br>
 
 Soi tu tournes sur un thème particulier, comme moi le material, et tu utilises ça:
 ```yaml linenums="1"
@@ -476,12 +758,16 @@ plugins:
 ```
 Ca permet de faire la même chôse que précedemment, en plus de rendre le moteur de blogging offline pour les recherches d'articles.
 
+<br>
+
 Cette méthode est la plus simple à mettre en place. Cependant, l'utilisateur final se baladera avec des liens du genre :
+
 - http://mon_blog/blog/index.html
 - http://mon_blog/blog/archive/2023/index.html
 - http://mon_blog/blog/2023/mon_article/index.html
 
 au lieu de :
+
 - http://mon_blog/blog/
 - http://mon_blog/blog/archive/2023/
 - http://mon_blog/blog/2023/mon_article/
@@ -490,37 +776,19 @@ Ce qui fait une barre d'addresse un peu moin sexy 😕
 
 ### AWS Lambda redirection (long mais propre) 
 Ici je te propose une méthode un poil plus complexe car on va devoir passer par un autre service d'AWS. On va se servir d'une lambda, qui te permet d'exploiter un bout de code dans le cloud.
-Ici on va demander que chaque URL qui transite par notre distribution de Cloudfront passe par notre Lambda. Au sein de notre lambda, on y effectuera une modification dans la requête, et on modifiera l'URL en sortie de fonction.
+Ici on va demander que chaque URL qui transite par notre distribution de Cloudfront passe par notre Lambda avant d'atteindre son origin, soit notre bucket principal. Au sein de notre lambda, on y effectuera une modification dans la requête, et on modifiera l'URL en sortie de fonction.
 
-Ainsi, quand un utilisateur va aller sur :
-http://mon_blog/blog/
-la Lambda va secretement changer l'url avant de transiter par Cloudfront et aura cette forme là :
-http://mon_blog/blog/index.html
+<br>
+Ainsi, quand un utilisateur va aller sur :  
+**http://mon_blog/blog/**  
+la Lambda va secretement changer l'url avant de transiter par Cloudfront et aura cette forme là :  
+**http://mon_blog/blog/index.html**  
 
+<br>
 Ainsi cela reste invisible pour l'utilisateur, et lui garanti une meilleure navigation.
 
-
-#### Lambda edge fonction
-#### Cloudfront fonction
+Initialement tu devais passer par la région us-est-1 afin de créer une lambda@Edge. Je te propose une solution un poil plus simple et moins overkill, vu la simplicité de notre fonction que l'on va crée. Cloudfront propose ses propes lambda désormais.
 
 
-TODO
+[TODOOO]
 
-1. Ecrire la partie terraform de la partie 1
-
-
-2. Faire les modifs tf suivante
-Changer route53 le record domain name de bastienmaurice => du website s3 au domain name de cloudfront
-
- 
-S3 principal
-desactiver stockage site sur le principal
-supprimer la policy courante + update de l'actuelle
-
-laisser le block public access a false
-
-
-## Problèmes courants
-### Nom de domaine transféré
-Si tu as souhaité faire un transfert de domaine avant de te lancer sur ce tuto, tu peux tomber sur un soucis.
-En effet, une fois le transfert fini vers ton nouveau cloud provider, il se peut qu'il ait gardé en configuration tes anciens DNS déclaré par ton ancien fournisseur. Le soucis ? Impossible de faire la validation de tes certificats, vu que ton ancienne zone DNS est supprimé.

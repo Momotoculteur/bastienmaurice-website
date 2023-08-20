@@ -29,23 +29,29 @@ extra:
     
 theme:
   custom_dir: overrides
+  icon:
+    logo: material/code-tags
+  favicon: ressource/img/favicon/icon.png
+
+  homepage: https://bastienmaurice.fr
   font:
     text: Roboto
     code: Roboto Mono
   name: material
   palette:
     - scheme: default
-      primary: indigo
-      accent: indigo
+      primary: teal
+      accent: green
       toggle:
-        icon: material/brightness-7
+        icon: material/weather-night
         name: Switch to dark mode
     - scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: teal
+      accent: green
       toggle:
-        icon: material/brightness-4
+        icon: material/weather-sunny
         name: Switch to light mode
+      
   features:
     - announce.dismiss
     - content.action.edit

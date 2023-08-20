@@ -33,7 +33,30 @@ Je vous propose d'heberger un simple site web statique sur AWS, pour un coût en
 
 Et on va faire le tout bien propre, avec du Terraform.
 
+<span>
+<a href="https://gitlab.com/Momotoculteur" target="_blank" rel="noopener">
 
+:fontawesome-brands-github:{style="color: red"}
+
+
+</a>
+</span>
+<a href="https://www.linkedin.com/in/bmaurice10/" target="_blank" rel="noopener">
+:fontawesome-brands-linkedin-in:
+</a>
+<a href="https://deeplylearning.fr" target="_blank" rel="noopener">
+:fontawesome-solid-globe:
+</a>
+<a href="https://youtube.com/@deeplylearning5754" target="_blank" rel="noopener">
+:fontawesome-brands-youtube:
+</a>
+
+<a href="https://gitlab.com/Momotoculteur" target="_blank" rel="noopener" >
+
+<img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/crown.svg" width="50" height="50" style="color:red">
+</a>
+
+<i class="fa-solid fa-up-right-from-square"></i>
 ## Pré-requis
 Tools :  
 - Terraform  
@@ -45,6 +68,8 @@ Compte:
 Projet:
 - Un repository avec un projet terraform déjà initialisé/paramétré, auquel tu peux déjà faire tes plan/apply
 - Un site statique déjà buildé
+
+Nom de domaine
 
  
 ## Hebergement - AWS S3 Bucket
@@ -262,8 +287,8 @@ Changer route53 le record domain name de bastienmaurice => du website s3 au doma
 S3 principal
 desactiver stockage site sur le principal
 supprimer la policy courante + update de l'actuelle
-rendre bucker prive (acl): ACLs disabled (recommended)
 
+laisser le block public access a false
 
 
 ## Problèmes courants

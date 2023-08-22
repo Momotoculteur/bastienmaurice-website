@@ -778,17 +778,65 @@ Ce qui fait une barre d'addresse un peu moin sexy 😕
 Ici je te propose une méthode un poil plus complexe car on va devoir passer par un autre service d'AWS. On va se servir d'une lambda, qui te permet d'exploiter un bout de code dans le cloud.
 Ici on va demander que chaque URL qui transite par notre distribution de Cloudfront passe par notre Lambda avant d'atteindre son origin, soit notre bucket principal. Au sein de notre lambda, on y effectuera une modification dans la requête, et on modifiera l'URL en sortie de fonction.
 
-<br>
-Ainsi, quand un utilisateur va aller sur :  
-**http://mon_blog/blog/**  
-la Lambda va secretement changer l'url avant de transiter par Cloudfront et aura cette forme là :  
-**http://mon_blog/blog/index.html**  
+```mermaid
+sequenceDiagram
+    participant Visiteur
+    participant CloudFront cache
+    participant Bucket blog.fr(Origin)
+    Visiteur->>CloudFront cache: Viewer request
+    loop lamda function
+        CloudFront cache->>CloudFront cache: suffixe l'URI de requête avec 'index.html'
+    end
+    CloudFront cache->>Bucket blog.fr(Origin): Origin request
+    Bucket blog.fr(Origin)->>CloudFront cache: Origin response
+    CloudFront cache->>Visiteur: Viewer response
+```
 
 <br>
+
+Ainsi, quand un utilisateur va aller sur **http://mon_blog/blog/**, la Lambda va suffixer l'URI de la requête initial avant de transiter par Cloudfront et aura cette forme là : **http://mon_blog/blog/index.html**  
+
+<br>
+
 Ainsi cela reste invisible pour l'utilisateur, et lui garanti une meilleure navigation.
 
-Initialement tu devais passer par la région us-est-1 afin de créer une lambda@Edge. Je te propose une solution un poil plus simple et moins overkill, vu la simplicité de notre fonction que l'on va crée. Cloudfront propose ses propes lambda désormais.
+Tu as le choix entre deux type de fonction avec lesquelles tu peux attacher des scripts javascript pour la modification de la requête de l'utilisateur et utilisable avec CloudFront:
+- Lambda@Edga (nécessite d'être crée dans une région us-est-1)
+- CloudFront function
+
+Ces deux types de lambda ont des utilisations pour des objectifs différents. Vérifie donc bien ton use case avant de choisir entre lambda@Edge et CloudFront function.
+Pour la suite du tuto, on partira nous sur une CloudFront function.
+
+#### Script javascript pour modifier une requête
+Je créer un fichier **.js** ce coup ci. Une simple regex va faire notre affaire.  
+<br>
+La regex **(/\/$/, '\/index.html')** permet de récupèrer la fin d'une URL si elle fini par **/**  (et donc dirige vers un folder, qui nous amène donc vers une erreur de clée renvoyé par le bucket car fichier inexistant) et on le remplace par **/index.html**.
+<br>   
+On a donc juste à récuperer l'URI de la requête, la modifier, et renvoyer la nouvelle requête :
 
 
-[TODOOO]
+```terraform linenums="1"
+# redirect.js
 
+function handler(event) {
+    var request = event.request;
+    var olduri = request.uri;
+    var newuri = olduri.replace(/\/$/, '\/index.html');
+    request.uri = newuri;
+    return request;
+}
+```
+
+#### Bind la fonction à CloudFront
+Comme tu peux l'imaginer, on a plus qu'a créer une CloudFront fonction et la bind à notre script de redirection crée à l'instant 
+
+```terraform linenums="1"
+# cloudfront.tf
+
+resource "aws_cloudfront_function" "cloudfront_lambda_function_html_redirect" {
+  name    = "cloudfront-lambda-function-html-redirect"
+  runtime = "cloudfront-js-1.0"   # Pas d'autre choix possible
+  publish = true                  # On active de suis la fonction en production
+  code    = file("${path.module}/redirect.js")
+}
+```

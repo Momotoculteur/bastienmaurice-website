@@ -9,9 +9,6 @@ site_description: |
     plutôt fullstack/DevOps, avec un côté cloud/infra en plus de mon profil de base orienté bas niveau.
   J'ai toujours eu un penchant au domaine du machine & deep learning.
 
-# Infos repo
-repo_name: Momotoculteur/bastienmaurice-website
-repo_url: https://github.com/Momotoculteur/bastienmaurice-website
 
 extra:
   generator: false
@@ -29,23 +26,29 @@ extra:
     
 theme:
   custom_dir: overrides
+  icon:
+    logo: material/code-tags
+  favicon: ressource/img/favicon/icon.png
+
+  homepage: https://bastienmaurice.fr
   font:
     text: Roboto
     code: Roboto Mono
   name: material
   palette:
     - scheme: default
-      primary: indigo
-      accent: indigo
+      primary: teal
+      accent: green
       toggle:
-        icon: material/brightness-7
+        icon: material/weather-night
         name: Switch to dark mode
     - scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: teal
+      accent: green
       toggle:
-        icon: material/brightness-4
+        icon: material/weather-sunny
         name: Switch to light mode
+      
   features:
     - announce.dismiss
     - content.action.edit

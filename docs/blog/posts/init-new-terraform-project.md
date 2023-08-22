@@ -21,17 +21,19 @@ Je te montre les best practices pour ton Terraform State, en minimisant les erre
 Cas concret avec un remote backend sur du AWS Bucket S3 et DynamoDB.
 
 <!-- more -->
+<br>
 
 J'ai souhaité récemment me faire un petit blog sur le net et l'heberger sur du AWS. J'ai voulu faire les choses propres et me faire mon infra as code avec Terraform. Mais avant de pouvoir plan et apply mes nouvelles ressources dont j'ai besoin, j'ai du me confronté à l'initialisation d'un projet Terraform.
 
-
+<br>
 Et si tu veux faire les choses bien, je peux te montrer quelques good practices concernant la gestion de ton tf.state ;)
 
 
 Je te montre ça sur du AWS, mais tu peux faire exactement la même chose sur les autres clouds provider. Seul le noms des ressources vont changer de l'un à l'autre !
 
 ## Pré-requis
-**Tools :**   
+Tools :   
+
 - Terraform
 
 ## tf.state
@@ -56,12 +58,14 @@ Tu le sais déjà, mais on va être obliger à un moment donné d'utiliser Git. 
 
 #### Remote backend ? OUI !
 C'est le feu car ça résolve les 3 problématiques que je viens de vous exposer :
+
 - Erreur manuelle: Terraform va automatiquement charger le tf.state a chaque fois que tu effecue un terraform plan ou apply, et automatiquement renvoyer sur le remote backend le nouveau tf.state fraichement crée
 - Verouillage: la plupart des remotes backend supportent nativement le locking. Et si quelqu'un d'autre à aquéri le lock à un instant T, tu vas devoir attendre qu'il ait fini. Il existe une commande, plutôt cet argument ci: *-lock-timeout=<temps>* qui te permet de dire à terraform d'attendre jusqu'a cette période là pour effectuer ta commande
 - Secret: La plupart des remotes backend supportent aussi nativement l'encryptage, de configurer les permissions d'accès et donc de définir quel utilisateur à le droit
 
 #### Exemple avec un AWS S3 bucket
 Dans mon cas on va faire avec un service managé par AWS qui te rend ultra simple cet ajout là, le S3. Qu'apporte t-il ?
+
 - Service managé, donc ballek de maintenir une infra supplémentaire pour ce cas d'usage
 - Niveau durabilité et disponibilité, on est à 99,99.....%, donc tu crains pas d'avoir des soucis pour y acceder à tout heure
 - Support l'encryptage, ce qui est plutôt cool avec les données sensibles stocké dedans le tf.state. Example avec de l'AES-256 niveau encryption côté Amazon, et on utilise du TLS pour la communication AWS <-> Terraform
@@ -101,6 +105,7 @@ resource "aws_s3_bucket" "s3_state" {
 !!! tips "lifecycle"
         Je rajoute un hook ici, une sécurité si je fais par mégarde un **terraform destroy**. Sans trop faire gaffe je pourrais delete le contenu de tout le bucket. Ici on n'empêche d'apply le destroy
 
+<br>
 J'ai utilisé des variables locales dans le code précédent, rien de particulier ici à préciser mais je te donne mes valeurs à titre d'example:
 ```terraform linenums="1"
 # locals.tf
@@ -175,8 +180,10 @@ A partir de là, tu peux commencer à faire un **terraform init**, puis **terraf
 
 !!! question
         Bizarre, je ne vois aucun tf.state dans mon bucket qui défini mon infra actuelle
-        
+
+<br>
 Et c'est normal ma gueule. On à encore la sauvegarde du tf.state en local, vu que ton provider initiallement crée au début du tutoriel target ton local.
+<br>
 
 #### From Local Backend to Remote Backend
 On touche du doigt la fin du chapitre. C'est ici que l'on va modifier notre configuration de notre provider, afin de lui dire d'aller target le backend disponible en ligne sur notre S3
@@ -201,6 +208,7 @@ terraform {
   }
 }
 ```
+
 - **required_providers**: un bloc permettant de définir une version du prodiver que tu uitlises, très utile si tu bosses sur la même infra avec plusieurs dév dessus.  ça t'évitera des soucis de compatibilité et avoir une version commun  
 - **backend**: C'est ici que l'on target notre S3 fraichement crée. On y renseigne le nom de notre bucket qui contient notre tf.state, et aussi notre DynamoDB qui va gérer le locking de ce fichier, permettant les accès concurentiel et empêcher toute corruption de celui-ci
 
@@ -213,7 +221,9 @@ Comme tu as pu le voir, tu as quelques manips à faire :
 1.  Ecrire une première partie de l'infra sous terraform pour créer ton bucket S3 et ta table sous DynamoDB avec un tf.state en local
 2. Ajouter un remote backend et le configure pour qu'il puisse utiliser le S3 et ta DB précédement crée, et refaire un *terraform init* pour copier ton tf.state local que tu as déjà utilisé.
 
+<br>
 Petit tips, si tu veux supprimer ton infra existante, tâche de faire ces étapes à l'envers ; à savoir :
+
 1. Supprimer le remote backend de la configuration terraform, et re-run le *terraform init* pour avoir ton tf.state en local
 2. Premier terraform init/plan/apply.
 3. Lance ton *terraform destroy* pour supprimer ton bucket S3 et ton DynamoDB

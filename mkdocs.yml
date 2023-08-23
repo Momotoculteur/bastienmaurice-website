@@ -11,6 +11,15 @@ site_description: |
 
 
 extra:
+  alternate:
+    - name: Français
+      link: /fr/
+      lang: fr
+    - name: English
+      link: /en/
+      lang: en
+
+  homepage: https://bastienmaurice.fr
   generator: false
   social:
     - icon: fontawesome/brands/linkedin-in
@@ -29,8 +38,7 @@ theme:
   icon:
     logo: material/code-tags
   favicon: ressource/img/favicon/icon.png
-
-  homepage: https://bastienmaurice.fr
+  language: fr
   font:
     text: Roboto
     code: Roboto Mono

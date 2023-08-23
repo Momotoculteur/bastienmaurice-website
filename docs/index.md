@@ -9,7 +9,7 @@
 </div>
 
 
-<span>
+<div class="center" markdown>
 <a href="https://gitlab.com/Momotoculteur" target="_blank" rel="noopener">
 :fontawesome-brands-github:
 </a>
@@ -22,4 +22,4 @@
 <a href="https://youtube.com/@deeplylearning5754" target="_blank" rel="noopener">
 :fontawesome-brands-youtube:
 </a>
-</span>
+</div>

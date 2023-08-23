@@ -23,7 +23,10 @@ extra:
       link: https://www.youtube.com/@deeplylearning5754
     - icon: material/web
       link: http://deeplylearning.fr/
-    
+  
+extra_css:
+  - css/extra.css
+
 theme:
   custom_dir: overrides
   icon:
@@ -115,6 +118,21 @@ plugins:
 
 nav:
   - Accueil: index.md
+  - CI/CD:
+    - Pré-requis : cicd/pre-requis.md
+    - Crer un micro-service:
+      - Frontend: cicd/micro-service/frontend.md
+      - Tests: cicd/micro-service/test.md
+      - Docker: cicd/micro-service/docker.md
+      - Helm: cicd/micro-service/helm.md
+    - Intégration continue: 
+      - Stage Dependencies : cicd/integration-continue/dependencies.md
+      - Stage Static-analysis: cicd/integration-continue/static-analysis.md
+      - Stage Build: cicd/integration-continue/build.md
+      - Stage Unit-testing: cicd/integration-continue/unit-testing.md
+    - Deploiement continu: 
+  - Culture DevOps:
+    - Pré-requis: culture-devops/pre-requis.md
   - Blog:
     - blog/index.md
 

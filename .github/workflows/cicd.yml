@@ -26,11 +26,6 @@ jobs:
           architecture: x64
       - run: pip3 install -r ./requirements.txt
       - run: mkdocs build
-      - uses: actions/cache/save@v3
-        id: build_id
-        with: 
-          key: mkdocs-material-${{ github.event.repository.updated_at}}
-          path: './${{ env.BUILD_DIR }}'
 
   deploy:
     runs-on: self-hosted

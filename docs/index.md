@@ -10,7 +10,7 @@
 
 
 <div class="center" markdown>
-<a href="https://gitlab.com/Momotoculteur" target="_blank" rel="noopener" style="margin-left:10px;margin-right:10px">
+<a href="https://github.com/Momotoculteur" target="_blank" rel="noopener" style="margin-left:10px;margin-right:10px">
 :fontawesome-brands-github:
 </a>
 <a href="https://www.linkedin.com/in/bmaurice10/" target="_blank" rel="noopener" style="margin-left:10px;margin-right:10px">
@@ -21,5 +21,8 @@
 </a>
 <a href="https://youtube.com/@deeplylearning5754" target="_blank" rel="noopener" style="margin-left:10px;margin-right:10px">
 :fontawesome-brands-youtube:
+</a>
+<a href="https://gitlab.com/Momotoculteur" target="_blank" rel="noopener" style="margin-left:10px;margin-right:10px">
+:fontawesome-brands-gitlab:
 </a>
 </div>

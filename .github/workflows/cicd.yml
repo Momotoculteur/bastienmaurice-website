@@ -26,22 +26,12 @@ jobs:
           architecture: x64
       - run: pip3 install -r ./requirements.txt
       - run: mkdocs build
-      - uses: actions/cache/save@v3
-        id: build_id
-        with: 
-          key: mkdocs-material-${{ github.event.repository.updated_at}}
-          path: './${{ env.BUILD_DIR }}'
 
   deploy:
     runs-on: self-hosted
     needs: build
     if:  ${{ github.ref_name == 'master' || github.event_name == 'workflow_dispatch' }}
     steps:
-      - uses: actions/cache/restore@v3
-        id: build_id
-        with:
-          path: './${{ env.BUILD_DIR }}'
-          key: mkdocs-material-${{ github.event.repository.updated_at}}
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions-assume-role-access

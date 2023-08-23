@@ -5,32 +5,31 @@ site_url: http://bastienmaurice.fr
 site_dir: public
 copyright: Copyright &copy; 2023 - 2023 Bastien MAURICE
 site_description: |
-  Initialement développeur en génie logiciel de part ma formation, je suis aujourd'hui avec quelques années d'expériences 
-    plutôt fullstack/DevOps, avec un côté cloud/infra en plus de mon profil de base orienté bas niveau.
-  J'ai toujours eu un penchant au domaine du machine & deep learning.
-
+  Développeur en génie logiciel de formation, je suis aujourd'hui avec quelques années d'expériences DevOps chez Betclic (Bordeaux, France).
+  Je m'intéresse aussi au domaine du machine & deep learning.
 
 extra:
   generator: false
+  homepage: https://bastienmaurice.fr
   social:
     - icon: fontawesome/brands/linkedin-in
       link: https://www.linkedin.com/in/bmaurice10/
     - icon: fontawesome/brands/github
       link: https://github.com/Momotoculteur
-    - icon: fontawesome/brands/gitlab
-      link: https://gitlab.com/Momotoculteur
     - icon: fontawesome/brands/youtube
       link: https://www.youtube.com/@deeplylearning5754
     - icon: material/web
       link: http://deeplylearning.fr/
-    
+  
+extra_css:
+  - css/extra.css
+
 theme:
   custom_dir: overrides
   icon:
     logo: material/code-tags
   favicon: ressource/img/favicon/icon.png
-
-  homepage: https://bastienmaurice.fr
+  language: fr
   font:
     text: Roboto
     code: Roboto Mono
@@ -78,9 +77,7 @@ plugins:
       exclude:
         - index.md
   - search:
-      lang:
-        - fr
-        - en
+      lang: fr
       separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
   - minify:
       minify_html: true
@@ -106,7 +103,6 @@ plugins:
       categories_toc: false
       pagination: true
       pagination_per_page: 10
-      pagination_keep_content: false
       authors: true
       draft: false
       draft_on_serve: true
@@ -115,6 +111,27 @@ plugins:
 
 nav:
   - Accueil: index.md
+  - CI/CD:
+    - Comparatif des plateformes : cicd/introduction/plateforme.md
+    - Setup des self-hosted runners: cicd/introduction/self-hosted-runner.md
+    - Crer un micro-service:
+      - Frontend: cicd/micro-service/frontend.md
+      - Tests: cicd/micro-service/test.md
+      - Docker: cicd/micro-service/docker.md
+      - Helm: cicd/micro-service/helm.md
+    - Intégration continue: 
+      - Stage Dependencies : cicd/integration-continue/dependencies.md
+      - Stage Static-analysis: cicd/integration-continue/static-analysis.md
+      - Stage Security-analysis SAST: cicd/integration-continue/security-analysis-sast.md
+      - Stage Security-analysis DAST: cicd/integration-continue/security-analysis-dast.md
+      - Stage Build: cicd/integration-continue/build.md
+      - Stage Unit-testing: cicd/integration-continue/unit-testing.md
+      - Stage Helm: cicd/integration-continue/helm.md
+      - Stage Quality-Gate: cicd/integration-continue/quality-gate.md
+    - Deploiement continu: 
+      - Stage Deploy: cicd/deploiement-continu/deploy.md
+  - Culture DevOps:
+    - Pré-requis: culture-devops/pre-requis.md
   - Blog:
     - blog/index.md
 
@@ -132,7 +149,6 @@ markdown_extensions:
   - md_in_html
   - toc:
       permalink: true
-
   # Python Markdown Extensions
   - pymdownx.arithmatex:
       generic: true

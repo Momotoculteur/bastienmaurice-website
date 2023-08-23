@@ -112,7 +112,8 @@ plugins:
 nav:
   - Accueil: index.md
   - CI/CD:
-    - Pré-requis : cicd/pre-requis.md
+    - Comparatif des plateformes : cicd/introduction/plateforme.md
+    - Setup des self-hosted runners: cicd/introduction/self-hosted-runner.md
     - Crer un micro-service:
       - Frontend: cicd/micro-service/frontend.md
       - Tests: cicd/micro-service/test.md

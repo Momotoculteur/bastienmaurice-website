@@ -116,20 +116,25 @@ nav:
     - Setup des self-hosted runners: cicd/introduction/self-hosted-runner.md
     - Crer un micro-service:
       - Frontend: cicd/micro-service/frontend.md
+      - Backend: cicd/micro-service/backend.md
       - Tests: cicd/micro-service/test.md
       - Docker: cicd/micro-service/docker.md
       - Helm: cicd/micro-service/helm.md
     - Intégration continue: 
       - Stage Dependencies : cicd/integration-continue/dependencies.md
       - Stage Static-analysis: cicd/integration-continue/static-analysis.md
-      - Stage Security-analysis SAST: cicd/integration-continue/security-analysis-sast.md
-      - Stage Security-analysis DAST: cicd/integration-continue/security-analysis-dast.md
+      - Stage Security-analysis (SAST): cicd/integration-continue/security-analysis-sast.md
       - Stage Build: cicd/integration-continue/build.md
       - Stage Unit-testing: cicd/integration-continue/unit-testing.md
       - Stage Helm: cicd/integration-continue/helm.md
       - Stage Quality-Gate: cicd/integration-continue/quality-gate.md
+      - Stage Cross-Browser-Testing: cicd/integration-continue/cross-browser-testing.md
+      - Stage Visual regression: cicd/integration-continue/visual-regression.md
     - Deploiement continu: 
       - Stage Deploy: cicd/deploiement-continu/deploy.md
+    - Nightly:
+      - Stage Load-testing: cicd/nightly/load-testing.md
+      - Stage Pentests (DAST): cicd/nightly/pentests.md
   - Culture DevOps:
     - Pré-requis: culture-devops/pre-requis.md
   - Blog:

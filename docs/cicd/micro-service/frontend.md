@@ -8,7 +8,12 @@ nvm use 20
 npm, yarn, pnpm
 ## Initialisation du projet
 ### Framework - React
+Pour les naze :
 npx create-react-app simple-project-frontend
+
+Pour les vrais :
+npx create-react-app my-app --template typescript
+
 
 Create react app : boilerplate pour une app basique sous react ;
 pas besoin de config de webpack, babel ou autre builder & transpiler

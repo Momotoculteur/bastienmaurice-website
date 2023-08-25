@@ -14,4 +14,7 @@ Docker desktop
 ### Backend app
 ## Optimiser son Dockerfile
 ### Choix de l'image : Alpine Linux, Distroless, Scratch...
+comparatif node:20 => 1.10go
+node:20-alpine3.18 => 180mo
+
 ### Multi-stage

@@ -1,1 +1,3 @@
-# Cross-Browser-Testing
+# Cross browser testing
+
+Utilisation de Browserstack Automate

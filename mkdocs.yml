@@ -20,7 +20,8 @@ extra:
       link: https://www.youtube.com/@deeplylearning5754
     - icon: material/web
       link: http://deeplylearning.fr/
-  
+    - icon: fontawesome/brands/gitlab
+      link: https://gitlab.com/Momotoculteur
 extra_css:
   - css/extra.css
 

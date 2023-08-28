@@ -24,24 +24,24 @@ jobs:
         with:
           python-version: 3.11.4
           architecture: x64
-      - run: pip3 install -r ./requirements.txt
+          cache: 'pip'
+      - run: pip install -r ./requirements.txt
       - run: mkdocs build
-      - uses: actions/cache/save@v3
-        id: website
+      - uses: actions/upload-artifact@v3
         with:
-          path: ./${{ env.BUILD_DIR }}
-          key: test
+          name: ${{ env.BUILD_DIR }}
+          retention-days: 1
+          path: |
+            ${{ env.BUILD_DIR }}
 
   deploy:
     runs-on: ubuntu-22.04
     needs: build
     if:  ${{ github.ref_name == 'master' || github.event_name == 'workflow_dispatch' }}
     steps:
-      - uses: actions/cache/restore@v3
-        id: website
+      - uses: actions/download-artifact@v3
         with:
-          path: ./${{ env.BUILD_DIR }}
-          key: test
+          name: ${{ env.BUILD_DIR }}
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions-assume-role-access

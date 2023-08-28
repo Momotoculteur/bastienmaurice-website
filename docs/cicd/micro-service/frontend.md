@@ -22,7 +22,7 @@ Choix du manage pour installer et gérer ses dependances :
 - **yarn** : se veut plus rapide que npm
 - **pnpm** : aussi plus rapide que npm
 
-Chacun ont des algos différents pour résoudre l'arbre de dépendances de ton package-lock.json.
+Chacun ont des algos différents pour résoudre l'arbre de dépendances de ton package-lock.json. Si tu travailles sur de gros projets, ou que tu as besoin d'avoir des besoins très léger pour build en CICD par exemple le plus rapidement possible, il est peut être intéréssant pour toi de bencher les différents packet manager.
 
 ## Initialisation du projet
 On débute avec l'utilisation d'un framework de frontend. Libre à toi d'utiliser :
@@ -50,6 +50,7 @@ Pour résumer, en une ligne de commande tu as une app, simple certe, mais qui to
 
 !!! info
     C'est webpacket babel qui s'occupe de la transpilation et le bundle de ton app par défaut
+
 
 Si t'es plutôt Javascript :  
 ```sh linenums="1"
@@ -87,26 +88,28 @@ npm install --save-dev json-server
 
 On va rajouter un script afin de lancer notre json-server avec quelques paramètres:
 ```json linenums="1"
-# package.json
+// package.json
 {
    "db": "json-server --watch ./json-server/db.json --port 5000 --routes routes.json"
 }
 ```
 
+<br>
 Deux choses en plus à faire.
 
 La première est que notre front est servi sur le port 3000 de base, et le json server de même. Ajoutons un proxy afin que notre frontend aille requêter sur un autre port :
 On ajoute une ligne à notre package.json : 
 ```json linenums="1"
-# package.json
+// package.json
 {
     "proxy": "http://localhost:5000"
 }
 ```
 
+<br>
 La seconde est que tu vas pouvoir commencer à définir tes mock d'API dans un seul fichier. Je défini une simple API get, qui renvoi une liste de string :
 ```json linenums="1"
-# db.json
+// db.json
 {
     "cars": [
         "Ford",
@@ -115,30 +118,35 @@ La seconde est que tu vas pouvoir commencer à définir tes mock d'API dans un s
     ]
 }
 ```
+
+<br>
 Dans ce simple cas, je vais servir mes données sur **http://localhost:5000/cars**. 
 
 
 Mais json-server te permet de faire des choses bien plus chouette, par example de définir des customs routes avec un seconde fichier qui va gérer ces matchings de route :
 ```json linenums="1"
-# route.json
+// route.json
 {
     "my/custom/route": "cars"
 }
 ```
-Dans ce cas là, on expose les data qui à la clée **cars** sur **http://localhost:5000/my/custom/route**
+
+Dans ce cas là, on expose les data qui à la clée **cars** sur **http://localhost:5000/my/custom/route**  
 
 
-!!!! tips
-        Ces routes peuvent s'apparenter très pratiques dans le cas ou on commence à avoir des query parameters ou des requête plus complexe
+!!! tip
+    Ces routes peuvent s'apparenter très pratiques dans le cas ou on commence à avoir des query parameters ou des requête plus complexe
 
-
+<br>
 Script à mettre à jour si besoin avec ces customs routes:
 ```json linenums="1"
-# package.json
+// package.json
 {
    "db": "json-server --watch ./json-server/db.json --port 5000 --routes routes.json"
 }
 ```
+
+<br>
 
 #### Simple requête au backend - Axios
 Echanger avec un Backend te permet de charger des données depuis des bases de données de ton backend ou d'ailleurs, et de les organiser et les afficher dans ton frontend. 
@@ -147,12 +155,14 @@ Pour cela, Axios te permet de définir en NodeJS facilement la création de ces 
 npm install axios
 ```
 
-!!!! note
+!!! note
     A partir de maintenant il te faut 2 consoles d'ouverte : une pour le serveur de dév de React, et une autre pour le mock de l'API par le json-server
+
+<br>
 
 On créer une requête des plus basiques en se servant des données exposés par notre json-server, à savoir récuper nos datas qui sont servies sur *http://localhost:5000/cars*
 ```typescript linenums="1"
-# getCars.tsx
+// getCars.tsx
 import axios from 'axios';
 
 export async function getCars() {
@@ -161,13 +171,14 @@ export async function getCars() {
 }
 ```
 
-!!!! tip
+!!! tip
     Lors de l'écriture d'une fonction asynchrone, profite de la lisibilité des **async/await** par rapport aux traditionnels **promesses** 
 
+<br>
 
 Maintenant que l'on a notre fonction qui tape sur notre backend, on va l'insérer dans un bloc de notre frontend 
 ```typescript linenums="1"
-# app.tsx
+// app.tsx
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { getCars } from './api/getCars';
@@ -187,29 +198,111 @@ function App() {
 }
 ```
 
-Le **useState** permet de sauvegarder la valeur d'une variable et de l'avoir dynamique. Pratique si tu utilises le contenu de cette var pour des données provenant d'un backend par example. En effet, au lancement de l'application, celle-ci sera par default **['']**. Mais on va executer Axios qui va aller récupérer des données, et une fois celle-ci récupéré, vont aller mettre à jour notre variable **cars**. Le raffraichissement de cette variable par une nouvelle valeur va permettre à du contenu dans l'UI de se mettre à jour automatiqument, et donc afficher nos données à l'instant même ou celle-ci sont être récupérés.
-Le **useEffect** est un hook qui permet de call le code à l'intérieur de celui-ci sous certains conditions. Dans ce cas là, notre le second argument **[]** de cette fonction. Un Array vide veut dire que ce code sera executé une seule et unique fois au lancement de mon app.
+- Le **useState** permet de sauvegarder la valeur d'une variable et de l'avoir dynamique. Pratique si tu utilises le contenu de cette var pour des données provenant d'un backend par example. En effet, au lancement de l'application, celle-ci sera par default **['']**. Mais on va executer Axios qui va aller récupérer des données, et une fois celle-ci récupéré, vont aller mettre à jour notre variable **cars**. Le raffraichissement de cette variable par une nouvelle valeur va permettre à du contenu dans l'UI de se mettre à jour automatiqument, et donc afficher nos données à l'instant même ou celle-ci vont être récupérés.
+- Le **useEffect** est un hook qui permet de call le code à l'intérieur de celui-ci sous certains conditions. Dans ce cas là, notre le second argument **[]** de cette fonction. Un Array vide veut dire que ce code sera executé une seule et unique fois au lancement de mon app.
 
+<br>
 
 J'ai fais quelque chose de relativement simple ici. Mais lorsque on fait appelle à Axios, on peut avoir des attributs supplémentaire dans la réponse de la requête, par exemple :
 
 - Renvoyer des données que l'on ré-organise dans notre fonction afin de s'adapter à une structure custom dans notre frontend par la suite
 - Renvoyer des données vide si la requête n'aboutie pas 
-- Gérer les cas d'erreurs avec du **try-catch**, gestion des erreurs et de leurs affichages pour l'utilisateur selon le status code de retour, etc.
+- Gérer les cas d'erreurs avec du *try-catch*, gestion des erreurs et de leurs affichages pour l'utilisateur selon le status code de retour, etc.
+
+<br>
 
 #### Requête dynamique au backend - ReactQuery
 On a vu précedemment pour faire une requête simple. Ca correspond à bon nombre d'application que l'on veut faire. On arrive sur une site, ça charge les data, et basta.
 </br> 
 
-Quid pour un site ou on veut du dynamique, un site ou on a des données qui change en temps réel comme un site de paris sportifs en ligne (Betlic les best 😏) ou tu as des côtes qui change en temps réel selon les actions qui se passe dans le match, Axios ne peut savoir car c'est une fonction passive que tu appelles qu'une seule fois. Si tu veux dynamiser avec Axios tu es donc obliger de re-call ta fonction, filtrer tes données comme tu le souhaites, les ré-afficher, pour au final faire quelque chose qui s'actualise tout les xx temps, et n'est donc pas au final une vrai bonne solution pour ce genre d'application web.
+Quid pour un site ou on veut du dynamique, un site ou on a des données qui change en temps réel comme un site de paris sportifs en ligne (Betlic les best 😏) ou tu as des côtes qui change en temps réel selon les actions qui se passe dans le match, Axios ne peut savoir car c'est une fonction passive que tu appelles qu'une seule fois. Si tu veux dynamiser avec Axios tu es donc obliger de re-call ta fonction, filtrer tes données comme tu le souhaites, les ré-afficher, pour au final faire quelque chose qui s'actualise tout les xx temps, et n'est donc pas au final une vraie bonne solution pour ce genre d'application web.  
+
 </br>
 
-Je te propose ReactQuery. Un module NPM qui te permet justement ce cas là, de re-trigger automatiquement si t'as des changes côté backend. Les données sont stocké dans un hook spécifique à React pour refresh l'UI facilement.
+Je te propose ReactQuery. Un module NPM qui te permet justement ce cas là, de re-trigger automatiquement si t'as des changes côté backend. Les données sont stocké dans un hook spécifique à React pour refresh l'UI facilement.  
 
 ```sh linenums="1"
-npm istall @tanstack/react-query
+npm install @tanstack/react-query
+```  
+
+</br>
+
+ReactQuery te rajoute d'ailleurs pas mal de props en plus dans le retour de l'appel à la requête. Il encapsule Axios d'ailleurs. Tu peux avoir du **isLoading**, **isFetching**, etc. Cela va te permettre d'avoir d'avantage de contrôle sur tes données, ou tu en es dans la requête, et en fonction de ça te permettre de réaliser une expérience utilisateur bien meilleur en lui apportant d'avantage de feedback :  
+
+- Ajout de **skeleton** pour fake les datas
+- Ajout de **progressBar** et autre spinner
+- Ajout d'**alerte** en cas d'erreurs
+- Ajout de **snackbar** pour prévenir d'autres informations
+- Etc.
+
+</br>
+
+On implemente notre requête :
+```typescript linenums="1"
+// useGetCars.tsx
+import axios from 'axios'
+import { useQuery } from '@tanstack/react-query'
+
+export function useGetCars(){
+    return useQuery({
+        queryKey: ['getCars'],
+        queryFn: () =>
+          axios
+            .get('/cars')
+            .then((res) => res.data),
+      })
+}
 ```
 
+</br>
+
+On ajout le client de query en root de notre application :
+
+```typescript linenums="1"
+// index.tsx
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement
+);
+const queryClient = new QueryClient()
+
+root.render(
+  <QueryClientProvider client={queryClient}>
+    <App />
+  </QueryClientProvider>
+);
+```  
+
+</br>
+
+On ajoute maintenant dans le front de quoi récupperer les props que l'ont souhaite depuis le **useQuery**. On peut jouer avec ces différentes possibilités pour afficher soit une barre de chargement, soit un texte d'erreur sous forme d'alerte, soit nos données souhaité si la requête est OK.
+
+```typescript linenums="1"
+// app.tsx
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import { useGetCars } from './api/useGetCars';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
+
+function App() {
+  const { isLoading, isError, data, isFetching } = useGetCars();
+
+  return (
+    <Box>
+      {isLoading && <CircularProgress />}
+      {isError && <Alert severity="error">Erreur dans la requete</Alert>}
+      {data}
+    </Box>
+  );
+}
+```
 
 ## NodeJS - Commencer à dev
 ### Squelette
@@ -277,10 +370,11 @@ Petit exemple, tu veux lint ton code TS/JS, tu devrais faire de la sorte :
 ```
 3. Lancer la commande de lint via `npm run lint`
 
+</br>
 
 Si par exemple tu as un cas d'utilisation ou tu veux t'affranchir d'alourdir tes modules de ton projet, tu peux utiliser la CLI npx. Reprenons le cas précédent, pour linter ton projet, par example ce coup-ci dans ta CI/CD:
 
-1. Appelle la commande souhaité via `npx eslint .`
+- Appelle la commande souhaitée via `npx eslint .`
 
 Bien plus simple et rapide quand tu as besoin de module NPM rapidement !
 

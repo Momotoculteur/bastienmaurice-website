@@ -33,7 +33,7 @@ jobs:
           name: ${{ env.BUILD_DIR }}
           retention-days: 1
           path: |
-            ${{ env.BUILD_DIR }}
+            ${{ env.BUILD_DIR }}.tar
 
   deploy:
     runs-on: ubuntu-22.04

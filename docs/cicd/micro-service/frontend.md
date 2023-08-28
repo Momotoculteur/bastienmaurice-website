@@ -69,26 +69,6 @@ npm install @mui/material @emotion/react @emotion/styled
 ```
 
 ### API, requêtes & data
-#### Simple requête au backend - Axios
-Echanger avec un Backend te permet de charger des données depuis des bases de données de ton backend ou d'ailleurs, et de les organiser et les afficher dans ton frontend. 
-Pour cela, Axios te permet de définir en NodeJS facilement la création de ces requêtes là.
-```sh linenums="1"
-npm install axios
-```
-
-#### Requête dynamique au backend - ReactQuery
-On a vu précedemment pour faire une requête simple. Ca correspond à bon nombre d'application que l'on veut faire. On arrive sur une site, ça charge les data, et basta.
-</br> 
-
-Quid pour un site ou on veut du dynamique, un site ou on a des données qui change en temps réel comme un site de paris sportifs en ligne (Betlic les best 😏) ou tu as des côtes qui change en temps réel selon les actions qui se passe dans le match, Axios ne peut savoir car c'est une fonction passive que tu appelles qu'une seule fois. Si tu veux dynamiser avec Axios tu es donc obliger de re-call ta fonction, filtrer tes données comme tu le souhaites, les ré-afficher, pour au final faire quelque chose qui s'actualise tout les xx temps, et n'est donc pas au final une vrai bonne solution pour ce genre d'application web.
-</br>
-
-Je te propose ReactQuery. Un module NPM qui te permet justement ce cas là, de re-trigger automatiquement si t'as des changes côté backend. Les données sont stocké dans un hook spécifique à React pour refresh l'UI facilement.
-
-```sh linenums="1"
-npm istall @tanstack/react-query
-```
-
 #### Mocker son api pour développer - JSONserver
 Nous avons une application basique qui tourne, avec quelques éléments graphique qui s'affichent. Cependant, elle paraît une peu vide car nous n'avons aucune données à afficher. Afin d'itérer rapidement notre développement du frontend et de matcher idéallement avec l'API du Backend, on va déployer un serveur en un rien de temps, qui va repprendre le job du backend, à savoir exposer des APIs REST afin de nous envoyer des données, à savoir : 
 
@@ -104,6 +84,132 @@ Ici je te propose un module NPM qui va nous faciliter la vie :
 ```sh linenums="1"
 npm install --save-dev json-server
 ```
+
+On va rajouter un script afin de lancer notre json-server avec quelques paramètres:
+```json linenums="1"
+# package.json
+{
+   "db": "json-server --watch ./json-server/db.json --port 5000 --routes routes.json"
+}
+```
+
+Deux choses en plus à faire.
+
+La première est que notre front est servi sur le port 3000 de base, et le json server de même. Ajoutons un proxy afin que notre frontend aille requêter sur un autre port :
+On ajoute une ligne à notre package.json : 
+```json linenums="1"
+# package.json
+{
+    "proxy": "http://localhost:5000"
+}
+```
+
+La seconde est que tu vas pouvoir commencer à définir tes mock d'API dans un seul fichier. Je défini une simple API get, qui renvoi une liste de string :
+```json linenums="1"
+# db.json
+{
+    "cars": [
+        "Ford",
+        "Citroen",
+        "Renault"
+    ]
+}
+```
+Dans ce simple cas, je vais servir mes données sur **http://localhost:5000/cars**. 
+
+
+Mais json-server te permet de faire des choses bien plus chouette, par example de définir des customs routes avec un seconde fichier qui va gérer ces matchings de route :
+```json linenums="1"
+# route.json
+{
+    "my/custom/route": "cars"
+}
+```
+Dans ce cas là, on expose les data qui à la clée **cars** sur **http://localhost:5000/my/custom/route**
+
+
+!!!! tips
+        Ces routes peuvent s'apparenter très pratiques dans le cas ou on commence à avoir des query parameters ou des requête plus complexe
+
+
+Script à mettre à jour si besoin avec ces customs routes:
+```json linenums="1"
+# package.json
+{
+   "db": "json-server --watch ./json-server/db.json --port 5000 --routes routes.json"
+}
+```
+
+#### Simple requête au backend - Axios
+Echanger avec un Backend te permet de charger des données depuis des bases de données de ton backend ou d'ailleurs, et de les organiser et les afficher dans ton frontend. 
+Pour cela, Axios te permet de définir en NodeJS facilement la création de ces requêtes là.
+```sh linenums="1"
+npm install axios
+```
+
+!!!! note
+    A partir de maintenant il te faut 2 consoles d'ouverte : une pour le serveur de dév de React, et une autre pour le mock de l'API par le json-server
+
+On créer une requête des plus basiques en se servant des données exposés par notre json-server, à savoir récuper nos datas qui sont servies sur *http://localhost:5000/cars*
+```typescript linenums="1"
+# getCars.tsx
+import axios from 'axios';
+
+export async function getCars() {
+  const resp = await axios.get('/cars',);
+  return resp.data;
+}
+```
+
+!!!! tip
+    Lors de l'écriture d'une fonction asynchrone, profite de la lisibilité des **async/await** par rapport aux traditionnels **promesses** 
+
+
+Maintenant que l'on a notre fonction qui tape sur notre backend, on va l'insérer dans un bloc de notre frontend 
+```typescript linenums="1"
+# app.tsx
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import { getCars } from './api/getCars';
+
+function App() {
+  const [cars, setCars] = React.useState([''])    // Hook fourni par React
+  
+  React.useEffect(()=>{                           // Hook fourni par React
+    getCars().then(resp => setCars(resp))
+  }, [])
+
+  return (
+    <Box>
+      <Box>{cars}</Box>
+    </Box>
+  );
+}
+```
+
+Le **useState** permet de sauvegarder la valeur d'une variable et de l'avoir dynamique. Pratique si tu utilises le contenu de cette var pour des données provenant d'un backend par example. En effet, au lancement de l'application, celle-ci sera par default **['']**. Mais on va executer Axios qui va aller récupérer des données, et une fois celle-ci récupéré, vont aller mettre à jour notre variable **cars**. Le raffraichissement de cette variable par une nouvelle valeur va permettre à du contenu dans l'UI de se mettre à jour automatiqument, et donc afficher nos données à l'instant même ou celle-ci sont être récupérés.
+Le **useEffect** est un hook qui permet de call le code à l'intérieur de celui-ci sous certains conditions. Dans ce cas là, notre le second argument **[]** de cette fonction. Un Array vide veut dire que ce code sera executé une seule et unique fois au lancement de mon app.
+
+
+J'ai fais quelque chose de relativement simple ici. Mais lorsque on fait appelle à Axios, on peut avoir des attributs supplémentaire dans la réponse de la requête, par exemple :
+
+- Renvoyer des données que l'on ré-organise dans notre fonction afin de s'adapter à une structure custom dans notre frontend par la suite
+- Renvoyer des données vide si la requête n'aboutie pas 
+- Gérer les cas d'erreurs avec du **try-catch**, gestion des erreurs et de leurs affichages pour l'utilisateur selon le status code de retour, etc.
+
+#### Requête dynamique au backend - ReactQuery
+On a vu précedemment pour faire une requête simple. Ca correspond à bon nombre d'application que l'on veut faire. On arrive sur une site, ça charge les data, et basta.
+</br> 
+
+Quid pour un site ou on veut du dynamique, un site ou on a des données qui change en temps réel comme un site de paris sportifs en ligne (Betlic les best 😏) ou tu as des côtes qui change en temps réel selon les actions qui se passe dans le match, Axios ne peut savoir car c'est une fonction passive que tu appelles qu'une seule fois. Si tu veux dynamiser avec Axios tu es donc obliger de re-call ta fonction, filtrer tes données comme tu le souhaites, les ré-afficher, pour au final faire quelque chose qui s'actualise tout les xx temps, et n'est donc pas au final une vrai bonne solution pour ce genre d'application web.
+</br>
+
+Je te propose ReactQuery. Un module NPM qui te permet justement ce cas là, de re-trigger automatiquement si t'as des changes côté backend. Les données sont stocké dans un hook spécifique à React pour refresh l'UI facilement.
+
+```sh linenums="1"
+npm istall @tanstack/react-query
+```
+
 
 ## NodeJS - Commencer à dev
 ### Squelette

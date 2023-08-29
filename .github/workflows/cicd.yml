@@ -49,4 +49,5 @@ jobs:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions-assume-role-access
           aws-region: eu-west-3
           role-session-name: githubactions
+      - run: aws s3 cp --recursive ${{ github.workspace }}/${{ env.BUILD_DIR }} s3://${{ env.BUCKET_NAME }}/
       - run: aws s3 sync --delete ${{ github.workspace }}/${{ env.BUILD_DIR }} s3://${{ env.BUCKET_NAME }}/

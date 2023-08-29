@@ -2,7 +2,7 @@
 
 
 ## Pourquoi 
-Docker te permet de créer un env isolé de ton application. Tu vas pouvoir la lancer ou tu veux, tu peux être sur qu'elle fonctionnera. C'est donc pratique pour distribuer. C'est d'ailleurs le moyen utilisé si tu veux deployer ton application sur un cluster Kubernetes, ou via Helm pour faire des templates très utile, ou encore via les outils des cloud provider (AWS Fargat, Azure container apps, Google cloud run, etc.)
+Docker te permet de créer un env isolé de ton application. Tu vas pouvoir la lancer ou tu veux, tu peux être sur qu'elle fonctionnera. C'est donc pratique pour distribuer. C'est d'ailleurs le moyen utilisé si tu veux deployer ton application sur un cluster Kubernetes, ou via Helm pour faire des templates très utile, ou encore via les outils des cloud provider (AWS Fargate, Azure container apps, Google cloud run, etc.)
 
 
 ## Tools pré-requis
@@ -59,9 +59,30 @@ Ici je vous propose de servir votre application via le module serve. Libre à vo
 Une autre méthode encore, vous pouvez aussi partir d'une autre image, **FROM nginx:alpîne** par example, et servir avec les bon argument dans **CMD ["nginx", "-g"]** pour servir votre application depuis un NGINX.
 
 ### Backend app
-Si vous faîte un backend basique sous ExpressJS par example, vous n'avez pas besoin comme le frontend de build votre application, étant donnée que celle-ci est faîte en JS et non Typescript et autre fichier tsx qui contient des fonctionnalités propre à React. 
+Si vous faîte un backend basique sous ExpressJS par example, vous n'avez pas besoin comme le frontend de build votre application, étant donnée que celle-ci est faîte en pure JS et non Typescript et autre fichier .tsx qui contient des fonctionnalités propre à React. 
+Vous avez donc juste à lancer votre main de votre serveur via `node index.js` 
 
-[TODO]
+```docker linenums="1"
+FROM node:20-alpine3.18 as client-builder
+WORKDIR /app
+
+COPY package*.json .
+COPY index.js .
+COPY openapi.yaml .
+
+RUN npm ci
+
+EXPOSE 5000
+
+CMD ["node", "index.js"]
+```
+
+- L4 : on copie les fichiers package.json et package-lock.json
+- L5 : on copie le fichier d'entrée de notre serveur
+- L6 : on copie notre OpenAPI qui spec tout nos endpoints du serveur pour validation des requêtes et réponses
+- L10 : on ouvre le port 5000 de notre container 
+- L12 : on lance le main de notre serveur 
+
 
 ## Optimiser son Dockerfile
 ### Choix de l'image : Alpine Linux, Distroless, Scratch...

@@ -73,6 +73,7 @@ theme:
     - search.share
     - search.suggest
 plugins:
+  - render_swagger
   - git-revision-date-localized:
       enable_creation_date: true
       exclude:
@@ -115,7 +116,7 @@ nav:
   - CI/CD:
     - Comparatif des plateformes : cicd/introduction/plateforme.md
     - Setup des self-hosted runners: cicd/introduction/self-hosted-runner.md
-    - Crer un micro-service:
+    - Creer un micro-service:
       - Frontend: cicd/micro-service/frontend.md
       - Backend: cicd/micro-service/backend.md
       - Tests: cicd/micro-service/test.md

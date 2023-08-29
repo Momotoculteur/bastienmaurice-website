@@ -1,0 +1,73 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "OpenAPI Swagger",
+        "description": "Example avec 2 endpoints"
+    },
+    "tags": [
+        {
+            "name": "car",
+            "description": "API about cars"
+        }
+    ],
+    "paths": {
+        "/cars/{id}": {
+            "get": {
+                "tags": [
+                    "car"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of car",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "description": "Returns a car",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "Ford"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cars": {
+            "get": {
+                "tags": [
+                    "car"
+                ],
+                "description": "Returns a list of cars",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "Ford,Renault"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -4,3 +4,4 @@ mkdocs-blog-plugin
 mkdocs-material-extensions
 mkdocs-minify-plugin
 mkdocs-git-revision-date-localized-plugin
+mkdocs-render-swagger-plugin==0.0.4

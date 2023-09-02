@@ -1,0 +1,229 @@
+{% extends "main.html" %}
+
+
+
+
+{% block tabs %}
+{{ super() }}
+
+<!-- COMMON -->
+<style>
+    a:hover {
+        color: var(--md-accent-fg-color);
+    }
+
+    @media (min-width: 600px) {
+
+        .main-global {
+            margin-bottom: 70px;
+
+        }
+
+        .main-container-section {
+            display: flex;
+            flex-direction: column;
+            margin-top: 70px;
+        }
+
+        .section-title {
+            font-size: 50px;
+            font-variant: small-caps;
+            font-weight: 700;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        .section-content-paragraph {
+            flex-direction: column;
+            justify-content: space-evenly;
+            flex-shrink: 1;
+            flex-grow: 0;
+            display: flex;
+            width: 600px;
+        }
+
+        .faker-margin-external {
+            display: flex;
+            flex-basis: 100px;
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+
+        .faker-margin-center {
+            display: flex;
+            flex-basis: 100px;
+            flex-grow: 0;
+            flex-shrink: 1;
+        }
+
+        .subsection-title {
+            font-size: 30px;
+            font-weight: 500;
+        }
+
+        .subsection-paragraph {
+            font-size: 15px;
+        }
+
+        .network-icons-spacing {
+            flex-basis: 100px;
+        }
+
+        .assets {
+            flex-direction: row;
+            justify-content: center;
+            display: flex;
+        }
+
+        .assets-image {
+            max-width: 100%;
+            width: 230px;
+            min-width: 200px;
+            object-fit: contain;
+        }
+    }
+
+    @media (max-width: 599px) {
+
+        .main-container-section {
+            display: flex;
+            flex-direction: column;
+            margin-top: 50px;
+        }
+
+        .section-title {
+            font-size: 50px;
+            font-variant: small-caps;
+            font-weight: 700;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .subsection-paragraph {
+            font-size: 20px;
+            text-align: center;
+            margin-left: 5%;
+            margin-right: 5%;
+            margin-top: 10px;
+        }
+
+        .subsection-title {
+            font-size: 30px;
+            font-weight: 500;
+        }
+
+        .section-content-paragraph {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .main-global {
+            margin-bottom: 70px;
+        }
+
+        .assets {
+            flex-direction: row;
+            justify-content: center;
+            display: flex;
+        }
+
+        .assets-image {
+            max-width: 100%;
+            width: 230px;
+        }
+
+
+
+        .network-icons-spacing {
+            height: 20px;
+        }
+
+    }
+</style>
+
+
+<!-- Specific network -->
+
+<style>
+    @media (min-width: 600px) {
+        .network-content {
+            display: flex;
+            flex-direction: row;
+        }
+    }
+
+    @media (max-width: 599px) {
+        .network-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+    }
+</style>
+
+
+
+<!-- Hack degage le footer -->
+<style>
+    .md-header {
+        position: initial
+    }
+
+    .md-main__inner {
+        margin: 0;
+        visibility: hidden;
+        height: 0;
+        padding: 0;
+    }
+
+    .md-content {
+        display: none;
+        visibility: hidden;
+        height: 0;
+        padding: 0;
+
+    }
+
+    @media screen and (min-width:60em) {
+        .md-sidebar--secondary {
+            display: none;
+            visibility: hidden;
+            height: 0;
+            padding: 0;
+
+        }
+    }
+
+    @media screen and (min-width:76.25em) {
+        .md-sidebar--primary {
+            display: none;
+            visibility: hidden;
+            height: 0;
+            padding: 0;
+
+        }
+    }
+</style>
+
+
+{% endblock %}

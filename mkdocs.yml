@@ -141,6 +141,7 @@ nav:
     - Pré-requis: culture-devops/pre-requis.md
   - Blog:
     - blog/index.md
+  - Machine & Deep learning: https://deeplylearning.fr/
 
 
 markdown_extensions:
@@ -186,3 +187,8 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - pymdownx.pathconverter:
+      base_path: '' # default: ''
+      relative_path: '' # default ''
+      absolute: false # default: false
+      tags: ''

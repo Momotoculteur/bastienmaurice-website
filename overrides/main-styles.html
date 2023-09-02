@@ -1,21 +1,67 @@
 {% extends "main.html" %}
 
-{% block scripts %}
-{{ super() }}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/brands.min.js" integrity="sha512-IZeK0c+nwCpZdoWLUoguVYEnBOwOnS3eTyS5Eg57YCk41x2NphG1E/vSa886whDSXG7vGauI8mmbP5PI/VC5LQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-{% endblock %}
+
 
 {% block tabs %}
 {{ super() }}
 
 <!-- COMMON -->
 <style>
-    @media (min-width: 1024px) {
+    a:hover {
+        color: var(--md-accent-fg-color);
+    }
+
+    @media (min-width: 600px) {
+
+        .main-global {
+            margin-bottom: 70px;
+
+        }
+
+        .main-container-section {
+            display: flex;
+            flex-direction: column;
+            margin-top: 70px;
+        }
+
         .section-title {
             font-size: 50px;
             font-variant: small-caps;
             font-weight: 700;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        .section-content-paragraph {
+            flex-direction: column;
+            justify-content: space-evenly;
+            flex-shrink: 1;
+            flex-grow: 0;
+            display: flex;
+            width: 600px;
+        }
+
+        .faker-margin-external {
+            display: flex;
+            flex-basis: 100px;
+            flex-grow: 1;
+            flex-shrink: 1;
+        }
+
+        .faker-margin-center {
+            display: flex;
+            flex-basis: 100px;
+            flex-grow: 0;
+            flex-shrink: 1;
         }
 
         .subsection-title {
@@ -23,69 +69,119 @@
             font-weight: 500;
         }
 
-        .main-container-section{
-            margin-top: 100px;
-            margin-bottom: 100px;
-            margin-left: 10%;
-            margin-right: 10%;
+        .subsection-paragraph {
+            font-size: 15px;
         }
 
-        .second-container-section {
+        .network-icons-spacing {
+            flex-basis: 100px;
+        }
+
+        .assets {
+            flex-direction: row;
+            justify-content: center;
+            display: flex;
+        }
+
+        .assets-image {
+            max-width: 100%;
+            width: 230px;
+            min-width: 200px;
+            object-fit: contain;
+        }
+    }
+
+    @media (max-width: 599px) {
+
+        .main-container-section {
+            display: flex;
+            flex-direction: column;
+            margin-top: 50px;
+        }
+
+        .section-title {
+            font-size: 50px;
+            font-variant: small-caps;
+            font-weight: 700;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .subsection-paragraph {
+            font-size: 20px;
+            text-align: center;
+            margin-left: 5%;
+            margin-right: 5%;
+            margin-top: 10px;
+        }
+
+        .subsection-title {
+            font-size: 30px;
+            font-weight: 500;
+        }
+
+        .section-content-paragraph {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .section-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .main-global {
+            margin-bottom: 70px;
+        }
+
+        .assets {
+            flex-direction: row;
+            justify-content: center;
+            display: flex;
+        }
+
+        .assets-image {
+            max-width: 100%;
+            width: 230px;
+        }
+
+
+
+        .network-icons-spacing {
+            height: 20px;
+        }
+
+    }
+</style>
+
+
+<!-- Specific network -->
+
+<style>
+    @media (min-width: 600px) {
+        .network-content {
             display: flex;
             flex-direction: row;
         }
-
-        .content-item-part {
-            display: flex;
-            flex: 2;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-        .title-item-part {
-            display: flex;
-            flex: 1;
-            align-items: center;
-            justify-content: center;
-
-        }
-
-        a:hover {
-            color: green;
-        }
-
     }
 
-</style>
-
-<!-- SECTION 1 -->
-<style>
-    @media (min-width: 1024px) {
-
-
-
-    }
-
-    @media (min-width: 1px) and (max-width: 539px) {
-        .first-s-container {
+    @media (max-width: 599px) {
+        .network-content {
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
+            align-items: center;
         }
 
     }
 </style>
 
-<!-- SECTION BLOG -->
-<style>
 
-</style>
-
-<!-- SECTION RESEAU SOCIAUX -->
-<style>
-
-</style>
 
 <!-- Hack degage le footer -->
 <style>

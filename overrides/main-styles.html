@@ -14,11 +14,6 @@
 
     @media (min-width: 850px) {
 
-        .main-global {
-            margin-bottom: 70px;
-
-        }
-
         .main-container-section {
             display: flex;
             flex-direction: column;
@@ -180,49 +175,33 @@
     }
 </style>
 
-
-
-<!-- Hack degage le footer -->
+<!-- Specific footer hack -->
 <style>
     .md-header {
         position: initial
     }
 
     .md-main__inner {
-        margin: 0;
-        visibility: hidden;
-        height: 0;
-        padding: 0;
+        margin: 0
     }
 
     .md-content {
-        display: none;
-        visibility: hidden;
-        height: 0;
-        padding: 0;
-
+        display: none
     }
 
     @media screen and (min-width:60em) {
         .md-sidebar--secondary {
-            display: none;
-            visibility: hidden;
-            height: 0;
-            padding: 0;
-
+            display: none
         }
     }
 
     @media screen and (min-width:76.25em) {
         .md-sidebar--primary {
-            display: none;
-            visibility: hidden;
-            height: 0;
-            padding: 0;
-
+            display: none
         }
     }
 </style>
+
 
 
 {% endblock %}

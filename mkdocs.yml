@@ -139,7 +139,26 @@ nav:
       - Stage Load-testing: cicd/nightly/load-testing.md
       - Stage Pentests (DAST): cicd/nightly/pentests.md
   - Culture DevOps:
-    - Pré-requis: culture-devops/pre-requis.md
+    - Tooling:
+      - Nice to have: culture-devops/tooling/nice-to-have.md
+    - Exposer des metriques:
+      - Kube-state-metrics, la gestion fine de kubernetes: culture-devops/expose-metrics/kube-state-metrics.md
+      - VictoriaMetrics, la relève de Prometheus ?: culture-devops/expose-scrap-metrics/victoria-metrics-vs-prometheus.md
+    - Logs collector: 
+      - Data pipeline avec Vector.dev: culture-devops/logs-collector/data-pipeline-vector.md
+    - Monitoring:
+      - Créer un dashboard sous Datadog et Grafana: culture-devops/monitoring/dashboard-grafana-datadog.md
+      - Alerting avec PagerDuty: culture-devops/monitoring/alerting-pager-duty.md
+    - Infra as code:
+      - Principes de base: culture-devops/infra-as-code/principes.md
+      - Terraform: culture-devops/infra-as-code/terraform.md
+      - Terragrunt: culture-devops/infra-as-code/terragrunt.md
+    - GitOps: 
+      - Principes de base: culture-devops/git-ops/principes.md
+      - FluxCD: culture-devops/git-ops/flux-cd.md
+      - ArgoCD: culture-devops/git-ops/argo-cd.md
+    - Messaging:
+      - Message et stream avec RabbitMQ: culture-devops/messaging/rabbit-mq.md
   - Blog:
     - blog/index.md
   - Machine & Deep learning: https://deeplylearning.fr/

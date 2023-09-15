@@ -1,7 +1,4 @@
 # Docker
-
-
-## Pourquoi 
 Docker te permet de créer un env isolé de ton application. Tu vas pouvoir la lancer ou tu veux, tu peux être sur qu'elle fonctionnera. C'est donc pratique pour distribuer. C'est d'ailleurs le moyen utilisé si tu veux deployer ton application sur un cluster Kubernetes, ou via Helm pour faire des templates très utile, ou encore via les outils des cloud provider (AWS Fargate, Azure container apps, Google cloud run, etc.)
 
 

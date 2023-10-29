@@ -17,7 +17,7 @@ comments: true
 
 # Les bonnes pratiques pour l'initialisation d'un nouveau projet Terraform (tf.state)
 
-Je te montre les best practices pour ton Terraform State, en minimisant les erreurs manuelles, le leak de secrets, la gestion du locking. Bref, comment gérer le partage du tf.state dans une équiep de dév.  
+Je te montre les best practices pour ton Terraform State, en minimisant les erreurs manuelles, le leak de secrets, la gestion du locking. Bref, comment gérer le partage du tf.state dans une équiep de dév.  <br><br>
 Cas concret avec un remote backend sur du AWS Bucket S3 et DynamoDB.
 
 <!-- more -->

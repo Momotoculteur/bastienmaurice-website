@@ -20,7 +20,8 @@ tags:
 
 # Setter une Github Action pour deployer son infra-as-code (Terraform) sur AWS via OIDC
 
-Comment parametrer sa pipeline et ses credentials pour communiquer vers AWS depuis sa Github action, et utiliser ces services. Deploiement le tf.state de son Terraform vers un AWS S3 Bucket, deploy son infrastructure, etc.
+Comment parametrer sa pipeline et ses credentials pour communiquer vers AWS depuis sa Github action, et utiliser ces services. <br><br>
+Deploiement le tf.state de son Terraform vers un AWS S3 Bucket, deploy son infrastructure, etc.
 
 <!-- more -->
 

@@ -140,14 +140,15 @@ nav:
       - Stage Pentests (DAST): cicd/nightly/pentests.md
   - Culture DevOps:
     - Tooling:
-      - Nice to have: culture-devops/tooling/nice-to-have.md
+      - Monitoring avec K9S, Lens: culture-devops/tooling/monitoring-with-lens-and-k9s.md
     - Exposer des metriques:
-      - Kube-state-metrics, la gestion fine de kubernetes: culture-devops/expose-metrics/kube-state-metrics.md
-      - VictoriaMetrics, la relève de Prometheus ?: culture-devops/expose-scrap-metrics/victoria-metrics-vs-prometheus.md
-    - Logs collector: 
-      - Data pipeline avec Vector.dev: culture-devops/logs-collector/data-pipeline-vector.md
+      - Ajouter des métriques avec Kube-state-metrics: culture-devops/expose-metrics/kube-state-metrics.md
+    - Data pipeline: 
+      - Logs collector & aggregator avec Vector.dev: culture-devops/data-pipeline/logs-collector-aggregator-vector.md
+    - Logs storage:
+      - Stockage avec VictoriaMetrics: culture-devops/logs-storage/victoria-metrics.md
     - Monitoring:
-      - Créer un dashboard sous Datadog et Grafana: culture-devops/monitoring/dashboard-grafana-datadog.md
+      - Dashboard Grafana depuis VictoriaMetrics: culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
       - Alerting avec PagerDuty: culture-devops/monitoring/alerting-pager-duty.md
     - Infra as code:
       - Principes de base: culture-devops/infra-as-code/principes.md

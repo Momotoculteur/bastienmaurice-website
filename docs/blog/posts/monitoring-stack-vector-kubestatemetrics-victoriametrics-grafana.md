@@ -15,6 +15,9 @@ tags:
   - kube state metrics
   - victoria metrics
   - prometheus
+  - influxdb
+  - timescaledb
+
 comments: true
 ---
 
@@ -59,3 +62,46 @@ Au fil du temps, on va créer de plus en plus de dashboard, et donc se baser sur
 C'est un soucis que l'on rencontre avec notre première stack. On peut évidemment diminuer notre nombre de métriques scrappé, ainsi que les logs, ou encore la fréquence de scrapping ou encore diminuer la rétention des données dans notre base. Mais moins de données équivaut à diminuer les fonctionnalités de notre monitoring.
 
 C'est ici que resort 2 nouveaux framework, Vector et VictoriaMetrics, qui se veulent plus léger et moins gourmand en ressource.
+
+
+## Vector
+Vector est extremement bien fourni :
+
+- Nombre incroyable d'inputs de datas (source)
+- Nombre incroyable d'outputs de datas (sinks)
+- Langage spécifique propriétaire (VRL), permettant très facilement de modifier nos données
+- construction complexe de pipeline
+- écrit en rust et donc très performant
+- free & open source
+
+
+![Vector features](../../ressource/blog/vector/vector-features.png)
+
+En terme de performances, ça outpass la concurrence de façon général ou ça reste dans le top 
+![Vector performances](../../ressource/blog/vector/vector-performance.png)
+
+## VictoriaMetrics
+VictoriaMetrics peut être un remplacement direct de Prometheus car : 
+
+- free & open source
+- écrit en go et donc très performant. 
+- peut remplacer Prometheus car utilise du MetricsQL, construit sur du PromQL le language de query de Prometheus avec de nouvelles fontionnalités
+- se plug donc directement à Vector avec le même sink que Prometheus
+- se plug directement à Grafana pour les dashboard à la place de Grafana Mimir (nécéssite seuelement l'ajout d'une plugin pour ajouter cette data source)
+
+Si on parle de performances pures, on est sur du :
+
+- 10X moins gourmant en RAM que InfluxDB, et jusqu'a 7X moins gourmant en RAM que Prometheus/Cortex/Thanos
+- En terme de data ingestion et query, 20X meilleur que InfluxDB/TimescaleDB
+- Meilleurs algos de compression et use 7X moins de disque storage que Prometheus/Cortex/Thanos
+
+![Prometheus vs VictoriaMetrics for Disk Space](../../ressource/blog/victoria-metrics/prometheus-vs-victoriametrics-disk-space.png)
+
+![Prometheus vs VictoriaMetrics for memory usage](../../ressource/blog/victoria-metrics/prometheus-vs-victoriametrics-memory-usage.png)
+
+Source:  
+https://github.com/vectordotdev/vector  
+https://github.com/VictoriaMetrics/VictoriaMetrics  
+https://valyala.medium.com/measuring-vertical-scalability-for-time-series-databases-in-google-cloud-92550d78d8ae  
+https://valyala.medium.com/prometheus-vs-victoriametrics-benchmark-on-node-exporter-metrics-4ca29c75590f  
+https://valyala.medium.com/when-size-matters-benchmarking-victoriametrics-vs-timescale-and-influxdb-6035811952d4  

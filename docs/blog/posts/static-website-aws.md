@@ -28,8 +28,8 @@ comments: true
 
 # Créer un site web statique HTTPS/SSL avec AWS Bucket S3, AWS Zone53 (DNS), AWS CloudFront (CDN), AWS Lambda et Terraform (IAC)
 
-Je te montre comment deploy un site statique sur AWS avec toute ton infrastructure as code avec Terraform :)   
-Au programme comment heberger ton site, comment le rendre visite sur le net avec un nom de domaine, gestion de la sécurité et des redirections, etc...   
+Je te montre comment deploy un site statique sur AWS avec toute ton infrastructure as code avec Terraform :) <br>  
+Au programme comment heberger ton site, comment le rendre visite sur le net avec un nom de domaine, gestion de la sécurité et des redirections, etc...   <br><br>
 Et de quoi automatiser le tout avec une pipeline pour le mettre à jour simplement 😎
 
 <!-- more -->

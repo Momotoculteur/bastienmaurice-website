@@ -59,6 +59,7 @@ Au fil du temps, on va créer de plus en plus de dashboard, et donc se baser sur
 1. Le stockage coute plus cher chez votre cloud provider  
 2. Le requêtage des datas dans notre base de données, depuis nos dashboard, deviennent de plus en plus longs à s'afficher   
 
+<br>
 C'est un soucis que l'on rencontre avec notre première stack. On peut évidemment diminuer notre nombre de métriques scrappé, ainsi que les logs, ou encore la fréquence de scrapping ou encore diminuer la rétention des données dans notre base. Mais moins de données équivaut à diminuer les fonctionnalités de notre monitoring.
 
 C'est ici que resort 2 nouveaux framework, Vector et VictoriaMetrics, qui se veulent plus léger et moins gourmand en ressource.
@@ -80,6 +81,8 @@ Vector est extremement bien fourni :
 En terme de performances, ça outpass la concurrence de façon général ou ça reste dans le top 
 ![Vector performances](../../ressource/blog/vector/vector-performance.png)
 
+
+
 ## VictoriaMetrics
 VictoriaMetrics peut être un remplacement direct de Prometheus car : 
 
@@ -89,6 +92,7 @@ VictoriaMetrics peut être un remplacement direct de Prometheus car :
 - se plug donc directement à Vector avec le même sink que Prometheus
 - se plug directement à Grafana pour les dashboard à la place de Grafana Mimir (nécéssite seuelement l'ajout d'une plugin pour ajouter cette data source)
 
+<br>
 Si on parle de performances pures, on est sur du :
 
 - 10X moins gourmant en RAM que InfluxDB, et jusqu'a 7X moins gourmant en RAM que Prometheus/Cortex/Thanos
@@ -99,6 +103,13 @@ Si on parle de performances pures, on est sur du :
 
 ![Prometheus vs VictoriaMetrics for memory usage](../../ressource/blog/victoria-metrics/prometheus-vs-victoriametrics-memory-usage.png)
 
+## Conclusion
+Stack facilement implémentable, celle-ci peut donc servir de remplacement build-in par la précédente car :
+
+- Vector peut scrapper les endpoints façon Prometheus
+- VictoriaMetrics peut scrapper les pods annoté/labélisé façon Prometheus via ses **VMAgent** défini par ses **VMServiceScrape**
+
+<br>
 Source:  
 https://github.com/vectordotdev/vector  
 https://github.com/VictoriaMetrics/VictoriaMetrics  

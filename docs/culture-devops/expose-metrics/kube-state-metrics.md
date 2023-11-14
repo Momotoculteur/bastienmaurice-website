@@ -3,6 +3,11 @@
 Monitorer son cluster a base de kubectl peut être long et fastidieux. Il y a des métriques en pagaille, tu ne sais probablement même pas à quoi elles correspondent toute, tu t'y perds. 
 Mais si tu fais le trie, et que tu décortiques certaines qui puissent t'être utile, tu peux ensuite les remonter à des outils sur lesquelles tu vas pouvoir y créer des dashboard. Et là, c'est garanti d'avoir de l'information facilement compréhensible par tous.
 
+### Installation
+- A la main façon kubectl
+- ArgoCD ou FluxCD
+
+
 ## Kube State Metrics
 ### Mieux que les métriques de Kubernertes ?
 De base, kubernetes expose des métriques. Voici une petite liste disponible ici : 
@@ -18,4 +23,14 @@ Grosso modo :
 Donc avoir le combo est deux est forcement gagnant :smile:
 
 
-### Installation
+## Comment scrapper ce service ?
+### Vector
+On peut utiliser Vector pour récupérer ces métriques. Celle-ci sont exposé façon prometheus (plaintext sur l'endpoint /metrics, port 8080 par default), on peut utiliser la source de type *prometheus_scrape* :
+
+``` yaml linenums="1"
+sources:
+    kube-state-metrics:
+        endpoints:
+        - http://kube-state-metrics.ksm_namespace.svc.cluster.local:8080/metrics
+        type: prometheus_scrape
+```

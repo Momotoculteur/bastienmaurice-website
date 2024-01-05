@@ -164,8 +164,15 @@ nav:
           - Message et stream avec RabbitMQ: culture-devops/messaging/rabbit-mq.md
   - Blog:
       - blog/index.md
+  - Slides:
+      - CI/CD:
+        - Continuous Integration: slides/cicd/ci/continuous-integration.md
+        - Continuous Deployment: slides/cicd/cd/continuous-deployment.md
+      - Méthodologies DevOps:
+        - Container avec Docker: slides/devops/container-docker/docker.md
+        - Multi container avec Docker Compose: slides/devops/multi-container-docker-compose/docker-compose.md
+        - Orchestration de container avec Kubernetes: slides/devops/kubernetes/kubernetes.md
   - Machine & Deep learning: https://deeplylearning.fr/
-  - momo: slides/test/main.md
 
 markdown_extensions:
   # Python Markdown

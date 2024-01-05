@@ -22,8 +22,7 @@ extra:
       link: https://deeplylearning.fr/
     - icon: fontawesome/brands/gitlab
       link: https://gitlab.com/Momotoculteur
-extra_css:
-  - css/extra.css
+
 
 theme:
   custom_dir: overrides
@@ -166,6 +165,7 @@ nav:
   - Blog:
       - blog/index.md
   - Machine & Deep learning: https://deeplylearning.fr/
+  - momo: slides/test/main.md
 
 markdown_extensions:
   # Python Markdown

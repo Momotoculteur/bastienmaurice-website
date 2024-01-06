@@ -74,6 +74,7 @@ theme:
 plugins:
   - render_swagger:
   - git-committers:
+      enabled: !ENV [CI, false]
       repository: Momotoculteur/bastienmaurice-website
       branch: master
   #- git-authors
@@ -168,9 +169,10 @@ nav:
       - CI/CD:
         - Continuous Integration: slides/cicd/ci/continuous-integration.md
         - Continuous Deployment: slides/cicd/cd/continuous-deployment.md
-      - Méthodologies DevOps:
-        - Container avec Docker: slides/devops/container-docker/docker.md
+      - Container & Virtual Machine :
+        - Container avec Docker: slides/devops/container-virtual-machine-docker/docker.md
         - Multi container avec Docker Compose: slides/devops/multi-container-docker-compose/docker-compose.md
+      - Méthodologies DevOps:
         - Orchestration de container avec Kubernetes: slides/devops/kubernetes/kubernetes.md
         - Shift Left Security: slides/devops/shift-left-security/shift-left-security.md
   - Machine & Deep learning: https://deeplylearning.fr/

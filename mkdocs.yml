@@ -172,6 +172,7 @@ nav:
         - Container avec Docker: slides/devops/container-docker/docker.md
         - Multi container avec Docker Compose: slides/devops/multi-container-docker-compose/docker-compose.md
         - Orchestration de container avec Kubernetes: slides/devops/kubernetes/kubernetes.md
+        - Shift Left Security: slides/devops/shift-left-security/shift-left-security.md
   - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:

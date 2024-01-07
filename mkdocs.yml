@@ -168,7 +168,8 @@ nav:
   - Slides:
       - Méthodologies DevOps:
         - DevOps, c'est quoi ? : slides/devops/what-is-dev-ops/dev-ops.md
-        - Shift Left Security - SecOps: slides/devops/shift-left-security-sec-ops/shift-left-security-sec-ops.md
+        - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
+        - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
       - CI/CD:
         - Continuous Integration: slides/cicd/ci/continuous-integration.md
         - Continuous Deployment: slides/cicd/cd/continuous-deployment.md

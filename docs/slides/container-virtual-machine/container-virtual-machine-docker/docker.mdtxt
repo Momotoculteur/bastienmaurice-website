@@ -201,7 +201,7 @@ Ex conteneurisation: Docker, Cri-o, Podman, RunC, Containerd, RKT,etc
 
 VM
 - Concerne des problèmes d'infrastucture
-- Gérer des serveurs
+- Gérer des serveurs et exploiter au mieux les ressources
 
 Conteneur
 - Resou des problèmes autour des applications
@@ -210,5 +210,7 @@ Conteneur
 ---
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
+
 # Docker
+
 ---

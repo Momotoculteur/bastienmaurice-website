@@ -166,15 +166,17 @@ nav:
   - Blog:
       - blog/index.md
   - Slides:
+      - Méthodologies DevOps:
+        - DevOps, c'est quoi ? : slides/devops/what-is-dev-ops/dev-ops.md
+        - Shift Left Security - SecOps: slides/devops/shift-left-security-sec-ops/shift-left-security-sec-ops.md
       - CI/CD:
         - Continuous Integration: slides/cicd/ci/continuous-integration.md
         - Continuous Deployment: slides/cicd/cd/continuous-deployment.md
       - Container & Virtual Machine :
-        - Container avec Docker: slides/devops/container-virtual-machine-docker/docker.md
-        - Multi container avec Docker Compose: slides/devops/multi-container-docker-compose/docker-compose.md
-      - Méthodologies DevOps:
-        - Orchestration de container avec Kubernetes: slides/devops/kubernetes/kubernetes.md
-        - Shift Left Security: slides/devops/shift-left-security/shift-left-security.md
+        - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
+        - Multi container avec Docker Compose: slides/container-virtual-machine/multi-container-docker-compose/docker-compose.md
+        - Orchestration de container avec Kubernetes: slides/container-virtual-machine/kubernetes/kubernetes.md
+
   - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:

@@ -1,6 +1,65 @@
-# Slide 1
-A paragraph with some text and a [link](https://hakim.se).
+# GitOps
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
 ---
-## Slide 2
+<div style="text-align: left;">
+
+## GitOps - Définition
+
+Modèle d'opération pour Kubernetes et autre technologies cloud-native  
+Gère l'infrastructure et la configuration de l'application  
+Donne d'avantage de contrôle sur le cycle de l'application  
+</div>
+
 ---
-## Slide 3
+<div style="text-align: left;">
+
+## GitOps - Principes de base
+
+- Git est la source de vérité
+- Déclaratif
+- Versionné et immutable
+- Système de **pull** automatique
+- Reconcilation automatique
+- Infrastucture et workflow consistent et standardisé
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## GitOps - Atouts
+
+- Deploiement & productivité plus rapide
+- Améliorer l'audit des modifications
+- Grande résilience via Git -> rollback facile
+</div>
+
+
+---
+<div style="text-align: left;">
+
+## GitOps - Example d'une pipeline
+
+Git: Github, Gitlab
+Registry: ACR, ECR, Artifactory
+Build server: CI, Action, Jenkins
+Orchestrateur container: Kubernetes
+GitOps Agent: FluxCD, ArgoCD
+Package Kubernetes manifest: Helm, Kustomize
+Monitoring: Grafana, Datadog
+
+</div>
+
+![git-ops-pipeline-stack](./img/git-ops-pipeline-stack.png)
+
+---
+<div style="text-align: left;">
+
+## GitOps - Push vs Pull
+
+</div>

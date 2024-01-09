@@ -1,0 +1,216 @@
+# Infrastructure as Code avec Terraform
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+<div style="text-align: left;">
+
+## Infra de base
+
+Création à la main via le portal management
+
+Quid pour une infra plus complexe ?
+- Si on a beaucoup de ressources
+- Si on gère plusieurs projets
+- Avoir une politique d'accès aux ressources
+- Suivi du FinOps ? (gérer les ressources utilisés de celles outdated)
+</div>
+
+---
+<div style="text-align: left;">
+
+## Infra as Code
+
+Définir son infra en code  
+Dispo sur un répôt Git
+<br>
+
+Atouts : 
+- Vision clair de ce qui tourne et sur quelle environnement
+- Changelog des ressources crée, détruite ou mis à jour entre chaque commit
+- Aucun soucis pour du collaboratif si le répôt est bien structuré
+- Meilleure suivi/gestion des ressourcs pour 
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+Liste des principaux IaC framework  
+Liste les configurations les plus communes et/ou par defaut
+Cf. 
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+### Configuration Management vs Provisioning
+
+</div>
+
+![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
+
+<div style="text-align: left;">
+</div>
+---
+
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+### Mutable Infrastructure vs Immutable Infrastructure
+
+</div>
+
+![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
+
+<div style="text-align: left;">
+</div>
+---
+
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+### Procedural vs Declarative
+
+</div>
+
+![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
+
+<div style="text-align: left;">
+</div>
+---
+
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+### General-purpose language versus domain-specific language
+
+</div>
+
+![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
+
+<div style="text-align: left;">
+</div>
+---
+
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+### Master vs Masterless
+
+</div>
+
+![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
+
+<div style="text-align: left;">
+</div>
+---
+
+
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+### Agent vs Agentless
+
+</div>
+
+![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
+
+<div style="text-align: left;">
+</div>
+---
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+### Paid versus free offering
+
+</div>
+
+![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
+
+<div style="text-align: left;">
+</div>
+---
+
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+### Large Community vs Small Community
+
+</div>
+
+![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
+
+<div style="text-align: left;">
+</div>
+---
+<div style="text-align: left;">
+
+## IaC Tools comparaison
+### Mature vs Cutting Edge
+
+</div>
+
+![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
+
+<div style="text-align: left;">
+</div>
+---
+<div style="text-align: left;">
+
+## Combiner les tools
+### Provisionning + Configuration management
+
+
+</div>
+
+![provisioning-configuration-management](./img/provisioning-configuration-management.png)<!-- .element: class="r-stretch" -->
+
+---
+
+<div style="text-align: left;">
+
+## Combiner les tools
+### Provisionning + Server templating
+
+
+</div>
+
+![provisioning-server-templating](./img/provisioning-server-templating.png)<!-- .element: class="r-stretch" -->
+
+---
+<div style="text-align: left;">
+
+## Combiner les tools
+### Provisionning + Server templating + Orchestration
+
+
+</div>
+
+![provisioning-server-templating-orchestration](./img/provisioning-server-templating-orchestration.png)<!-- .element: class="r-stretch" -->
+
+---
+<div style="text-align: left;">
+
+## Terraform le GOAT ?
+
+Résumé:
+- Open source 
+- Grande communauté
+- Tool de provisioning
+- Infra immutable
+- Codebase mature
+- Language déclaratif
+- Masterless et Agentless
+- Multi cloud
+
+</div>
+
+---
+
+# Let's go pour Terraform !
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->

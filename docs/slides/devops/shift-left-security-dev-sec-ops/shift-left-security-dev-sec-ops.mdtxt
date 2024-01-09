@@ -112,7 +112,7 @@ Ne pas attendre un incident de sécurité :
 
 </div>
 
-![gitlab-ci-pipeline](./img/gitlab-ci-pipeline.png)
+![gitlab-ci-pipeline](./img/gitlab-ci-pipeline.png)<!-- .element: class="r-stretch" -->
 
 ---
 <div style="text-align: left;">
@@ -134,7 +134,7 @@ Suivre en continu métriques, logs applicatifs, etc :
 
 </div>
 
-![datadog](./img/datadog.png)
+![datadog](./img/datadog.png) <!-- .element: class="r-stretch" -->
 
 ---
 <div style="text-align: left;">

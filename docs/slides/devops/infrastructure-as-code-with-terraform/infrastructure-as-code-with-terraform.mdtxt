@@ -40,6 +40,10 @@ Atouts :
 Liste des principaux IaC framework  
 Liste les configurations les plus communes et/ou par defaut
 Cf. 
+
+✅ On peut combiner les outils ensemble.
+Exemple, création d'un serveur sous Terraform, et configuration de celui-ci via Ansible
+
 </div>
 
 ---
@@ -48,6 +52,17 @@ Cf.
 
 ## IaC Tools comparaison
 ### Configuration Management vs Provisioning
+
+Configuration management
+- Consiste à installer et manager des softs sur des serveurs déjà existants  
+
+❗❗ Peut faire du provisioning à moindre degrés
+
+Provisioning
+- Fait pour créer les serveurs eux-mêmes. Database, load-balancer, storage, etc.
+
+❗❗ Peut faire de la configuration moins facilement via des scripts sur les serveurs fraichement crées
+
 
 </div>
 
@@ -62,6 +77,10 @@ Cf.
 ## IaC Tools comparaison
 ### Mutable Infrastructure vs Immutable Infrastructure
 
+Mutable: lancer une même commande effectue une 2nd fois des changes
+</br>
+Immutable: lancer x fois une commande donne le même résultat
+
 </div>
 
 ![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
@@ -74,6 +93,14 @@ Cf.
 
 ## IaC Tools comparaison
 ### Procedural vs Declarative
+
+Le style procéduriale décrit étape par étape ce que tu souhaites avoir  
+Besoin de savoir ce qui est déployé à l'instant T, et de lancer les commandes dans le bon ordre  
+
+</br>
+
+Le style déclaratif décrit ton souhait final. Tu ne te soucis pas de comment y arriver  
+Notion de state qui capture l'état courant de l'infrastructure  
 
 </div>
 
@@ -88,6 +115,9 @@ Cf.
 ## IaC Tools comparaison
 ### General-purpose language versus domain-specific language
 
+GPL: Javascript/Typescript, Python, Go, C#, Java...
+DSL: HCL, Puppet Language, YAML, JSON...
+
 </div>
 
 ![infrastructure-as-code-tools](./img/infrastructure-as-code-tools.png)<!-- .element: class="r-stretch" -->
@@ -100,6 +130,15 @@ Cf.
 
 ## IaC Tools comparaison
 ### Master vs Masterless
+
+Master
+- Besoin d'avoir un agent qui run. 
+- Le client discute avec le master 
+- Le master applique les changes demandés
+
+Masterless
+- Moins d'extra infra à gérer
+- Donc moins de maintenance
 
 </div>
 

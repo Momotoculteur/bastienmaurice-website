@@ -148,8 +148,11 @@ nav:
           - Kube-state-metrics: culture-devops/expose-metrics/kube-state-metrics.md
       - Data pipeline:
           - Logs collector & aggregator avec Vector.dev: culture-devops/data-pipeline/logs-collector-aggregator-vector.md
-      - Logs storage:
-          - Stockage avec VictoriaMetrics: culture-devops/logs-storage/victoria-metrics.md
+      - Observability stack:
+          - Metriques avec VictoriaMetrics: culture-devops/observability-stack/metrics-with-victoria-metrics.md
+          - Metrique avec Grafana Mimir: culture-devops/observability-stack/metrics-with-grafana-mimir.md
+          - Logs avec VictoriaLogs: culture-devops/observability-stack/logs-with-victoria-logs.md
+          - Logs avec Grafana Loki: culture-devops/observability-stack/logs-with-grafana-loki.md
       - Monitoring:
           - Dashboard Grafana depuis VictoriaMetrics: culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
           - Alerting avec PagerDuty: culture-devops/monitoring/alerting-pager-duty.md

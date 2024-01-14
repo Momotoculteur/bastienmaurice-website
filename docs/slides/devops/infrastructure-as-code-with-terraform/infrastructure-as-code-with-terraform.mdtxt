@@ -290,7 +290,8 @@ A privilégier les **shorts term credentials** vs long term (Ex: login sso vs ac
 
 ## Modules
 
-Un module est une sorte d'extention. Il regroupe du code terraform pour faciliter certaines opérations  
+Un module est une sorte d'extention  
+Il regroupe du code terraform pour faciliter certaines opérations  
 Ils peuvent être créer par sois même, ou même distribué par la communauté en open source  
 
 </div>
@@ -305,6 +306,8 @@ Les main:
 - terraform init
 - terraform plan
 - terraform apply
+
+<br><br>
 
 Les secondaires:
 - terraform fmt
@@ -322,5 +325,23 @@ Les secondaires:
 - terraform taint
 - terraform import
 - terraform workspace
+
+</div>
+
+
+---
+<div style="text-align: left;">
+
+
+## Minimal terraform
+
+<!-- .slide: class="data-template" -->
+
+```terraform [1-4|2|3]
+# bucket_s3.tf
+resource "aws_s3_bucket" "bucket" {
+  bucket = "mon-bucket"
+}
+```
 
 </div>

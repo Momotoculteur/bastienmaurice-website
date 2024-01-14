@@ -174,6 +174,7 @@ nav:
         - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
         - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
         - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
+        - DRY Terraform configuration avec Terragrunt: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
       - CI/CD:
         - Continuous Integration: slides/cicd/ci/continuous-integration.md
         - Continuous Deployment: slides/cicd/cd/continuous-deployment.md

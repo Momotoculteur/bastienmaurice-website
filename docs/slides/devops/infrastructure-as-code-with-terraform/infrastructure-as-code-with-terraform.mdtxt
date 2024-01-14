@@ -249,3 +249,78 @@ Résumé:
 # Let's go pour Terraform !
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## La base de Terraform
+
+Terraform utilise son propre language le **HCL** (ressemble à du JSON)
+
+1. On crée des ressources. 
+2. TF calcule l'odre des dépendances à appliquer
+3. Terraform 'sauvegarde' l'état final de l'infra dans un fichier **tf.state**
+
+</div>
+
+![terraform-workfllow](./img/terraform-workfllow.png)
+
+---
+
+<div style="text-align: left;">
+
+## Best practices
+
+Le **tf.state** contient toute la structure de l'infrastucture, celui-ci est donc critique si il est supprimé ou corrompu (ex: un apply qui à été intérompu, 2 apply qui se font en même temps...)  
+<br>
+Ce fichier contient les infos en clair. Notemment des tokens, password, etc.  
+🚨 Fichier à ne jamais commit sur Git !!  
+<br>
+Pour gérer au mieux le travail collaboratif, et la résilience de ce fichier, on préfère utiliser un **remote backend**  
+<br>
+Pour les opérations critiques (cf terraform apply) on met en place du **locking**, permettant de faire celles-ci en séquentiel  
+<br>
+A privilégier les **shorts term credentials** vs long term (Ex: login sso vs accesKey/secretKey)
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Modules
+
+Un module est une sorte d'extention. Il regroupe du code terraform pour faciliter certaines opérations  
+Ils peuvent être créer par sois même, ou même distribué par la communauté en open source  
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Les principales commandes
+
+Les main: 
+- terraform init
+- terraform plan
+- terraform apply
+
+Les secondaires:
+- terraform fmt
+- terraform validate
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Commande annexes 
+
+- terraform graph
+- terraform taint
+- terraform import
+- terraform workspace
+
+</div>

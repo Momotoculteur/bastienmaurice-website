@@ -328,16 +328,103 @@ Les secondaires:
 
 </div>
 
+---
+# Un peu de code :)
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
 
 ---
 <div style="text-align: left;">
 
+## Terraform - Providers
 
-## Minimal terraform
+```terraform
+# providers.tf
+terraform {
+    required_providers {
+        aws = {
+            source  = "hashicorp/aws"
+            version = "5.13.1"
+        }
+    }
+}
+```
 
-<!-- .slide: class="data-template" -->
+</div>
+---
 
-```terraform [1-4|2|3]
+<div style="text-align: left;">
+
+## Terraform - Providers multiple
+
+<pre class="stretch"><code data-trim data-noescape>
+terraform {
+    required_providers {
+        aws = {
+            source  = "hashicorp/aws"
+            version = "5.13.1"
+        }
+    }
+}
+
+provider "aws" {
+    region = "eu-west-3"
+}
+
+provider "aws" {
+    alias = "acm_provider"
+    region = "us-east-1"
+}
+
+resource "aws_acm_certificate" "certificate" {
+    provider = aws.acm_provider
+    ...
+}
+</code></pre>
+
+</div>
+---
+
+<div style="text-align: left;">
+
+## Terraform - Remote backend
+
+```terraform []
+# providers.tf
+terraform {
+    backend "s3" {
+    bucket = "bastienmaurice-website-infra-state"
+    key    = "terraform/state/terraform.tfstate"
+    region = "eu-west-3"
+
+    dynamodb_table = "bastienmaurice-website-infra-state"
+    encrypt        = true
+  }
+}
+```
+
+</div>
+---
+
+<div style="text-align: left;">
+
+## Terraform - Locals
+
+```terraform []
+# locals.tf
+locals {
+    toto = "tata"
+}
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+
+## Terraform - Création d'une ressource
+
+```terraform []
 # bucket_s3.tf
 resource "aws_s3_bucket" "bucket" {
   bucket = "mon-bucket"

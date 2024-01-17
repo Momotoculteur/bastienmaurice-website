@@ -11,7 +11,7 @@ Ici un basique docker file qui expose une application en React. Celle-ci est ser
 
 ```docker linenums="1"
 FROM node:20-alpine3.18 as client-builder
-WORKDIR /app
+
 COPY client/package*.json .
 RUN npm ci
 COPY client/. ./
@@ -35,7 +35,7 @@ Je vous propose ici de faire une seconde version que l'on va build en mode produ
 
 ```docker linenums="1"
 FROM node:20-alpine3.18 as client-builder
-WORKDIR /app
+
 COPY client/package*.json .
 RUN npm ci
 COPY client/. ./
@@ -71,7 +71,7 @@ RUN npm ci
 
 EXPOSE 5000
 
-CMD ["node", "index.js"]
+CMD ["node", "/app/index.js"]
 ```
 
 - L4 : on copie les fichiers package.json et package-lock.json

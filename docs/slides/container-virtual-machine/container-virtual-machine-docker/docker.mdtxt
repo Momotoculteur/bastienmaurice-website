@@ -214,3 +214,57 @@ Conteneur
 # Docker
 
 ---
+<div style="text-align: left;">
+
+## Docker - Example basique
+
+``` Dockerfile []
+FROM node:20-alpine3.18 as client-builder
+WORKDIR /app
+
+COPY package*.json .
+COPY index.js .
+COPY openapi.yaml .
+
+RUN npm ci
+
+EXPOSE 5000
+
+CMD ["node", "/app/index.js"]
+```
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Docker - Multi stage
+
+``` Dockerfile []
+FROM node:20-alpine3.18 as client-builder
+WORKDIR /app
+COPY client/package*.json .
+RUN npm ci
+COPY client/. ./
+RUN npm run build
+
+
+FROM node:20-alpine3.18 as server-builder
+WORKDIR /app
+COPY server/package*.json .
+RUN npm ci --omit=dev
+COPY server/. ./
+
+
+FROM node:20-alpine3.18 as server
+WORKDIR /app
+COPY --from=client-builder /app/build ./build
+COPY --from=server-builder /app/index.js index.js
+COPY --from=server-builder /app/node_modules ./node_modules
+
+EXPOSE 5000
+
+CMD ["node", "/app/index.js"]
+```
+
+</div>

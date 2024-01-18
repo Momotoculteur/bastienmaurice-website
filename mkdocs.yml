@@ -117,8 +117,8 @@ plugins:
 nav:
   - Accueil: index.md
   - CI/CD:
-      - Comparatif des plateformes: cicd/introduction/plateforme.md
-      - Setup des self-hosted runners: cicd/introduction/self-hosted-runner.md
+      - Comparatif des plateformes [TODO]: cicd/introduction/plateforme.md
+      - Setup des self-hosted runners [TODO]: cicd/introduction/self-hosted-runner.md
       - Creer un micro-service:
           - Frontend: cicd/micro-service/frontend.md
           - Backend: cicd/micro-service/backend.md
@@ -126,21 +126,21 @@ nav:
           - Docker: cicd/micro-service/docker.md
           - Helm: cicd/micro-service/helm.md
       - Intégration continue:
-          - Stage Dependencies: cicd/integration-continue/dependencies.md
-          - Stage Static-analysis: cicd/integration-continue/static-analysis.md
-          - Stage Security-analysis (SAST): cicd/integration-continue/security-analysis-sast.md
-          - Stage Build: cicd/integration-continue/build.md
-          - Stage Unit-testing: cicd/integration-continue/unit-testing.md
-          - Stage E2e-testing: cicd/integration-continue/e2e-testing.md
-          - Stage Helm: cicd/integration-continue/helm.md
-          - Stage Quality-Gate: cicd/integration-continue/quality-gate.md
-          - Stage Cross-Browser-Testing: cicd/integration-continue/cross-browser-testing.md
-          - Stage Visual regression: cicd/integration-continue/visual-regression.md
+          - Stage Dependencies [TODO]: cicd/integration-continue/dependencies.md
+          - Stage Static-analysis [TODO]: cicd/integration-continue/static-analysis.md
+          - Stage Security-analysis (SAST) [TODO]: cicd/integration-continue/security-analysis-sast.md
+          - Stage Build [TODO]: cicd/integration-continue/build.md
+          - Stage Unit-testing : cicd/integration-continue/unit-testing.md
+          - Stage E2e-testing [TODO]: cicd/integration-continue/e2e-testing.md
+          - Stage Helm [TODO]: cicd/integration-continue/helm.md
+          - Stage Quality-Gate [TODO]: cicd/integration-continue/quality-gate.md
+          - Stage Cross-Browser-Testing [TODO]: cicd/integration-continue/cross-browser-testing.md
+          - Stage Visual regression [TODO]: cicd/integration-continue/visual-regression.md
       - Deploiement continu:
-          - Stage Deploy: cicd/deploiement-continu/deploy.md
+          - Stage Deploy [TODO]: cicd/deploiement-continu/deploy.md
       - Nightly:
-          - Stage Load-testing: cicd/nightly/load-testing.md
-          - Stage Pentests (DAST): cicd/nightly/pentests.md
+          - Stage Load-testing [TODO]: cicd/nightly/load-testing.md
+          - Stage Pentests (DAST) [TODO]: cicd/nightly/pentests.md
   - Culture DevOps:
       - Tooling:
           - Monitoring avec K9S, Lens: culture-devops/tooling/monitoring-with-lens-and-k9s.md
@@ -149,38 +149,38 @@ nav:
       - Data pipeline:
           - Logs collector & aggregator avec Vector.dev: culture-devops/data-pipeline/logs-collector-aggregator-vector.md
       - Observability stack:
-          - Metriques avec VictoriaMetrics: culture-devops/observability-stack/metrics-with-victoria-metrics.md
+          - Metriques avec VictoriaMetrics (TODO): culture-devops/observability-stack/metrics-with-victoria-metrics.md
           - Metrique avec Grafana Mimir: culture-devops/observability-stack/metrics-with-grafana-mimir.md
-          - Logs avec VictoriaLogs: culture-devops/observability-stack/logs-with-victoria-logs.md
-          - Logs avec Grafana Loki: culture-devops/observability-stack/logs-with-grafana-loki.md
+          - Logs avec VictoriaLogs (TODO): culture-devops/observability-stack/logs-with-victoria-logs.md
+          - Logs avec Grafana Loki (TODO): culture-devops/observability-stack/logs-with-grafana-loki.md
       - Monitoring:
-          - Dashboard Grafana depuis VictoriaMetrics: culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
-          - Alerting avec PagerDuty: culture-devops/monitoring/alerting-pager-duty.md
+          - Dashboard Grafana depuis VictoriaMetrics (TODO): culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
+          - Alerting avec PagerDuty (TODO): culture-devops/monitoring/alerting-pager-duty.md
       - Infra as code:
-          - Principes de base: culture-devops/infra-as-code/principes.md
-          - Terraform: culture-devops/infra-as-code/terraform.md
-          - Terragrunt: culture-devops/infra-as-code/terragrunt.md
+          - Principes de base (TODO): culture-devops/infra-as-code/principes.md
+          - Terraform (TODO): culture-devops/infra-as-code/terraform.md
+          - Terragrunt (TODO): culture-devops/infra-as-code/terragrunt.md
       - GitOps:
-          - Principes de base: culture-devops/git-ops/principes.md
-          - FluxCD: culture-devops/git-ops/flux-cd.md
-          - ArgoCD: culture-devops/git-ops/argo-cd.md
+          - Principes de base (TODO): culture-devops/git-ops/principes.md
+          - FluxCD (TODO): culture-devops/git-ops/flux-cd.md
+          - ArgoCD (TODO): culture-devops/git-ops/argo-cd.md
       - Messaging:
-          - Message et stream avec RabbitMQ: culture-devops/messaging/rabbit-mq.md
+          - Message et stream avec RabbitMQ (TODO): culture-devops/messaging/rabbit-mq.md
   - Blog:
       - blog/index.md
   - Slides:
       - Méthodologies DevOps:
-        - DevOps, c'est quoi ? : slides/devops/what-is-dev-ops/dev-ops.md
+        - DevOps, c'est quoi ? [TODO]: slides/devops/what-is-dev-ops/dev-ops.md
         - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
-        - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
+        - GitOps, c'est quoi ? [TODO]: slides/devops/what-is-git-ops/git-ops.md
         - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
-        - DRY Terraform configuration avec Terragrunt: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
+        - DRY Terraform configuration avec Terragrunt [TODO]: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
       - CI/CD:
-        - Continuous Integration: slides/cicd/ci/continuous-integration.md
-        - Continuous Deployment: slides/cicd/cd/continuous-deployment.md
+        - Continuous Integration [TODO]: slides/cicd/ci/continuous-integration.md
+        - Continuous Deployment [TODO]: slides/cicd/cd/continuous-deployment.md
       - Container & Virtual Machine :
         - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
-        - Orchestration de container avec Kubernetes: slides/container-virtual-machine/kubernetes/kubernetes.md
+        - Orchestration de container avec Kubernetes [TODO]: slides/container-virtual-machine/kubernetes/kubernetes.md
 
   - Machine & Deep learning: https://deeplylearning.fr/
 

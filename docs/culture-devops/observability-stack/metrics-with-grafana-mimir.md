@@ -4,11 +4,7 @@ Grafana Mimir c'est un peu LA stack de référence en terme de TSDB (Time Series
 On va s'intérésser ici à la version **distributed**, c'est à dire la version hautement scalable et qui est composé que de micro-services.
 
 ## Installation
-Je te montre ici comment l'installer sous ArgoCD. On va y claquer le helm chart correspondant :  
-
-https://github.com/grafana/helm-charts/tree/main/charts/mimir-distributed  
-https://artifacthub.io/packages/helm/grafana/mimir-distributed  
-
+Je te montre ici comment l'installer sous ArgoCD. On va y claquer le helm chart correspondant à **mimir-distributed** 
 
 Cela va être à toi de choisir ce que tu veux comme element qui tourne sur ta stack, mais le minimal va être d'avoir ces services ci :  
 
@@ -39,7 +35,7 @@ compactor = {
 
 ## Long term storage des données 
 ### AWS S3 Bucket 
-Il te faut un service pour stocker tes données si tu souhaites garder tes métriques afin de pouvoir les requêter depuis Grafana sur des mois et des mois. Ici je te propose simple en utilisant le service AWS S3.
+Il te faut un service pour stocker tes données si tu souhaites garder tes métriques afin de pouvoir les requêter depuis Grafana sur des mois et des mois. Ici je te propose simple en utilisant le service AWS S3. Configurons les values du helm chart afin de forcer Mimir à utiliser un storage de type s3 :
 
 ``` terraform linenums="1"
 mimir = {
@@ -58,7 +54,7 @@ mimir = {
 !!! note
     Si tu utilise d'autre services de Mimir, tel que alertManager ou le ruler, assure toi de bien les configurer vers ton long term storage aussi
 
-Occupons nous de la création du bucket : 
+Occupons nous de la création du bucket qui va être utilisé par Mimir : 
 ```terraform linenums="1"
 resource "aws_s3_bucket" "mimir_bucket" {
   bucket = "mimir_bucket"
@@ -174,7 +170,7 @@ customConfig = {
             endpoints = [
                 "http://kube-prometheus-stack-prometheus.<namespace_ou_run_ksm>.svc.cluster.local:9090/metrics"
             ],
-            type                 = "prometheus_scrape",
+            type                 = "prometheus_scrape"
             scrape_interval_secs = 60
         }
     }
@@ -194,13 +190,13 @@ On pense à bien prendre en inputs la data source précedement crée :
 customConfig = {
     transforms = {
         filter_example = {
-            type = "filter",
+            type = "filter"
             inputs = [
                 "prometheus"
             ]
         },
         remap_example = {
-            type = "remap",
+            type = "remap"
             inputs = [
                 "prometheus"
             ]
@@ -229,7 +225,7 @@ customConfig = {
             healthcheck = {
                 enabled = false
             }
-        },
+        }
     }
 }
 ```
@@ -240,4 +236,141 @@ customConfig = {
 Et voilà, nos données partent désormais bien vers Grafana Mimir d'un façon simple et surtout cost effective.
 
 ### Prometheus
+Dans cette example on va partir sur **kube-prometheus-stack**, qui comprends un opérateur pour installer et maintenir Prometheus.
 
+On commence par quelques paramètres, notemment ici on ne souhaite pas self monitorer l'operateur 
+
+```terraform linenums="1"
+defaultRules = {
+    create = false
+}
+
+prometheusOperator = {
+    serviceMonitor = {
+        selfMonitor = false
+    }
+}
+```
+
+Ce chart self monitor pas mal de services de base. Faisons simple et ne gardons que l'essentiel, je vais en desactiver quelques-uns :
+
+```terraform linenums="1"
+kubernetesServiceMonitors = {
+    enabled = true
+}
+
+alertmanager = {
+    enabled = false
+}
+
+grafana = {
+    enabled = false
+}
+
+kubeStateMetrics = {
+    enabled = false
+}
+
+kubeApiServer = {
+    enabled = false
+}
+
+kubeEtcd = {
+    enabled = false
+}
+
+kubeScheduler = {
+    enabled = false
+}
+
+nodeExporter = {
+    enabled = false
+}
+
+kubeControllerManager = {
+    enabled = false
+}
+
+coreDns = {
+    enabled = false
+}
+
+kubeDns = {
+    enabled = false
+}
+
+kubeProxy = {
+    enabled = false
+}
+```
+
+
+Petite astuces ici optionnel, pour ceux qui souhaitent avoir les metrics de **cAdvisor**, pas besoin d'installer le chart correspondant. En effet, une version tourne déjà sur les nodes via le kubelet. On peut le scrap comme ceci : 
+
+```terraform linenums="1"
+kubelet = {
+    enabled = true
+    serviceMonitor = {
+        cAdvisor     = true
+        probes       = false
+        resource     = false
+        resourcePath = "/metrics/resource"
+
+        cAdvisorMetricRelabelings = [
+            {
+                sourceLabels = ["__name__"],
+                regex        = "(metrics_1|metrics2|...)",
+                action       = "keep"
+            },
+            {
+                regex  = "(label_to_drop_1|label_to_drop_2|...)"
+                action = "labeldrop"
+            }
+        ],
+        metricRelabelings = [
+            {
+                sourceLabels = ["__metrics_path__"]
+                regex        = "/metrics/cadvisor"
+                action       = "keep"
+            }
+        ]
+    }
+}
+```
+
+Ici on ne garde que les metrics de cAdvisor, mais vous pouvez récuperer celles provenant des probes ou des ressources. 
+
+**cAdvisorMetricRelabelings** permet de manipuler les metrics. Ici j'y ais ajouté une rule permettant d'utiliser une regex pour n'en garder que quelques une, ou encore une autre regex me permettant de modifier certains label. 
+**metricRelabelings** permet quand à lui de faire un second filtre, car ici on scrappe d'autres metrics de base en plus de celles de cAvisor. j'y ajoute une rule me permettant de ne garder que celle de cAdvisor.
+
+Maintenant finissons par nous attaquer au plus important, à savoir envoyer nos données vers Grafana Mimir : 
+
+```terraform linenums="1"
+prometheus = {
+    serviceMonitor = {
+        selfMonitor = false
+    },
+    agentMode = true
+    prometheusSpec = {
+        replicaExternalLabelNameClear    = true,
+        prometheusExternalLabelNameClear = true,
+        scrapeInterval                   = "60s",
+        remoteWrite = [
+            {
+                url = "http://mimir-distributed-nginx.<namespace>.svc.cluster.local/api/v1/push"
+            },
+        ],
+    }
+}
+```
+
+!!! tip
+    Le mode **agent** de prometheus est une optimisation à ne surtout pas louper. En effet cela permet de configurer et d'utiliser Prometheus en simple scrapper, permettant d'éviter d'avoir une database d'instancier pour stocker les logs sur notre cluster, et donc une consomation de ressources plus conséquente et non utile dans notre cas. On l'utilise ici en tant que simple scrapper et forwarder de logs.
+
+Mais quid de si je veux envoyer mes données non pas directement vers Mimir, mais vouloir les envoyer dans un vector aggregator afin d'y effectuer des transformations plus poussées que celle effectués précédemment ? Change juste ton **remoteWrite** : 
+
+```terraform linenums="1"
+{
+    url = "http://vector-aggregator-headless.grafana-stack:9090"
+}
+```

@@ -217,8 +217,49 @@ Conteneur
 <div style="text-align: left;">
 
 ## Docker - Example basique
+###### Frontend sous NodeJS - mode dev
+<pre class="stretch"><code data-trim data-noescape>
+FROM node:20-alpine3.18 as client-builder
+WORKDIR /app
+COPY client/package*.json .
+RUN npm ci
+COPY client/. ./
 
-``` Dockerfile []
+EXPOSE 3000
+
+CMD ["npm", "start"]
+</code></pre>
+</div>
+
+---
+<div style="text-align: left;">
+
+## Docker - Example basique
+###### Frontend sous NodeJS - mode production
+<pre class="stretch"><code data-trim data-noescape>
+FROM node:20-alpine3.18 as client-builder
+WORKDIR /app
+COPY client/package*.json .
+RUN npm ci
+COPY client/. ./
+
+RUN npm run build
+
+RUN npm install -g serve
+
+EXPOSE 3000
+
+CMD ["serve", "-s", "build"]
+</code></pre>
+</div>
+
+
+---
+<div style="text-align: left;">
+
+## Docker - Example basique
+###### Backend sous NodeJS 
+<pre><code data-trim data-noescape>
 FROM node:20-alpine3.18 as client-builder
 WORKDIR /app
 
@@ -230,8 +271,8 @@ RUN npm ci
 
 EXPOSE 5000
 
-CMD ["node", "/app/index.js"]
-```
+CMD ["node", "index.js"]
+</code></pre>
 
 </div>
 
@@ -240,7 +281,17 @@ CMD ["node", "/app/index.js"]
 
 ## Docker - Multi stage
 
-``` Dockerfile []
+- C'est le fait d'utiliser plusieurs **FROM** dans ton Dockerfile
+- Copie d'artefact entre les stages
+- Permet de ne pas laisser caches et autres choses useless dans l'image finale
+
+</div>
+---
+<div style="text-align: left;">
+
+## Docker - Example Multi stage
+
+<pre class="stretch"><code data-trim data-noescape>
 FROM node:20-alpine3.18 as client-builder
 WORKDIR /app
 COPY client/package*.json .
@@ -265,6 +316,6 @@ COPY --from=server-builder /app/node_modules ./node_modules
 EXPOSE 5000
 
 CMD ["node", "/app/index.js"]
-```
+</code></pre>
 
 </div>

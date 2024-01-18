@@ -180,7 +180,6 @@ nav:
         - Continuous Deployment: slides/cicd/cd/continuous-deployment.md
       - Container & Virtual Machine :
         - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
-        - Multi container avec Docker Compose: slides/container-virtual-machine/multi-container-docker-compose/docker-compose.md
         - Orchestration de container avec Kubernetes: slides/container-virtual-machine/kubernetes/kubernetes.md
 
   - Machine & Deep learning: https://deeplylearning.fr/

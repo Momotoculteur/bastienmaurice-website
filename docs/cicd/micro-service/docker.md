@@ -80,6 +80,8 @@ CMD ["node", "/app/index.js"]
 - L10 : on ouvre le port 5000 de notre container 
 - L12 : on lance le main de notre serveur 
 
+!!! info
+    Attention, ici je code mon backend en mode **CommonJS (cjs)** qui ne nécessite donc pas de build. Mais pour profiter des nouvelles features et des imports style ES, tu peux très bien coder façon **EcmaScript Module (esm)**. Si tu dev sur cette seconde façon, là par contre tu devrais passer par un bundler qui te transorme en pure javascript compréhensible par le moteur de NodeJS. Tu peux utiliser de toute sorte : esbuild, webpack, vite.js, rollup, parcel, etc.
 
 ## Optimiser son Dockerfile
 ### Choix de l'image : Alpine Linux, Distroless, Scratch...

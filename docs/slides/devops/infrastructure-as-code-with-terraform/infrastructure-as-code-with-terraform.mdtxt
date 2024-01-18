@@ -325,7 +325,7 @@ Les secondaires:
 - terraform taint
 - terraform import
 - terraform workspace
-
+mkd
 </div>
 
 ---
@@ -338,8 +338,7 @@ Les secondaires:
 
 ## Terraform - Providers
 
-```terraform
-# providers.tf
+<pre class="stretch"><code data-trim data-noescape>
 terraform {
     required_providers {
         aws = {
@@ -348,7 +347,7 @@ terraform {
         }
     }
 }
-```
+</code></pre>
 
 </div>
 ---
@@ -389,8 +388,7 @@ resource "aws_acm_certificate" "certificate" {
 
 ## Terraform - Remote backend
 
-```terraform []
-# providers.tf
+<pre class="stretch"><code data-trim data-noescape>
 terraform {
     backend "s3" {
     bucket = "bastienmaurice-website-infra-state"
@@ -401,7 +399,7 @@ terraform {
     encrypt        = true
   }
 }
-```
+</code></pre>
 
 </div>
 ---
@@ -410,25 +408,56 @@ terraform {
 
 ## Terraform - Locals
 
-```terraform []
-# locals.tf
+<pre class="stretch"><code data-trim data-noescape>
 locals {
     toto = "tata"
 }
-```
+</code></pre>
+
+</div>
+---
+
+<div style="text-align: left;">
+
+## Terraform - Variables
+
+<pre class="stretch"><code data-trim data-noescape>
+variable "ma_var" {
+    type = string
+}
+
+variable "region_list" {
+  type    = list(string)
+  default = ["us-west-1a"]
+}
+
+variable "docker_ports" {
+  type = list(object({
+    internal = number
+    external = number
+    protocol = string
+  }))
+  default = [
+    {
+      internal = 8300
+      external = 8300
+      protocol = "tcp"
+    }
+  ]
+}
+
+</code></pre>
 
 </div>
 ---
 <div style="text-align: left;">
 
-
 ## Terraform - Création d'une ressource
 
-```terraform []
-# bucket_s3.tf
+<pre class="stretch"><code data-trim data-noescape>
 resource "aws_s3_bucket" "bucket" {
   bucket = "mon-bucket"
 }
-```
+</code></pre>
 
 </div>

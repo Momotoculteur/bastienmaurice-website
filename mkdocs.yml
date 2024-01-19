@@ -144,6 +144,8 @@ nav:
   - Culture DevOps:
       - Tooling:
           - Monitoring avec K9S, Lens: culture-devops/tooling/monitoring-with-lens-and-k9s.md
+      - Secrets:
+          - Gère tes secrets dans Git et CI/CD via SOPS [TODO]: culture-devops/secrets/secrets-management-with-sops.md
       - Exposer des metriques:
           - Kube-state-metrics: culture-devops/expose-metrics/kube-state-metrics.md
       - Data pipeline:

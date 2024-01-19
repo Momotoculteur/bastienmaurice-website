@@ -349,17 +349,17 @@ Maintenant finissons par nous attaquer au plus important, à savoir envoyer nos 
 prometheus = {
     serviceMonitor = {
         selfMonitor = false
-    },
+    }
     agentMode = true
     prometheusSpec = {
-        replicaExternalLabelNameClear    = true,
-        prometheusExternalLabelNameClear = true,
-        scrapeInterval                   = "60s",
+        replicaExternalLabelNameClear    = true
+        prometheusExternalLabelNameClear = true
+        scrapeInterval                   = "60s"
         remoteWrite = [
             {
                 url = "http://mimir-distributed-nginx.<namespace>.svc.cluster.local/api/v1/push"
-            },
-        ],
+            }
+        ]
     }
 }
 ```
@@ -369,8 +369,20 @@ prometheus = {
 
 Mais quid de si je veux envoyer mes données non pas directement vers Mimir, mais vouloir les envoyer dans un vector aggregator afin d'y effectuer des transformations plus poussées que celle effectués précédemment ? Change juste ton **remoteWrite** : 
 
-```terraform linenums="1"
-{
-    url = "http://vector-aggregator-headless.grafana-stack:9090"
+```js linenums="1"
+remoteWrite = [
+    {
+        url = "http://vector-aggregator-headless.<namespace>:9090"
+    }
+]
+```
+
+Et on récupère ces données depuis une data source dans Vector. Voici un example de configuration :
+```js linenums="1"
+sources = {
+    prometheus = {
+        type = "prometheus_remote_write"
+        address = "0.0.0.0:9090"
+    }
 }
 ```

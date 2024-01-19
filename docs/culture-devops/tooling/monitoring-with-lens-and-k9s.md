@@ -12,6 +12,9 @@ Lens est un soft avec une chouette interface qui va te permettre d'absolument to
 
 Plus d'info sur [LENS](https://github.com/lensapp/lens)
 
+!!! info
+    **Lens devient entierement payant. Mais la version open source est disponible [ICI](https://github.com/MuhammedKalkan/OpenLens)**
+
 
 ### K9S
 C'est mon préféré. K9s te permet de faire grosso modo la même chose que Lens. Il est cependant un poil moins sexy, et s'utilise dans un terminal. Donc si la console ne te rébute pas, que tu es d'avantage clavier que souris, tu dois partir sur celui-ci !

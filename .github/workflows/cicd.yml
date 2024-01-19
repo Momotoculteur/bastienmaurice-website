@@ -12,6 +12,7 @@ permissions:
 env:
   BUILD_DIR: "public"
   BUCKET_NAME: "bastienmaurice.fr"
+  CI: true
 
 jobs: 
   build:

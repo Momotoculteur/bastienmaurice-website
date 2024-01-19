@@ -11,7 +11,7 @@ Ici un basique docker file qui expose une application en React. Celle-ci est ser
 
 ```docker linenums="1"
 FROM node:20-alpine3.18 as client-builder
-WORKDIR /app
+
 COPY client/package*.json .
 RUN npm ci
 COPY client/. ./
@@ -35,7 +35,7 @@ Je vous propose ici de faire une seconde version que l'on va build en mode produ
 
 ```docker linenums="1"
 FROM node:20-alpine3.18 as client-builder
-WORKDIR /app
+
 COPY client/package*.json .
 RUN npm ci
 COPY client/. ./
@@ -71,7 +71,7 @@ RUN npm ci
 
 EXPOSE 5000
 
-CMD ["node", "index.js"]
+CMD ["node", "/app/index.js"]
 ```
 
 - L4 : on copie les fichiers package.json et package-lock.json
@@ -80,6 +80,8 @@ CMD ["node", "index.js"]
 - L10 : on ouvre le port 5000 de notre container 
 - L12 : on lance le main de notre serveur 
 
+!!! info
+    Attention, ici je code mon backend en mode **CommonJS (cjs)** qui ne nécessite donc pas de build. Mais pour profiter des nouvelles features et des imports style ES, tu peux très bien coder façon **EcmaScript Module (esm)**. Si tu dev sur cette seconde façon, là par contre tu devrais passer par un bundler qui te transorme en pure javascript compréhensible par le moteur de NodeJS. Tu peux utiliser de toute sorte : esbuild, webpack, vite.js, rollup, parcel, etc.
 
 ## Optimiser son Dockerfile
 ### Choix de l'image : Alpine Linux, Distroless, Scratch...

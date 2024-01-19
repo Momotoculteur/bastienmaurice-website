@@ -1,0 +1,35 @@
+# Terragrunt  
+## Wrapper Terraform  
+
+Bastien MAURICE
+
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## Multi-env avec Terraform
+
+Inutile pour une projet perso  
+<br>
+
+Mais un vrai projet est souvent composé de plusieurs env :
+- DEV
+- ...
+- STAGE1
+- STAGE2
+- ...
+- PROD
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Multi-env comparaison
+
+</div>
+
+![multi-environment-terraform-comparaison-workspaces-branches-terragrunt](./img/multi-environment-terraform-comparaison-workspaces-branches-terragrunt.png)
+

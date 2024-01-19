@@ -33,3 +33,11 @@ Axé  sur le machine learning, deep learning et l'IA en général
 ```
 mkdocs serve --watch-theme
 ```
+
+### Reveal.Js + Highlight.js
+Embarquer du codes propres dans les slides en markdown:
+```
+<pre class="stretch"><code data-trim data-noescape>
+moncode()
+</code></pre>
+```

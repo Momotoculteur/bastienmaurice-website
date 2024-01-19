@@ -124,3 +124,33 @@ sources:
 
 Libre à toi pour **vector-agent** d'y ajouter les *datasources* que tu souhaites parser.
 Ainsi que pour **vector-aggregator** d'y faire les *remaps* que tu souhaites et de les envoyer vers un *sink* final.
+
+## Quid de la meilleure data pipeline ? Vector VS Prometheus
+
+Je parle qu'en bon de Vector. Comme quoi il outpass la concurrence en étant : 
+
+- plus simple d'utilisation
+- plus optimisé en CPU et memoire
+- multitude de sources (data input)
+- modification des données
+- multitude de sinks (data output)
+- racheté par Datadog, c'est pas n'importe qui qui suit ce projet 😉
+
+Ce qui fait de lui un outils extremement complet. Mais attention à ne pas le remplacer partout dans votre collectes de logs et métriques. Un cas bien précis est mal géré de sa part, nous allons voir ça en détails.  
+
+
+### Cas N°1 : scrap d'un service de type Deployment, Statefulset ou Replicaset - Vector win
+On a vu plus haut le cas d'un service qui expose des métriques via un endpoint façons prometheus sur le **/metrics**. Pour ce genre de cas, on a aucuns soucis avec Vector il peut aller le scrap directement pour récuperer les données. Cela peut donc bien marcher pour des services tel que kube state metrics, un service à vous particulier avec un seul replica. Même si votre service scale, cela continue de fonctionner tant que votre endpoint expose les mêmes métriques. Vector pourra en scrap un via la redirection du service.
+
+
+### Cas N°2 : scrap d'une multitude de service, de type Daemonset - Prometheus win
+
+Mais quid d'un service, comme **cAdvisor** (vous donnes des métriques sur vos containers) qui tourne avec une instance sur chaque node de votre cluster, donc on mode **daemonset**. Ici si on a un seul Vector qui tourne on pourrait quand même avoir une config comme vu plus haut. 
+
+Vous vous dîtes surement, si on utilise un Vector en mode Agent et non plus en mode Aggregator, on va pouvoir avoir un agent vector qui tourne sur chaque node, et qui va pouvoir communiquer directement avec le cAdvisor qui est sur son même noeud. Mais cela est impossible dans kubernetes, on est obliger de passer par le service de l'application qui elle même va rediriger la requête vers une instance du service. On aura bien entendu plus de métriques de scrapper étant donné que l'on utilise autant d'instance de vector que de cAdvisor, mais on ne peut garantir de tout remonter ce qui est problématique. Voilà une faiblesse de Vector.
+
+<br>
+Aucun soucis pour Prometheus qui va pouvoir grace à ses **CRD (custom ressource definition)**,  utiliser des **PodMonitor** ou des **ServiceMonitor**. Cela permet de communiquer sur l'ensemble des pods ou des services et donc de garantir de pouvoir remonter tout les informations de chaque instance de cAdvisor qui tourne sur l'ensemble du cluster. 
+
+
+Attention donc au cas d'usage que vous rencontrez dans votre propre cas. A vous de coupler ces deux outils afin d'optimiser cout des ressources et fonctionnalités.

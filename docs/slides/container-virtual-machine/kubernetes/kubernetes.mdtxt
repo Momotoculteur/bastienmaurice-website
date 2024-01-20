@@ -1,1 +1,32 @@
 # Kubernetes
+## Orchestration de container
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+TODOOOOO
+
+
+---
+<div style="text-align: left;">
+
+## Distribution Kubernetes
+
+Permet de tester des dévelopements rapide en local
+
+|Props|Minikube|MicroK8s|K3S|K0S|kind|
+|---|---|---|---|---|---|
+|Facilité d'utilisation|⭐⭐⭐⭐⭐|⭐⭐⭐|⭐⭐⭐⭐|⭐⭐|⭐⭐⭐⭐|
+|Simple binaire|❌|❌|✅|✅|✅|
+|Stockage par defaut|✅|❌|✅|❌|✅|
+|DNS par defaut|✅|❌|✅|✅|✅|
+
+</div>
+
+
+✅
+
+❌

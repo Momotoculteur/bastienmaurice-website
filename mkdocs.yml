@@ -177,7 +177,7 @@ nav:
       - Méthodologies DevOps:
         - DevOps, c'est quoi ? [TODO]: slides/devops/what-is-dev-ops/dev-ops.md
         - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
-        - GitOps, c'est quoi ? [TODO]: slides/devops/what-is-git-ops/git-ops.md
+        - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
         - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
         - DRY Terraform configuration avec Terragrunt [TODO]: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
       - CI/CD:

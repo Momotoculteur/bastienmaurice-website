@@ -1,4 +1,4 @@
-# Helm
+# Helm Charts
 Si tu veux deployer ton application sur un service type Kubernetes, tu vas forcement tomber sur du Helm. En quelques mots, cela va te permettre de packager ton application avec l'image docker de ton service, pour donner les spécifications
 et autre indications à K8s sur la manière dont :
 
@@ -20,3 +20,9 @@ un_nom_de_projet/
   |- templates/         # fichier de template
   |- templates/tests/   # fichier de test de template
 ```
+
+### Packaging & Dry run
+Tu peux utiliser `helm template <mon_chart>` pour avoir un rendu de ton chart avec les values qui template ton chart
+
+### Lint du chart
+`helm lint <mon_chart>`

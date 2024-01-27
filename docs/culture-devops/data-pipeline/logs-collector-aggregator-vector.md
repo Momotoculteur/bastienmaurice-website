@@ -37,7 +37,7 @@ Une fois que tu ingéres des données dans Vector, provenant de multiples source
 - et bien d'autres opérations :)
 
 <br>
-Example d'une configuration : 
+Example d'une configuration pour un filter : 
 ``` yaml linenums="1"
 # vector-configmap.yml
 transforms:

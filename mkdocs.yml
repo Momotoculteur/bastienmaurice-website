@@ -124,7 +124,7 @@ nav:
           - Backend: cicd/micro-service/backend.md
           - Tests: cicd/micro-service/test.md
           - Docker: cicd/micro-service/docker.md
-          - Helm: cicd/micro-service/helm.md
+          - Helm Charts[TODO]: cicd/micro-service/helm-charts.md
       - Intégration continue:
           - Stage Dependencies [TODO]: cicd/integration-continue/dependencies.md
           - Stage Static-analysis [TODO]: cicd/integration-continue/static-analysis.md
@@ -150,11 +150,12 @@ nav:
           - Kube-state-metrics: culture-devops/expose-metrics/kube-state-metrics.md
       - Data pipeline:
           - Logs collector & aggregator avec Vector.dev: culture-devops/data-pipeline/logs-collector-aggregator-vector.md
+          - Logs collector avec Prometheus: culture-devops/data-pipeline/logs-collector-prometheus.md
       - Observability stack:
           - Metriques avec VictoriaMetrics (TODO): culture-devops/observability-stack/metrics-with-victoria-metrics.md
           - Metrique avec Grafana Mimir: culture-devops/observability-stack/metrics-with-grafana-mimir.md
           - Logs avec VictoriaLogs (TODO): culture-devops/observability-stack/logs-with-victoria-logs.md
-          - Logs avec Grafana Loki (TODO): culture-devops/observability-stack/logs-with-grafana-loki.md
+          - Logs avec Grafana Loki: culture-devops/observability-stack/logs-with-grafana-loki.md
       - Monitoring:
           - Dashboard Grafana depuis VictoriaMetrics (TODO): culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
           - Alerting avec PagerDuty (TODO): culture-devops/monitoring/alerting-pager-duty.md
@@ -166,6 +167,8 @@ nav:
           - Principes de base (TODO): culture-devops/git-ops/principes.md
           - FluxCD (TODO): culture-devops/git-ops/flux-cd.md
           - ArgoCD (TODO): culture-devops/git-ops/argo-cd.md
+      - Kubernetes & FinOps:
+          - Maîtrise les coûts de ton cluster avec OpenCost ou KubeCost (TODO): culture-devops/kubernetes-finops/k8s-finops-with-opencost-and-kubecost.md
       - Messaging:
           - Message et stream avec RabbitMQ (TODO): culture-devops/messaging/rabbit-mq.md
   - Blog:
@@ -178,8 +181,8 @@ nav:
         - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
         - DRY Terraform configuration avec Terragrunt [TODO]: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
       - CI/CD:
-        - Continuous Integration [TODO]: slides/cicd/ci/continuous-integration.md
-        - Continuous Deployment [TODO]: slides/cicd/cd/continuous-deployment.md
+        - Continuous Integration: slides/cicd/ci/continuous-integration.md
+        - Continuous Delivery & Deployment: slides/cicd/cd/continuous-delivery-deployment.md
       - Container & Virtual Machine :
         - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
         - Orchestration de container avec Kubernetes [TODO]: slides/container-virtual-machine/kubernetes/kubernetes.md

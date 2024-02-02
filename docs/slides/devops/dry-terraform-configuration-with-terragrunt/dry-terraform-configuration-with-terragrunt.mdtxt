@@ -9,10 +9,39 @@ Bastien MAURICE
 ---
 <div style="text-align: left;">
 
+## Terragrunt - DRY
+### don't repeat yourself
+
+Surcouche de terraform  
+Corrige plusieurs problématique de terraform (multi-env, code propre..)  
+Ré-utiliser les portions de code via des configurations partagés  
+
+</div>
+
+---
+
+# Dry ?
+
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+<div style="text-align: left;">
+
+## Multi-env comparaison
+
+</div>
+
+![multi-environment-terraform-comparaison-workspaces-branches-terragrunt](./img/multi-environment-terraform-comparaison-workspaces-branches-terragrunt.png)
+
+---
+
+<div style="text-align: left;">
+
 ## Multi-env avec Terraform
 
 Inutile pour une projet perso  
-<br>
 
 Mais un vrai projet est souvent composé de plusieurs env :
 - DEV
@@ -24,12 +53,16 @@ Mais un vrai projet est souvent composé de plusieurs env :
 
 </div>
 
+![terragrunt-workspace-example](./img/terragrunt-workspace-example.png)
+
 ---
+
 <div style="text-align: left;">
 
-## Multi-env comparaison
+## Multi-env avec Terraform
+
+Generaliser les providers  
+Generaliser les versions  
+Generaliser les variables, locals, data, etc.  
 
 </div>
-
-![multi-environment-terraform-comparaison-workspaces-branches-terragrunt](./img/multi-environment-terraform-comparaison-workspaces-branches-terragrunt.png)
-

@@ -1,1 +1,44 @@
 # Kubernetes
+## Orchestration de container
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+## Rappel Docker
+
+Creation d'image qui embarque une application  
+Permet d'être deployer n'importe ou, qu'importe l'environnement
+
+
+---
+## Kubernetes intro
+
+Système hautement résilient et scalable 
+
+- Application basé sur des images Docker
+- Suis les pic et les baisses de traffic/charge
+- Système capable
+
+---
+<div style="text-align: left;">
+
+## Distribution Kubernetes
+
+Permet de tester des dévelopements rapide en local
+
+|Props|Minikube|MicroK8s|K3S|K0S|kind|
+|---|---|---|---|---|---|
+|Facilité d'utilisation|⭐⭐⭐⭐⭐|⭐⭐⭐|⭐⭐⭐⭐|⭐⭐|⭐⭐⭐⭐|
+|Simple binaire|❌|❌|✅|✅|✅|
+|Stockage par defaut|✅|❌|✅|❌|✅|
+|DNS par defaut|✅|❌|✅|✅|✅|
+
+</div>
+
+
+✅
+
+❌

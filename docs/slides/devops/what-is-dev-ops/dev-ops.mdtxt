@@ -1,6 +1,62 @@
-# Slide 1
-A paragraph with some text and a [link](https://hakim.se).
+# DevOps 
+## Build better & faster
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
 ---
-## Slide 2
+<div style="text-align: left;">
+
+## C'est quoi DevOps ?
+
+- Combinaison de philos et de pratiques
+- But d'améliorer la capacité d'une entreprise à livrer
+- Tenir un rythme élevé
+- Mieux servir le client, et donc gain en compétitivité
+
+</div>
+
+![devops-model](./img/devops-model.png)
+
 ---
-## Slide 3
+<div style="text-align: left;">
+
+## Fonctionnement du DevOps
+
+On rassemble les équipes de développement, d'opérations, QA...
+
+Travaille sur l'ensemble du cycle de vie de l'application :
+
+- Développement
+- Tests
+- Deploiement
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Avantages du DevOps
+
+- Meilleure cohésion entre les équipes, meilleur comunication
+- Amène de melleurs feedback, plus rapide, moins de friction
+- Permet d'avoir des cycles, implémentation de feature plus rapide
+- Meilleur qualité & sécurité du code
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Pratiques DevOps
+
+- Agilité, Scrum
+- Automation, CI/CD
+- Microservices
+- Infra as Code
+- Monitoring, Observability
+- Alerting
+- DevSecOps, ShiftLeft
+- GitOps
+
+</div>

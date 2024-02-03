@@ -7,8 +7,20 @@ Bastien MAURICE
 
 ---
 
-TODOOOOO
+## Rappel Docker
 
+Creation d'image qui embarque une application  
+Permet d'être deployer n'importe ou, qu'importe l'environnement
+
+
+---
+## Kubernetes intro
+
+Système hautement résilient et scalable 
+
+- Application basé sur des images Docker
+- Suis les pic et les baisses de traffic/charge
+- Système capable
 
 ---
 <div style="text-align: left;">

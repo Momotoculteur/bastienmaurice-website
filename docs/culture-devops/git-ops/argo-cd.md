@@ -20,9 +20,9 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 
 On peut avec un port-forward sur le pod d'ArgoCD pouvoir acceder à l'UI pour manager notre cluster.
 
-## Push based configuration
+## Configuration declarative fixe
 
-Je te propose ici si tu veux adapter une installation de ArgoCD en mode **push**. Avec ce mode de configuration, c'est toi qui pousse les changes sur ton cluster kubernetes.
+Je te propose ici si tu veux adapter une installation de ArgoCD avec des versions de chart fixe. Avec ce mode de configuration, c'est toi qui pousse les changes sur ton cluster kubernetes en incrementant à la main quand tu le souhaites tes mises à jour d'application.
 
 Tu peux très bien gérer cela entierement avec l'UI fourni par ArgoCD lui même. Tu devrais néanmoins, pour avoir une approche Devops et avoir les best practices, faire cette configuration as code, avec Terraform par exemple. Mais imagine que ton cluster tomber pour n'importe quelle raison, tu perdrais toute ta configuration. Avec Terarform, un coup de **terraform apply** et tu retrouves en moins d'un minute ton cluster entier.
 
@@ -238,10 +238,86 @@ spec {
 
 <br>
 
-**Tadaaa ! Ta première application déployé avec ArgoCD :)**
+
+
+!!! success
+    **Tadaaa ! Ta première application déployé avec ArgoCD :)**
+
 
 ![kube-state-metrics](./img/kube-state-metrics.png)
 
-## Pull based configuration
+## Configuration declarative variable
 
-Ici je te propose la version en mode **pull**. Cela veut dire que l'on va avoir un opérateur dans notre cluster qui va s'assurer que la configuration des applications défini dans notre repository Git, est bien en accord avec ce qui tourne à un instant T dans notre cluster. Ainsi, lors d'un commit, d'une PR ou tout changes sur la branches Master/Main, puisse trigger le controller sur notre cluster pour applique les changes, update ou autres modification sur le cluster en temps réel.
+Je te propose d'aller encore un peu plus loin dans la démarche. Tu vas pouvoir avoir ainsi toujours des applications up-to-date. Cela veut dire qu'avec le controller qui tourne dans notre cluster, celui-ci va s'assurer que la configuration des applications défini dans notre repository Git, est bien en accord avec ce qui tourne à un instant T dans notre cluster. 
+
+Ainsi, lors d'un commit, d'une PR ou tout changes sur la branches Master/Main, puisse trigger le controller sur notre cluster pour applique les changes, update ou autres modification sur le cluster en temps réel. En effet il va reconcilier automatiquement les changes.  
+
+Pour faire cela on va repprendre la configuration plus haute, notemment la partie ou on défini la version du chart. On utilisera des `*` qui va nous permettre, un peu à la façon d'une regex, d'avoir une wildcard. Et celle-ci dans notre cas va spécifier d'avoir la latest version sur le chiffre que l'on ajoute.  
+
+On peux donc avoir la latest majeur, mineur, ou patch. Je parle biensur de notation **SEMVER** ici.
+
+<br>
+
+Exemple ici pour une application en latest path :
+``` terraform
+# app_ksm.tf
+
+spec {   
+    source {
+      repo_url        = "https://prometheus-community.github.io/helm-charts"
+      chart           = "kube-state-metrics"
+      target_revision = "5.16.*"
+    }
+}
+```
+
+<br>
+
+Exemple ici pour une application en latest mineure :
+``` terraform
+# app_ksm.tf
+
+spec {   
+    source {
+      repo_url        = "https://prometheus-community.github.io/helm-charts"
+      chart           = "kube-state-metrics"
+      target_revision = "5.*.*"
+    }
+}
+```
+
+<br>
+
+Exemple ici pour une application en latest majeure :
+``` terraform
+# app_ksm.tf
+
+spec {   
+    source {
+      repo_url        = "https://prometheus-community.github.io/helm-charts"
+      chart           = "kube-state-metrics"
+      target_revision = "*.*.*"
+    }
+}
+```
+
+<br>
+
+!!! danger
+    Je ne recommande biensur pas la version avec la latest en majeur pour la simple raison que tu vas avoir des applications avec des breaking changes entre elle. Tu peux donc avoir du jour au lendemain des applications qui ne fonctionnent plus du fait que tu n'aies pas regardé les changelog te permettant une migration smooth de tes app.
+
+
+## Tips à connaître
+### Argo Rollouts
+Argo Rollouts est un opérateur Kubernetes, qui avec ses CRD qu'il embarque, va te permettre d'effectuer des stratégies différents de deploiement de tes applications, telle que :
+
+- Blue-green deployment
+- Canary deployment
+- Divers experimentation de switch de traffic
+- Etc.
+
+Cela va se baser sur ton ingress controller & service mesh pour réaliser ces changements de traffics des utilisateurs. Ainsi avec à ta disposition de divers métriques, de KPI et autres readiness probes, tu vas pouvoir valider ou rollback tes deploiements et mise à jour d'applications, selon les performances automatiquement et ta statégie mise en place.
+
+!!! warning
+        Attention à vérifier que ton ingress fasse bien partie de la liste supporté par
+        le controller Argo Rollout

@@ -166,7 +166,7 @@ nav:
       - GitOps:
           - Principes de base (TODO): culture-devops/git-ops/principes.md
           - FluxCD (TODO): culture-devops/git-ops/flux-cd.md
-          - ArgoCD (TODO): culture-devops/git-ops/argo-cd.md
+          - ArgoCD: culture-devops/git-ops/argo-cd.md
       - Kubernetes & FinOps:
           - Maîtrise les coûts de ton cluster avec OpenCost ou KubeCost (TODO): culture-devops/kubernetes-finops/k8s-finops-with-opencost-and-kubecost.md
       - Messaging:

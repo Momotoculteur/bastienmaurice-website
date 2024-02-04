@@ -129,10 +129,10 @@ nav:
           - Stage Dependencies: cicd/integration-continue/dependencies.md
           - Stage Static-analysis: cicd/integration-continue/static-analysis.md
           - Stage Security-analysis (SAST) [TODO]: cicd/integration-continue/security-analysis-sast.md
-          - Stage Build [TODO]: cicd/integration-continue/build.md
+          - Stage Build: cicd/integration-continue/build.md
           - Stage Unit-testing : cicd/integration-continue/unit-testing.md
           - Stage E2e-testing [TODO]: cicd/integration-continue/e2e-testing.md
-          - Stage Helm [TODO]: cicd/integration-continue/helm.md
+          - Stage Helm: cicd/integration-continue/helm.md
           - Stage Quality-Gate [TODO]: cicd/integration-continue/quality-gate.md
           - Stage Cross-Browser-Testing [TODO]: cicd/integration-continue/cross-browser-testing.md
           - Stage Visual regression [TODO]: cicd/integration-continue/visual-regression.md

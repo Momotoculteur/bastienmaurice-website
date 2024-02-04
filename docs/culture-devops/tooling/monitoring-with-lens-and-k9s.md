@@ -1,5 +1,3 @@
-# Tooling
-
 ## Surveiller son cluster Kubernetes 
 Tu vas vouloir monitorer ton cluster kubernetes à un moment donné. Tu pourrais très bien le faire à la mano à base de bon **kubectl**. Mais au fur et à mesure que ton cluster grossi, ça peut vite devenir la merde pour gérer tout ça. Connaître les commandes de bases c'est bien, mais une fois que tu veux faire un peu de monitoring de ressources, de port-forward tes services, modifier à chaud des configmap de façon efficace, simple et rapide, il te faut absolument un de ces outils suivant.
 

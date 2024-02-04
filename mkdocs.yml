@@ -124,10 +124,10 @@ nav:
           - Backend: cicd/micro-service/backend.md
           - Tests: cicd/micro-service/test.md
           - Docker: cicd/micro-service/docker.md
-          - Helm Charts[TODO]: cicd/micro-service/helm-charts.md
+          - Helm Charts: cicd/micro-service/helm-charts.md
       - Intégration continue:
-          - Stage Dependencies [TODO]: cicd/integration-continue/dependencies.md
-          - Stage Static-analysis [TODO]: cicd/integration-continue/static-analysis.md
+          - Stage Dependencies: cicd/integration-continue/dependencies.md
+          - Stage Static-analysis: cicd/integration-continue/static-analysis.md
           - Stage Security-analysis (SAST) [TODO]: cicd/integration-continue/security-analysis-sast.md
           - Stage Build [TODO]: cicd/integration-continue/build.md
           - Stage Unit-testing : cicd/integration-continue/unit-testing.md
@@ -143,7 +143,7 @@ nav:
           - Stage Pentests (DAST) [TODO]: cicd/nightly/pentests.md
   - Culture DevOps:
       - Tooling:
-          - Monitoring avec K9S, Lens: culture-devops/tooling/monitoring-with-lens-and-k9s.md
+          - Monitorer son cluster Kubernetes efficacement: culture-devops/tooling/monitoring-with-lens-and-k9s.md
       - Secrets:
           - Gère tes secrets dans Git et CI/CD via SOPS [TODO]: culture-devops/secrets/secrets-management-with-sops.md
       - Exposer des metriques:

@@ -128,9 +128,10 @@ nav:
       - Intégration continue:
           - Stage Dependencies: cicd/integration-continue/dependencies.md
           - Stage Static-analysis: cicd/integration-continue/static-analysis.md
-          - Stage Security-analysis (SAST) [TODO]: cicd/integration-continue/security-analysis-sast.md
+          - Stage Security-analysis (SAST): cicd/integration-continue/security-analysis-sast.md
           - Stage Build: cicd/integration-continue/build.md
           - Stage Unit-testing : cicd/integration-continue/unit-testing.md
+          - Stage Integration-Testing TODO_: cicd/integration-continue/integration-testing.md
           - Stage E2e-testing [TODO]: cicd/integration-continue/e2e-testing.md
           - Stage Helm: cicd/integration-continue/helm.md
           - Stage Quality-Gate [TODO]: cicd/integration-continue/quality-gate.md
@@ -180,6 +181,9 @@ nav:
         - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
         - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
         - DRY Terraform configuration avec Terragrunt: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
+        - Logs & métriques scrapping TODO: slides/devops/logs-metrics-scrapping/logs-metrics-scrapping.md
+        - Logs & métriques storage TODO: slides/devops/logs-metrics-storage/logs-metrics-storage.md
+        - Monitoring & Dashboards TODO: slides/devops/monitoring-dashboards/monitoring-dashboards.md
       - CI/CD:
         - Continuous Integration: slides/cicd/ci/continuous-integration.md
         - Continuous Delivery & Deployment: slides/cicd/cd/continuous-delivery-deployment.md

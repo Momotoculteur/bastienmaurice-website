@@ -6,6 +6,10 @@ Le moyen le plus simple est d'utiliser Docker lui même pour builder des images.
 - DinD a besoin pour fonctionne d'avoir un le mode privilège
 - DinD est très lent
 
+!!! danger
+    Oui oui, tu peux très bien lancer docker avec l'args **--privileged** avec ton pod lancé en mode **spec.containers.securityContext.privileged: true**. A tes risques et perils 😉
+
+
 ## Example avec Kaniko
 Kaniko est un outils te permettant donc de builder des images Docker dans un environnement qui tourne dans Kubernetes.
 

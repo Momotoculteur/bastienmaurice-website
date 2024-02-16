@@ -117,60 +117,61 @@ plugins:
 nav:
   - Accueil: index.md
   - CI/CD:
-      - Comparatif des plateformes [TODO]: cicd/introduction/plateforme.md
-      - Setup des self-hosted runners [TODO]: cicd/introduction/self-hosted-runner.md
+      # - Comparatif des plateformes [TODO]: cicd/introduction/plateforme.md
+      # - Setup des self-hosted runners [TODO]: cicd/introduction/self-hosted-runner.md
       - Creer un micro-service:
           - Frontend: cicd/micro-service/frontend.md
           - Backend: cicd/micro-service/backend.md
           - Tests: cicd/micro-service/test.md
           - Docker: cicd/micro-service/docker.md
-          - Helm Charts[TODO]: cicd/micro-service/helm-charts.md
+          - Helm Charts: cicd/micro-service/helm-charts.md
       - Intégration continue:
-          - Stage Dependencies [TODO]: cicd/integration-continue/dependencies.md
-          - Stage Static-analysis [TODO]: cicd/integration-continue/static-analysis.md
-          - Stage Security-analysis (SAST) [TODO]: cicd/integration-continue/security-analysis-sast.md
-          - Stage Build [TODO]: cicd/integration-continue/build.md
+          - Stage Dependencies: cicd/integration-continue/dependencies.md
+          - Stage Static-analysis: cicd/integration-continue/static-analysis.md
+          - Stage Security-analysis (SAST): cicd/integration-continue/security-analysis-sast.md
+          - Stage Build: cicd/integration-continue/build.md
           - Stage Unit-testing : cicd/integration-continue/unit-testing.md
-          - Stage E2e-testing [TODO]: cicd/integration-continue/e2e-testing.md
-          - Stage Helm [TODO]: cicd/integration-continue/helm.md
-          - Stage Quality-Gate [TODO]: cicd/integration-continue/quality-gate.md
+          # - Stage Integration-Testing TODO_: cicd/integration-continue/integration-testing.md
+          - Stage Helm: cicd/integration-continue/helm.md
+          - Stage Quality-Gate : cicd/integration-continue/quality-gate.md
           - Stage Cross-Browser-Testing [TODO]: cicd/integration-continue/cross-browser-testing.md
           - Stage Visual regression [TODO]: cicd/integration-continue/visual-regression.md
       - Deploiement continu:
           - Stage Deploy [TODO]: cicd/deploiement-continu/deploy.md
       - Nightly:
           - Stage Load-testing [TODO]: cicd/nightly/load-testing.md
+          - Stage E2E-testing [TODO]: cicd/nightly/e2e-testing.md
           - Stage Pentests (DAST) [TODO]: cicd/nightly/pentests.md
   - Culture DevOps:
       - Tooling:
-          - Monitoring avec K9S, Lens: culture-devops/tooling/monitoring-with-lens-and-k9s.md
-      - Secrets:
-          - Gère tes secrets dans Git et CI/CD via SOPS [TODO]: culture-devops/secrets/secrets-management-with-sops.md
+          - Monitorer son cluster Kubernetes efficacement: culture-devops/tooling/monitoring-with-lens-and-k9s.md
+      # - Secrets:
+          # - Gère tes secrets dans Git et CI/CD via SOPS [TODO]: culture-devops/secrets/secrets-management-with-sops.md
       - Exposer des metriques:
           - Kube-state-metrics: culture-devops/expose-metrics/kube-state-metrics.md
       - Data pipeline:
           - Logs collector & aggregator avec Vector.dev: culture-devops/data-pipeline/logs-collector-aggregator-vector.md
           - Logs collector avec Prometheus: culture-devops/data-pipeline/logs-collector-prometheus.md
       - Observability stack:
-          - Metriques avec VictoriaMetrics (TODO): culture-devops/observability-stack/metrics-with-victoria-metrics.md
+          # - Metriques avec VictoriaMetrics (TODO): culture-devops/observability-stack/metrics-with-victoria-metrics.md
           - Metrique avec Grafana Mimir: culture-devops/observability-stack/metrics-with-grafana-mimir.md
-          - Logs avec VictoriaLogs (TODO): culture-devops/observability-stack/logs-with-victoria-logs.md
+          # - Logs avec VictoriaLogs (TODO): culture-devops/observability-stack/logs-with-victoria-logs.md
           - Logs avec Grafana Loki: culture-devops/observability-stack/logs-with-grafana-loki.md
-      - Monitoring:
-          - Dashboard Grafana depuis VictoriaMetrics (TODO): culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
-          - Alerting avec PagerDuty (TODO): culture-devops/monitoring/alerting-pager-duty.md
-      - Infra as code:
-          - Principes de base (TODO): culture-devops/infra-as-code/principes.md
-          - Terraform (TODO): culture-devops/infra-as-code/terraform.md
-          - Terragrunt (TODO): culture-devops/infra-as-code/terragrunt.md
+      # - Monitoring:
+          # - Dashboard Grafana depuis VictoriaMetrics (TODO): culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
+          # - Alerting avec PagerDuty (TODO): culture-devops/monitoring/alerting-pager-duty.md
+      # - Infra as code:
+          # - Principes de base (TODO): culture-devops/infra-as-code/principes.md
+          # - Terraform (TODO): culture-devops/infra-as-code/terraform.md
+          # - Terragrunt (TODO): culture-devops/infra-as-code/terragrunt.md
       - GitOps:
-          - Principes de base (TODO): culture-devops/git-ops/principes.md
-          - FluxCD (TODO): culture-devops/git-ops/flux-cd.md
+          # - Principes de base (TODO): culture-devops/git-ops/principes.md
+          # - FluxCD (TODO): culture-devops/git-ops/flux-cd.md
           - ArgoCD: culture-devops/git-ops/argo-cd.md
-      - Kubernetes & FinOps:
-          - Maîtrise les coûts de ton cluster avec OpenCost ou KubeCost (TODO): culture-devops/kubernetes-finops/k8s-finops-with-opencost-and-kubecost.md
-      - Messaging:
-          - Message et stream avec RabbitMQ (TODO): culture-devops/messaging/rabbit-mq.md
+      # - Kubernetes & FinOps:
+          # - Maîtrise les coûts de ton cluster avec OpenCost ou KubeCost (TODO): culture-devops/kubernetes-finops/k8s-finops-with-opencost-and-kubecost.md
+      # - Messaging:
+          # - Message et stream avec RabbitMQ (TODO): culture-devops/messaging/rabbit-mq.md
   - Blog:
       - blog/index.md
   - Slides:
@@ -180,6 +181,9 @@ nav:
         - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
         - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
         - DRY Terraform configuration avec Terragrunt: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
+        - Logs & métriques scrapping TODO: slides/devops/logs-metrics-scrapping/logs-metrics-scrapping.md
+        - Logs & métriques storage TODO: slides/devops/logs-metrics-storage/logs-metrics-storage.md
+        - Monitoring & Dashboards TODO: slides/devops/monitoring-dashboards/monitoring-dashboards.md
       - CI/CD:
         - Continuous Integration: slides/cicd/ci/continuous-integration.md
         - Continuous Delivery & Deployment: slides/cicd/cd/continuous-delivery-deployment.md

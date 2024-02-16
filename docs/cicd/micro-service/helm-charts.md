@@ -21,8 +21,13 @@ un_nom_de_projet/
   |- templates/tests/   # fichier de test de template
 ```
 
-### Packaging & Dry run
-Tu peux utiliser `helm template <mon_chart>` pour avoir un rendu de ton chart avec les values qui template ton chart
+### Dry run
+Tu peux utiliser `helm template <mon_chart>` pour avoir un rendu de ton chart avec les values qui template ton chart. Cela te donne une idée de ce que tu vas installer, et te permet de vérifier que tu as bien ce que tu souhaites de templatisé.
+
+### Packaging de ton chart
+Tu peux avoir besoin de packager ton chart. Que cela soit à des fins de stockage sur un registry tel que Artifactory afin de pouvoir le distribuer. Tu peux notemment en avoir besoin si tu passes pas pour du déploiement continue, par FluxCD par example, d'avoir un .tgz de ton chart, permettant une installation simplifié au sein de ton cluster Kubernetes.
+
+Pour cela tu devras utiliser `helm package <mon_chart>`
 
 ### Lint du chart
 `helm lint <mon_chart>`

@@ -57,7 +57,7 @@ Ici on va passer par un provider Terraform qui va nous simplifier la vie. Celui-
 #### Update Admin roles
 
 On commence par modificer notre confimap argocd-cm, afin d'ajouter des droits à notre user, qui ne peut seulement se logger actuellement à l'interface : 
-``` yaml
+``` yaml linenums="1"
 data:
     accounts.admin: apiKey, login
 ```
@@ -73,7 +73,7 @@ Nous pouvons aller dans ArgoCD afin de créer un token d'authentification, utili
 
 On commence par setter notre local backend qui contiendra notre tf.state, on fait simple. On créer un nouveau fichier provider.tf avec ce contenu ci :
 
-``` terraform
+``` terraform linenums="1"
 # provider.tf
 
 terraform {
@@ -97,11 +97,11 @@ On peut noter l'ajout d'un provider custom disponible sur la marketplace de Terr
 
 On vient de configurer les providers essentiels à notre projet. On va maintenant configurer notre provider afin qu'il puisse communiquer avec notre cluster et déployer de nouvelles applications via ArgoCD. 
 
-``` terraform
+``` terraform linenums="1"
 # provider.tf
 
 provider "argocd" {
-  auth_token                  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhcmdvY2QiLCJzdWIiOiJhZG1pbjphcGlLZXkiLCJuYmYiOjE3MDY5NzI3MzYsImlhdCI6MTcwNjk3MjczNiwianRpIjoiNDFhNTEyNDAtOTUwOC00MGY5LTkzZmQtZjcyY2E5NTgxZGNiIn0.mY8zRxOFqvCaQDWlcwGJ8Cqqe48Fr0qgdhFFYcPgMMM"
+  auth_token                  = "<ton_token_genere>"
   port_forward_with_namespace = "argocd"
   kubernetes {
     config_context = "minikube"
@@ -125,7 +125,7 @@ Comme exemple je vais montrer comment installer un Helm Chart, avec comme servic
 
 Je créer un nouveau fichier qui va contenir l'ensemble de la configuration de mon chart :
 
-``` terraform
+``` terraform linenums="1"
 # app_ksm.tf
 
 resource "argocd_application" "ksm" {
@@ -137,7 +137,7 @@ resource "argocd_application" "ksm" {
 
 Le premier bloc que l'on défini dedans, si on fait les choses proprement, est de définir des labels. Cela nous permettra de classer nos applications. Utile en production quand tu auras des centaines d'applications.
 
-``` terraform
+``` terraform linenums="1"
 # app_ksm.tf
 
 metadata {
@@ -150,7 +150,7 @@ metadata {
 
 On défini ensuite la destination du chart, ou dans le cluster on souhaite l'installer. Je mentionne mon cluster local, et un namespace.
 
-``` terraform
+``` terraform linenums="1"
 # app_ksm.tf
 
 spec {
@@ -167,7 +167,7 @@ spec {
 
 Ici je défini une politique de comment je souhaite que mon application soit réconcilié par ArgoCD. Définir le comportement de comment je souhaite appliquer mon helm chart, de comment il se comporte si l'installation echoue, ou si une mise à jour d'un chart existant fail, etc.
 
-``` terraform
+``` terraform linenums="1"
 # app_ksm.tf
 
 spec {
@@ -194,7 +194,7 @@ spec {
 <br>
 
 Ici je défini l'application, le chart que je souhaite installer avec une version.
-``` terraform
+``` terraform linenums="1"
 # app_ksm.tf
 
 spec {   
@@ -210,7 +210,7 @@ spec {
 
 Tu n'as plus qu'a renseigner les values que tu souhaites pour customize ton chart comme bon te semble.
 
-``` terraform
+``` terraform linenums="1"
 # app_ksm.tf
 spec {   
 
@@ -259,7 +259,8 @@ On peux donc avoir la latest majeur, mineur, ou patch. Je parle biensur de notat
 <br>
 
 Exemple ici pour une application en latest path :
-``` terraform
+
+``` terraform linenums="1"
 # app_ksm.tf
 
 spec {   
@@ -274,7 +275,8 @@ spec {
 <br>
 
 Exemple ici pour une application en latest mineure :
-``` terraform
+
+``` terraform linenums="1"
 # app_ksm.tf
 
 spec {   
@@ -289,7 +291,8 @@ spec {
 <br>
 
 Exemple ici pour une application en latest majeure :
-``` terraform
+
+``` terraform linenums="1"
 # app_ksm.tf
 
 spec {   
@@ -319,5 +322,5 @@ Argo Rollouts est un opérateur Kubernetes, qui avec ses CRD qu'il embarque, va 
 Cela va se baser sur ton ingress controller & service mesh pour réaliser ces changements de traffics des utilisateurs. Ainsi avec à ta disposition de divers métriques, de KPI et autres readiness probes, tu vas pouvoir valider ou rollback tes deploiements et mise à jour d'applications, selon les performances automatiquement et ta statégie mise en place.
 
 !!! warning
-        Attention à vérifier que ton ingress fasse bien partie de la liste supporté par
-        le controller Argo Rollout
+    Attention à vérifier que ton ingress fasse bien partie de la liste supporté par
+    le controller Argo Rollout

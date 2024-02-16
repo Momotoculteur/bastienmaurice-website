@@ -133,7 +133,7 @@ nav:
           - Stage Unit-testing : cicd/integration-continue/unit-testing.md
           # - Stage Integration-Testing TODO_: cicd/integration-continue/integration-testing.md
           - Stage Helm: cicd/integration-continue/helm.md
-          - Stage Quality-Gate [TODO]: cicd/integration-continue/quality-gate.md
+          - Stage Quality-Gate : cicd/integration-continue/quality-gate.md
           - Stage Cross-Browser-Testing [TODO]: cicd/integration-continue/cross-browser-testing.md
           - Stage Visual regression [TODO]: cicd/integration-continue/visual-regression.md
       - Deploiement continu:

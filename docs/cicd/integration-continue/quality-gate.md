@@ -15,7 +15,7 @@ Il te permet de définir l'ensemble des points précedents via deux choses :
 - **Quality Profile** : Un Profile va recencer un ensemble de régles qui organise les bonnes pratiques, sur un language spécifique. Tu peux donc faire des quality profile sur du Pyhon, NodeJS, Golang, etc. Il va te définir des règles sur comment définir une variable, comme indenter ton code, gérer des normes de compléxité sur ton code, etc.
 - **Quality Gate** : Une Gate est un ensemble de métriques que ton projet va devoir atteindre et respecter si tu veux avoir le tampon de Sonar pour valider ta merge request en cours sur laquelle tu analyses ton code. Tu vas ainsi spécifier que tu souhaites une couverte de code avec l'ensemble de tes tests de X pourcentage, que tu souhaites un niveau de code smell de X rangs, que tu souhaites X issues maximum sur ton projet, etc.
 
-### Pré-requis
+### Se faire une instance de test en local
 Pour lancer une analyse Sonar, il te faudra forcement une instance de Sonarqube qui tourne déjà. Si tu souhaites juste t'exercer sur l'application à des fins de simple tests, tu peux te lancer un Sonar en local avec Docker Desktop ou le deployer via un Helm Chart dans un cluter kubernetes en local, via Minikube par example.
 
 #### Via Helm Chart

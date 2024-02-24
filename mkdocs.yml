@@ -175,6 +175,10 @@ nav:
   - Blog:
       - blog/index.md
   - Slides:
+      - Présentation générale:
+        - Hello Momo !: slides/presentation/hello-momo/hello-momo.md
+        - YNOV - CI/CD: slides/presentation/ynov-cicd/ynov-cicd.md
+        - YNOV - DevOps: slides/presentation/ynov-devops/ynov-devops.md
       - Méthodologies DevOps:
         - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
         - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
@@ -190,7 +194,7 @@ nav:
       - Container & Virtual Machine :
         - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
         - Orchestration de container avec Kubernetes [TODO]: slides/container-virtual-machine/kubernetes/kubernetes.md
-
+        - Kubernetes Resources [TODO]: slides/container-virtual-machine/kubernetes-resources/kubernetes-resources.md
   - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:

@@ -159,7 +159,7 @@ nav:
           - Logs avec Grafana Loki: culture-devops/observability-stack/logs-with-grafana-loki.md
       # - Monitoring:
           # - Dashboard Grafana depuis VictoriaMetrics (TODO): culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
-          # - Alerting avec PagerDuty (TODO): culture-devops/monitoring/alerting-pager-duty.md
+          # - Alerting avec PagerDuty (tTODO): culture-devops/monitoring/alerting-pager-duty.md
       # - Infra as code:
           # - Principes de base (TODO): culture-devops/infra-as-code/principes.md
           # - Terraform (TODO): culture-devops/infra-as-code/terraform.md
@@ -176,9 +176,9 @@ nav:
       - blog/index.md
   - Slides:
       - Présentation générale:
-        - Hello Momo !TODO_: slides/presentation/hello-momo/hello-momo.md
-        - YNOV - CI/CD TODO_: slides/presentation/ynov-cicd/ynov-cicd.md
-        - YNOV - DevOps TODO_: slides/presentation/ynov-devops/ynov-devops.md
+        - Hello Momo !: slides/presentation/hello-momo/hello-momo.md
+        - YNOV - CI/CD: slides/presentation/ynov-cicd/ynov-cicd.md
+        - YNOV - DevOps: slides/presentation/ynov-devops/ynov-devops.md
       - Méthodologies DevOps:
         - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
         - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md

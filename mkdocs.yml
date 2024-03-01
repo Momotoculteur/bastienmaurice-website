@@ -147,6 +147,7 @@ nav:
           - Monitorer son cluster Kubernetes efficacement: culture-devops/tooling/monitoring-with-lens-and-k9s.md
       # - Secrets:
           # - Gère tes secrets dans Git et CI/CD via SOPS [TODO]: culture-devops/secrets/secrets-management-with-sops.md
+          # - Kubernetes, Sealed Secrets
       - Exposer des metriques:
           - Kube-state-metrics: culture-devops/expose-metrics/kube-state-metrics.md
       - Data pipeline:

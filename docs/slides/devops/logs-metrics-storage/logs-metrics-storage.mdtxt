@@ -1,6 +1,79 @@
-# Slide 1
-A paragraph with some text and a [link](https://hakim.se).
+# Logs & Metrics Storage
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
 ---
-## Slide 2
+
+# Commençons logs...
+
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
 ---
-## Slide 3
+<div style="text-align: left;">
+
+## Logs - Stockage
+
+Sous forme de clée - labels  
+Contient au moins un champs **message**  
+Peut contenir des labels aditionnels  
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Grafana Loki - Architecture
+
+</div>
+
+![grafana-loki-architecture](./img/grafana-loki-architecture.png)
+---
+
+<div style="text-align: left;">
+
+## VictoriaLogs - Architecture
+
+</div>
+
+---
+
+
+# Finissons métriques
+
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## TSDB
+
+**T**ime **S**eries **D**ata**B**ase  
+
+Clé/Valeur entre une timestamp et une variable  
+
+Stockage des données en local, via un Cloud provider..  
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Grafana Mimir - Architecture
+
+</div>
+
+<img src="./img/grafana-mimir-architecture.png" width=1300 /> 
+
+---
+
+<div style="text-align: left;">
+
+## VictoriaMetrics - Architecture
+
+</div>
+
+![victoriametrics-architecture](./img/victoriametrics-architecture.png)

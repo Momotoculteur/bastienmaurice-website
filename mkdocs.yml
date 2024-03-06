@@ -147,6 +147,7 @@ nav:
           - Monitorer son cluster Kubernetes efficacement: culture-devops/tooling/monitoring-with-lens-and-k9s.md
       # - Secrets:
           # - Gère tes secrets dans Git et CI/CD via SOPS [TODO]: culture-devops/secrets/secrets-management-with-sops.md
+          # - Kubernetes, Sealed Secrets
       - Exposer des metriques:
           - Kube-state-metrics: culture-devops/expose-metrics/kube-state-metrics.md
       - Data pipeline:
@@ -159,7 +160,7 @@ nav:
           - Logs avec Grafana Loki: culture-devops/observability-stack/logs-with-grafana-loki.md
       # - Monitoring:
           # - Dashboard Grafana depuis VictoriaMetrics (TODO): culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
-          # - Alerting avec PagerDuty (TODO): culture-devops/monitoring/alerting-pager-duty.md
+          # - Alerting avec PagerDuty (tTODO): culture-devops/monitoring/alerting-pager-duty.md
       # - Infra as code:
           # - Principes de base (TODO): culture-devops/infra-as-code/principes.md
           # - Terraform (TODO): culture-devops/infra-as-code/terraform.md
@@ -175,6 +176,10 @@ nav:
   - Blog:
       - blog/index.md
   - Slides:
+      - Présentation générale:
+        - Hello Momo !: slides/presentation/hello-momo/hello-momo.md
+        - YNOV - CI/CD: slides/presentation/ynov-cicd/ynov-cicd.md
+        - YNOV - DevOps: slides/presentation/ynov-devops/ynov-devops.md
       - Méthodologies DevOps:
         - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
         - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
@@ -190,7 +195,9 @@ nav:
       - Container & Virtual Machine :
         - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
         - Orchestration de container avec Kubernetes [TODO]: slides/container-virtual-machine/kubernetes/kubernetes.md
-
+        - Kubernetes Resources [TODO]: slides/container-virtual-machine/kubernetes-resources/kubernetes-resources.md
+      - Cloud Provider:
+        - AWS - Principales ressources [TODO]: slides/cloud-provider/aws/main-resources/main-resources.md
   - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:

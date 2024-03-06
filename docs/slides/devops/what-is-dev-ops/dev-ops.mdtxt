@@ -7,6 +7,20 @@ Bastien MAURICE
 ---
 <div style="text-align: left;">
 
+## Un example d'avant - Une application JAVA
+
+Les dév font du logiciel
+
+Envoi des fichiers .WAR sur un serveur FTP
+Envoie un fichier de properties en format Excel (Creds, Script d'install avec des tokens/clée/Etc, paramètrer certains hyper-paramètres)
+
+Les Ops récupèrent et pousse le logiciel sur le serveur en remplaçant par les bonnes values
+
+</div>
+
+---
+<div style="text-align: left;">
+
 ## C'est quoi DevOps ?
 
 - Combinaison de philos et de pratiques

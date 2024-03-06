@@ -18,10 +18,10 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.11.4
           architecture: x64
@@ -29,7 +29,7 @@ jobs:
       - run: pip install -r ./requirements.txt
       - run: mkdocs build
       - run: tar -cvf public.tar public/*
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.BUILD_DIR }}
           retention-days: 1
@@ -41,11 +41,11 @@ jobs:
     needs: build
     if:  ${{ github.ref_name == 'master' || github.event_name == 'workflow_dispatch' }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ${{ env.BUILD_DIR }}
       - run: tar -xvf public.tar
-      - uses: aws-actions/configure-aws-credentials@v2
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::288002323060:role/github-actions-assume-role-access
           aws-region: eu-west-3

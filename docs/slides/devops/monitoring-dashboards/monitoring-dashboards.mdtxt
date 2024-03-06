@@ -1,6 +1,69 @@
-# Slide 1
-A paragraph with some text and a [link](https://hakim.se).
+# Monitoring
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
 ---
-## Slide 2
+
+<div style="text-align: left;">
+
+## Monitoring
+
+- Surveiller un système
+- Plusieurs type d'info
+    - Metriques
+    - Trace
+    - Log
+
+</div>
+
 ---
-## Slide 3
+
+
+<div style="text-align: left;">
+
+## Monitoring - Grafana
+
+- Grafana
+
+</div>
+
+![grafana-dashboard](./img/grafana-dashboard.png)
+
+
+---
+
+
+<div style="text-align: left;">
+
+## Monitoring - Datadog
+
+- Datadog
+
+</div>
+
+![datadog-dashboard](./img/datadog-dashboard.png)
+---
+
+
+<div style="text-align: left;">
+
+## Monitoring - Best practices
+
+- Faire un premier dash à la main
+- Puis Terraformer le JSON associé
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Monitoring - Stockage des données
+
+- Lecture des données depuis une base de donnée spécifique
+- Base de donnée alimenté depuis un agent, collecteur, data-pipeline, etc.
+
+</div>
+
+

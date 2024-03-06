@@ -1,3 +1,5 @@
-# Visual regression
 
-Utilisation de Browserstack Percy
+
+## OpenSource & local : BackstopJS
+
+## Payant & SaaS : Browserstack Percy

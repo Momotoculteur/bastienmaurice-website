@@ -131,7 +131,7 @@ nav:
           - Stage Security-analysis (SAST): cicd/integration-continue/security-analysis-sast.md
           - Stage Build: cicd/integration-continue/build.md
           - Stage Unit-testing : cicd/integration-continue/unit-testing.md
-          # - Stage Integration-Testing TODO_: cicd/integration-continue/integration-testing.md
+          - Stage Integration-Testing: cicd/integration-continue/integration-testing.md
           - Stage Helm: cicd/integration-continue/helm.md
           - Stage Quality-Gate : cicd/integration-continue/quality-gate.md
           - Stage Cross-Browser-Testing [TODO]: cicd/integration-continue/cross-browser-testing.md

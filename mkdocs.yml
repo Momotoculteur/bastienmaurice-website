@@ -140,7 +140,7 @@ nav:
           - Stage Deploy [TODO]: cicd/deploiement-continu/deploy.md
       - Nightly:
           - Stage Load-testing [TODO]: cicd/nightly/load-testing.md
-          - Stage E2E-testing [TODO]: cicd/nightly/e2e-testing.md
+          - Stage E2E-testing : cicd/nightly/e2e-testing.md
           - Stage Pentests (DAST) [TODO]: cicd/nightly/pentests.md
   - Culture DevOps:
       - Tooling:

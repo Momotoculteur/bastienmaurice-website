@@ -43,7 +43,7 @@ snapshots:
 
 On indique ici simplement de réaliser une comparaison sur la page d'accueil de mon site web. Je mentionne ici localhost car comme dit précédemment, je dois servir mon site web pour qu'il puisse être consulter.
 
-#### Lancement en local
+### Lancement en local
 On va ajouter un nouveau script NPM afin de lancer la CLI de Percy : 
 
 ```json linenums="1"
@@ -57,7 +57,7 @@ On va ajouter un nouveau script NPM afin de lancer la CLI de Percy :
 ```
 
 
-#### Lancement en CI/CD
+### Lancement en CI/CD
 
 On commence par setter en variable d'environnement de pipeline la variable **PERCY_TOKEN**, avec le bon acces token, disponible sur son compte Percy.
 
@@ -92,5 +92,56 @@ test-visual:
 
 A moi maintenant de valider ou non les changes directement depuis leur application. Celui-ci renverra un code de retour à ma pipeline, permettant qu'elle soit validé ou en erreur.
 
+Exemple ici d'un cas ou Percy detecte des changes que l'on doit approuve ou non, ici spécifié en rouge. Ici il indique absolument tout l'écran car c'est mon premier build, je n'ai encore rien de poussé sur ma branche master.
+
+![percy-browserstack-visual-regression](./img/percy-browserstack-visual-regression.png)
+
 ## BackstopJS
-Celui-ci
+Cet outils-ci va s'executer en local uniquement.
+
+On va devoir réaliser les opérations suivantes : 
+
+1. Initialiser un nouveau projet BackstopJS
+2. Lancer un premier build/snapshot de notre application afin de servir comme référence
+3. Commit les dossier générés
+4. Créer une nouvelle feature branche, et lancer Backstop à nouveau afin qu'il puisse réaliser une comparaison de snapshot entre votre branche de production et votre branche de feature
+
+Ici on utilisera deux principales commandes.
+
+`backstop test` afin de lancer une comparaison entre la branche de prod et ta feature branch en cours.
+
+`backstop approve` afin de valider ta feature branch, si le contenu te paraît bon. A toi de valider les diff entre les deux branches, afin de voir si cela est une regression ou une amélioration qui doit être incorporé. Une fois le contenu courant validé, le contenu de ta feature branch devient la baseline, c'est à dire la nouvelle prod.
+
+BackstopJS te fourni un panel d'instrument afin de pouvoir injecter des cookies, fournir des hooks de pré-test et de post-test afin de gérer si tu as des partie de ton applications qui nécéssite d'être authentifié.
+
+### Initialisation d'un projet
+
+Installons cet outils en global, ça nous facilitera la vie pour la suite. Mais vous pouvez bien évidemment l'installer qu'en local de votre projet, et utiliser les scripts de votre package.json afin de réaliser les mêmes appels à BackstopJS.
+
+On commence par `npm install -g backstopjs` l'outil
+
+On continu pour initialiser le projet avec `backstop init`. Cela va créer un panel de nouveau fichier qui va setup ton projet.
+
+Le plus important ici à modifier afin d'adapter le boilerplate à ton projet, est de vérifier le fichier **backstop.json**
+
+Ici je vais simplement modifier l'url de test vers **http://localhost:3000** qui correspond à la page d'accueil d'un site basique que tu developperais en react.
+
+Ici c'est important d'avoir un serveur web qui heberge ton site afin qu'il soit accesible et navigable avec Backstop.
+
+### Lancement en local
+
+Pour le premier snapshot on va être obliger de valider l'existant, vu que on a pas encore de baseline avec laquelle comparer notre branche.
+
+Pour cela on va realiser un `backstop approve` pour générer les captures d'ecrans de référence. Une fois réaliser, on pourra comparer les futurs branches avec un `backstop test`
+
+![backstopjp-visual-regression](./img/backstopjp-visual-regression.png)
+
+### Lancement en CI/CD
+
+L'utilisation de BackstopJS en pipeline risque de changer par rapport à Percy pour la simple et bonne raison que tout se fait en local via les commandes approve & test.
+
+Un example d'utilisation serait de :
+
+- Avoir un premier job, qui est lancé sur chaque commit de ta branch, qui run **backstop test**, afin de réaliser une comparaison entre la baseline sur master et ta feature branche. Le résultat permet de faire passer ou fail ta pipeline.
+- Avoir un second job, quant à lui qui ne se lance qu'exclusivement sur un commit sur la branche master (Cf: lorsque on merge une feature branch sur master) permettant de lancer un **backstop approve**, et donc de mettre à jour la baseline de master avec les nouvelles captures d'ecrans que tu as ajoutés sur ta feature branch.
+

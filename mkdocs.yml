@@ -134,10 +134,11 @@ nav:
           - Stage Integration-Testing: cicd/integration-continue/integration-testing.md
           - Stage Helm: cicd/integration-continue/helm.md
           - Stage Quality-Gate : cicd/integration-continue/quality-gate.md
-          - Stage Cross-Browser-Testing [TODO]: cicd/integration-continue/cross-browser-testing.md
+          - Stage Cross-Browser-Testing : cicd/integration-continue/cross-browser-testing.md
           - Stage Visual regression [TODO]: cicd/integration-continue/visual-regression.md
       - Deploiement continu:
-          - Stage Deploy [TODO]: cicd/deploiement-continu/deploy.md
+          - Deploy sur Gitlab Pages son site web: cicd/deploiement-continu/deploy-gitlab-pages-static-website.md
+          - Deploy sur AWS S3 Bucket son site web: cicd/deploiement-continu/deploy-aws-s3-bucket-static-website.md
       - Nightly:
           - Stage Load-testing [TODO]: cicd/nightly/load-testing.md
           - Stage E2E-testing : cicd/nightly/e2e-testing.md

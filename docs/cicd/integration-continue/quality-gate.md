@@ -29,9 +29,23 @@ On se lance une instance en local. On target la version community qui est free a
 
 Connecte toi sur l'interface avec `admin` comme username, ainsi qu'en password, sur l'adresse et le port sur laquelle tu fais tourner ton application. Si c'est en local, cela sera forcement sous forme `localhost:<ton_port>`
 
+#### Token
+Afin que la pipeline ait les droits de trigger des infos venant de Sonarqube, tu vas devoir créer un token dans ton espace perso **Compte -> Security -> Générer token**.
+
+#### Récupérer la base URL de Sonar
+Nous avons sur notre projet des gitlab runners self-hosted sous forme de container docker. Nous avons un second docker container qui run notre instance de Sonarqube en local, accessible via localhost:9000.
+
+!!! question
+    Comment indiquer depuis notre pipeline Gitlab, via la CLI de SonarScaner la communication vers notre instance sonar pour lui faire analyser notre projet ?
+
+Il faut faire attention ici. On ne peut simplement donner *localhost:9000* comme *host URL* en pipeline. En effet, nos 2 services tournant sur des containers docker, ils sont absolument isolés, même d'un point de vue réseau. Ils ont donc chacun leur propre localhost.
+
+Afin d'assurer la bonne communication entre nos 2 services, on va devoir récupérer l'IP temporaire du container qui execute notre container sonarqube avec :
+`docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sonarqube`
+
+C'est celle-ci que l'on mentionnera en argument de la CLI de sonnar scanner avec l'argument **-Dsonar.host.url**
 
 ### Example de code
-Afin que la pipeline ait les droits de trigger des infos venant de Sonarqube, tu vas devoir créer un token dans ton espace perso **Compte -> Security -> Générer token**.
 
 ```yaml linenums="1"
 sonarqube-check:
@@ -46,7 +60,7 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script:
-    - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.host.url=http://localhost:9000 -Dsonar.token=<token_generé> -Dsonar.sources=<source_de_ton_projet_a_analyser>
+    - sonar-scanner -Dsonar.qualitygate.wait=true -Dsonar.host.url=http://<ip_du_container_sonarqube>:9000 -Dsonar.token=<token_generé> -Dsonar.sources=<source_de_ton_projet_a_analyser>
 ```
 
 A toi de customiser l'appel de sonar via la cli de son scanner avec certaines options importantes :

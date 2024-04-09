@@ -93,9 +93,44 @@ Le scénario est le suivant :
 
 #### Scénarios
 
-Les scénarios vont te permettre de créer des types de charges soit plus réalise en ayant des charges de VU (virtual users) qui scale up ou down, réaliser des actions parrallèles, ou encore plus fine-grained afin de réaliser des choses plus complexe.
+Les scénarios vont te permettre de créer des types de charges soit plus réalise en ayant des charges de VU (virtual users) qui scale up ou down, réaliser des actions parrallèles, ou d'avantage fine-grained tes cas d'usages, afin de réaliser des choses plus complexe.
 
-C'est l'**executor** qui va être responsable de rendre ces VU dynamique
+C'est l'**executor** qui va être responsable de rendre ces VU dynamique.
+
+Je te montre ici un example qui défini 2 scénarios différents, avec pour chacun des deux un type d'executor différent.
+
+```js linenums="1"
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+export const options = {
+    discardResponseBodies: true,
+    scenarios: {
+        scena1: {
+            executor: 'constant-vus',
+            exec: 'simpleTest',
+            vus: 50,
+            duration: '10s',
+        },
+        scena2: {
+            executor: 'per-vu-iterations',
+            exec: 'simpleTest',
+            vus: 50,
+            iterations: 100,
+            startTime: '10s',
+            maxDuration: '1m',
+        },
+    },
+};
+
+export function simpleTest() {
+    const urlRes = http.get('http://example.com');
+    check(urlRes, {
+        'is status 200': (r) => r.status === 200,
+    });
+    sleep(1);
+}
+```
 
 #### Lancement en CI/CD
 Je te montre ici un exemple simpliste pour lancer mon smoke test depuis une pipeline GitalbCI
@@ -111,5 +146,5 @@ k6:
 ```
 
 ## Gatling
-## jmeter
+## JMeter
 

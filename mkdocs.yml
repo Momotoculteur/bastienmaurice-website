@@ -154,11 +154,12 @@ nav:
       - Data pipeline:
           - Logs collector & aggregator avec Vector.dev: culture-devops/data-pipeline/logs-collector-aggregator-vector.md
           - Logs collector avec Prometheus: culture-devops/data-pipeline/logs-collector-prometheus.md
-      - Observability stack:
-          # - Metriques avec VictoriaMetrics (TODO): culture-devops/observability-stack/metrics-with-victoria-metrics.md
-          - Metrique avec Grafana Mimir: culture-devops/observability-stack/metrics-with-grafana-mimir.md
-          # - Logs avec VictoriaLogs (TODO): culture-devops/observability-stack/logs-with-victoria-logs.md
-          - Logs avec Grafana Loki: culture-devops/observability-stack/logs-with-grafana-loki.md
+      - Stack de monitoring - Logs :
+          - VictoriaLogs & Intégration dans Grafana: culture-devops/monitoring-stack/logs-with-victoria-logs.md
+          - Grafana Loki: culture-devops/monitoring-stack/logs-with-grafana-loki.md
+      - Stack de monitoring - Métriques :
+          - Grafana Mimir : culture-devops/monitoring-stack/metrics-with-grafana-mimir.md
+          - VictoriaMetrics & Intégration dans Grafana: culture-devops/monitoring-stack/metrics-with-victoria-metrics.md
       # - Monitoring:
           # - Dashboard Grafana depuis VictoriaMetrics (TODO): culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
           # - Alerting avec PagerDuty (tTODO): culture-devops/monitoring/alerting-pager-duty.md

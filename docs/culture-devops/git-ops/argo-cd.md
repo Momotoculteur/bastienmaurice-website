@@ -154,8 +154,6 @@ On défini ensuite la destination du chart, ou dans le cluster on souhaite l'ins
 # app_ksm.tf
 
 spec {
-    project = "argocd"
-
     destination {
         server    = "https://kubernetes.default.svc"
         namespace = "argocd"

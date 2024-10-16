@@ -1,0 +1,147 @@
+# Introduction à Docker
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+<div style="text-align: left;">
+
+## Premier workflow Hello World 
+
+Un pipeline est constitué de stages, qui contiennent des jobs. Chaque job effectue une tâche précise. Voici un exemple minimaliste de pipeline CI pour afficher "Hello World!" :
+
+<pre><code data-trim data-noescape>
+stages:
+  - test
+
+hello_world_job:
+  stage: test
+  script:
+    - echo "Hello, World!"
+</code></pre>
+
+Dans cet exemple :
+- Nous avons un seul stage appelé test.  
+- Le job **hello_world_job** est exécuté dans ce stage et il utilise la commande echo pour afficher "Hello, World!".
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Création d'une première application NodeJS
+Créez un nouveau projet NodeJS :
+
+<pre><code data-trim data-noescape>
+mkdir my-first-app
+cd my-first-app
+npm init -y
+npm install express
+
+</code></pre>
+
+
+</div>
+
+
+---
+
+<div style="text-align: left;">
+
+## Création d'une première application NodeJS
+Ensuite, créez un fichier index.js avec le contenu suivant pour démarrer un serveur web basique :
+
+
+<pre><code data-trim data-noescape>
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.get('/', (req, res) => {
+  res.send('Hello World from NodeJS!');
+});
+
+app.listen(port, () => {
+  console.log(`App listening at http://localhost:${port}`);
+});
+</code></pre>
+
+Pour démarrer l'application localement, utilisez :
+
+<pre><code data-trim data-noescape>
+node index.js
+</code></pre>
+
+Votre première application NodeJS est maintenant prête.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Ajouter un workflow CI pour l'application
+
+Ensuite, nous allons ajouter un pipeline CI pour cette application dans le fichier **.gitlab-ci.yml**.
+
+<pre><code data-trim data-noescape>
+stages:
+  - install
+  - build
+
+install_dependencies:
+  stage: install
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+build_app:
+  stage: build
+  script:
+    - npm run build
+</code></pre>
+
+
+Dans cet exemple :
+
+- **install_dependencies** est un job dans le stage install, qui exécute la commande npm install pour installer les dépendances de l'application.
+- **build_app** est un job dans le stage build, qui exécute la commande npm run build (à condition que vous ayez une commande de build définie dans package.json).
+
+</div>
+---
+
+<div style="text-align: left;">
+
+## Job bonus
+
+Vous pouvez ajouter un job supplémentaire pour vérifier si vos dépendances NodeJS sont à jour.
+
+
+<pre><code data-trim data-noescape>
+check_updates:
+  stage: test
+  script:
+    - npm outdated
+</code></pre>
+
+Le job **check_updates** exécute la commande npm outdated, qui liste les packages ayant une version plus récente disponible.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Récap
+
+Avec ces étapes, vous avez :
+- Initialisé un pipeline GitLab CI avec un simple "Hello World!".
+- Créé une application NodeJS simple.
+- Ajouté un pipeline CI pour installer les dépendances et construire l'application.
+- Ajouté un job bonus pour vérifier si vos packages npm sont obsolètes.
+
+
+N'hésitez pas à itérer et ajouter des stages supplémentaires pour des tests, des vérifications de code, et des déploiements !

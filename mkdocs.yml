@@ -142,7 +142,7 @@ nav:
       - Nightly:
           - Stage Load-testing: cicd/nightly/load-testing.md
           - Stage E2E-testing : cicd/nightly/e2e-testing.md
-          - Stage Pentests (DAST) [TODO]: cicd/nightly/pentests.md
+          - Stage Pentests: cicd/nightly/pentests.md
   - Culture DevOps:
       - Tooling:
           - Monitorer son cluster Kubernetes efficacement: culture-devops/tooling/monitoring-with-lens-and-k9s.md
@@ -191,7 +191,7 @@ nav:
         - Logs & métriques scrapping TODO: slides/devops/logs-metrics-scrapping/logs-metrics-scrapping.md
         - Logs & métriques storage TODO: slides/devops/logs-metrics-storage/logs-metrics-storage.md
         - Monitoring & Dashboards TODO: slides/devops/monitoring-dashboards/monitoring-dashboards.md
-      - CI/CD:
+      - CI/CD - Théorie:
         - Continuous Integration: slides/cicd/ci/continuous-integration.md
         - Continuous Delivery & Deployment: slides/cicd/cd/continuous-delivery-deployment.md
       - Container & Virtual Machine :
@@ -200,6 +200,10 @@ nav:
         - Kubernetes Resources [TODO]: slides/container-virtual-machine/kubernetes-resources/kubernetes-resources.md
       - Cloud Provider:
         - AWS - Principales ressources [TODO]: slides/cloud-provider/aws/main-resources/main-resources.md
+      - CI/CD - TP:   
+        - 00 - Introduction à GitlabCI : slides/TP/introduction-a-gitlabci/introduction-a-gitlabci.md
+        - 01 - Premier workflow avec NodeJS: slides/TP/premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
+        - 02 - Introduction à Docker & Dockerfile: slides/TP/introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
   - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:

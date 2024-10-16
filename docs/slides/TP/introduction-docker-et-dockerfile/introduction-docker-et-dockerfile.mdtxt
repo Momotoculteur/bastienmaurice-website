@@ -1,0 +1,195 @@
+# Introduction à Docker
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+<div style="text-align: left;">
+
+## Introduction 
+
+Docker est une plateforme open-source qui permet d’automatiser le déploiement d’applications à l’intérieur de conteneurs légers et portables.  </br></br>
+Un conteneur regroupe tout ce dont une application a besoin pour fonctionner : le code, les bibliothèques, les dépendances et le système d'exploitation léger.</br></br>
+Cela permet de s’assurer que l’application fonctionne de manière cohérente, indépendamment de l’environnement.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Concepts de base
+
+- **Images** : Les images sont des instantanés d’applications. Elles sont immuables et servent de modèles pour les conteneurs. Elles sont créées à partir d’un Dockerfile.
+- **Conteneurs** : Les conteneurs sont des instances d’images qui tournent. Ils sont légers et portables.
+- **Dockerfile** : Un fichier texte qui contient les instructions pour construire une image Docker.
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Avantages de Docker
+
+- **Portabilité** : Fonctionne de manière identique sur tous les environnements.
+- **Isolation** : Les conteneurs isolent l’application, ses dépendances et les processus.
+- **Rapidité** : Les conteneurs démarrent rapidement grâce à leur légèreté.
+- **Scalabilité** : Facile à scaler en utilisant des systèmes d'orchestration comme Kubernetes.
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Création d'un Dockerfile
+
+Un **Dockerfile** est un fichier texte qui contient une série d'instructions permettant de construire une image Docker.</br></br>
+
+Explication des directives principales :
+- **FROM** : Spécifie l’image de base à utiliser (ici une image Node.js).
+- **WORKDIR** : Définit le répertoire de travail à l’intérieur du conteneur.
+- **COPY** : Copie les fichiers de l’hôte dans le conteneur.
+- **RUN** : Exécute une commande pendant la construction de l’image.
+- **EXPOSE** : Indique le port sur lequel l’application sera exposée.
+- **CMD** : Spécifie la commande par défaut à exécuter lorsque le conteneur démarre.
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Structure d’un Dockerfile
+
+Voici un exemple de Dockerfile simple pour une application Node.js :
+
+<pre class="stretch"><code data-trim data-noescape>
+# 1. Spécifiez l'image de base
+FROM node:14
+
+# 2. Définir le répertoire de travail dans le conteneur
+WORKDIR /usr/src/app
+
+# 3. Copier le fichier package.json et package-lock.json
+COPY package*.json ./
+
+# 4. Installer les dépendances
+RUN npm install
+
+# 5. Exposer le port sur lequel l'application va tourner
+EXPOSE 3000
+
+# 6. Commande pour démarrer l'application
+CMD ["node", "app.js"]
+</code></pre>
+
+</div>
+
+
+---
+<div style="text-align: left;">
+
+
+## Optimisations possibles
+
+Pour améliorer les performances et la taille de vos images Docker, voici quelques bonnes pratiques :
+
+1. Utilisation des images légères
+<br>
+Il est préférable d’utiliser des images de base légères, comme alpine, pour réduire la taille de l’image :
+
+<pre><code data-trim data-noescape>
+FROM node:14-alpine
+</code></pre>
+
+Cela permet de réduire considérablement la taille de l’image.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Optimisations possibles
+
+2. Réduction du nombre de couches  
+<br>
+Chaque instruction Docker crée une nouvelle couche. Pour réduire la taille des images, combinez les instructions RUN :
+
+<pre><code data-trim data-noescape>
+RUN apt-get update && \
+    apt-get install -y curl && \
+    apt-get clean
+</code></pre>
+
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Optimisations possibles
+
+3. Nettoyage après installation
+<br>
+Lorsque vous installez des dépendances ou des outils, nettoyez les fichiers inutiles après :
+
+<pre><code data-trim data-noescape>
+RUN apt-get update && apt-get install -y \
+    build-essential \
+ && rm -rf /var/lib/apt/lists/*
+</code></pre>
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Optimisations possibles
+
+4. Utilisation de multi-stage builds
+<br>
+Les multi-stage builds permettent de réduire la taille de l’image finale en ne conservant que les fichiers essentiels à l’exécution de l’application. Par exemple :
+
+<pre><code data-trim data-noescape>
+# Étape 1: Construction
+FROM node:14 as builder
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Étape 2: Production
+FROM node:14-alpine
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/dist ./dist
+CMD ["node", "dist/app.js"]
+</code></pre>
+
+Ici, la première étape construit l’application, et la deuxième étape ne conserve que les fichiers nécessaires pour l’exécution.
+
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Bonnes pratiques
+- **Minimalisme** : Essayez de garder vos images aussi petites que possible pour des raisons de performance et de sécurité.
+- **Utilisez .dockerignore** : Tout comme .gitignore, ce fichier permet d’exclure certains fichiers inutiles (ex : fichiers de logs, dépendances locales) lors de la création de l’image.
+- **Sécurité** : Évitez d’inclure des informations sensibles comme des clés API dans le Dockerfile. Utilisez des variables d’environnement à la place.
+- **Versionner vos images** : Utilisez des tags pour versionner vos images Docker et éviter de toujours utiliser latest, qui peut mener à des comportements inattendus.
+- **Testez vos images localement** : Avant de pousser une image en production, assurez-vous qu’elle fonctionne comme attendu dans votre environnement local.
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Récap
+
+Docker est un outil puissant pour le déploiement et la gestion d’applications dans des environnements isolés et reproductibles. En suivant les bonnes pratiques, il est possible de créer des images légères, performantes et sécurisées, tout en améliorant la portabilité de vos applications.
+
+</div>

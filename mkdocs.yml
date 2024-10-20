@@ -201,9 +201,14 @@ nav:
       - Cloud Provider:
         - AWS - Principales ressources [TODO]: slides/cloud-provider/aws/main-resources/main-resources.md
       - CI/CD - TP:   
-        - 00 - Introduction à GitlabCI : slides/TP/00-introduction-a-gitlabci/introduction-a-gitlabci.md
-        - 01 - Premier workflow avec NodeJS: slides/TP/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
-        - 02 - Introduction à Docker & Dockerfile: slides/TP/02-introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
+        - 00 - Introduction à GitlabCI : slides/TP-cicd/00-introduction-a-gitlabci/introduction-a-gitlabci.md
+        - 01 - Premier workflow avec NodeJS: slides/TP-cicd/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
+        - 02 - Introduction à Docker & Dockerfile: slides/TP-cicd/02-introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
+      - DevOps & Monitoring - TP: 
+        - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
+        - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md
+        - 03 - ArgoCD: slides/TP-devops-et-monitoring/03-argocd/argocd.md
+
   - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:

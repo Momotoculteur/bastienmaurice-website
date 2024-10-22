@@ -180,8 +180,8 @@ nav:
   - Slides:
       - Présentation générale:
         - Hello Momo !: slides/presentation/hello-momo/hello-momo.md
-        - YNOV - CI/CD: slides/presentation/ynov-cicd/ynov-cicd.md
-        - YNOV - DevOps: slides/presentation/ynov-devops/ynov-devops.md
+        - TP - CI/CD: slides/presentation/tp-cicd/tp-cicd.md
+        - TP - DevOps: slides/presentation/tp-devops/tp-devops.md
       - Méthodologies DevOps:
         - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
         - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md

@@ -207,8 +207,8 @@ nav:
       - DevOps & Monitoring - TP: 
         - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
         - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md
-        - 03 - ArgoCD: slides/TP-devops-et-monitoring/03-argocd/argocd.md
-
+        - 03 - ArgoCD, Continuous Delivery & GitOps: slides/TP-devops-et-monitoring/03-argocd-continuous-delivery-et-gitops/argocd-continuous-delivery-et-gitops.md
+        - 04 - Collecte, Traitement et Envoi de Logs, Métriques et Traces avec Vector: slides/TP-devops-et-monitoring/04-collecte-traitement-envoi-logs-metrics-traces-avec-vector/data-pipeline-avec-vector.md
   - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:

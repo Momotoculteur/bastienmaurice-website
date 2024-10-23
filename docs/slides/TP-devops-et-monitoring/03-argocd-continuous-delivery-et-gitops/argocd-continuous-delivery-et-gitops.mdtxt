@@ -1,0 +1,236 @@
+# ArgoCD, Continuous Delivery et GitOps
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+
+<div style="text-align: left;">
+
+## Introduction
+
+Dans le monde moderne du développement logiciel, l'automatisation des déploiements d'applications et de l'infrastructure est essentielle pour garantir rapidité, efficacité et fiabilité. 
+</br></br>
+Deux approches clés pour atteindre cet objectif sont GitOps et Continuous Delivery (CD). </br></br>
+ArgoCD est un outil qui applique ces principes en se basant sur l'automatisation des déploiements dans Kubernetes à partir de déclarations dans Git.
+
+
+</div>
+
+---
+
+# Qu'est-ce que GitOps ?
+
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## Définition de GitOps
+
+GitOps est une approche de gestion des infrastructures et des applications où le dépôt Git est utilisé comme source unique de vérité. 
+
+</br></br>
+Tous les changements d'état d'une application ou de l'infrastructure sont gérés via des commits dans Git. 
+
+</br></br>
+Les outils GitOps surveillent en permanence Git pour appliquer automatiquement ces modifications à l'environnement cible.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Principes de GitOps
+
+1. **Déclaratif** : L'état souhaité des systèmes est décrit dans des fichiers (comme les manifests Kubernetes en YAML) dans Git.
+2. **Versionné et audité** : Tout changement est versionné dans Git, assurant un historique des modifications et un audit clair.
+3. **Automatisé** : Les changements sont automatiquement appliqués à l'infrastructure lorsqu'ils sont fusionnés dans le dépôt.
+4. **Autosuffisant** : Si une divergence entre l'état actuel et l'état souhaité est détectée, l'outil GitOps tente de ramener le système à l'état souhaité.
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Avantages de GitOps
+
+**Traçabilité et audit** : Tous les changements sont tracés dans Git, permettant une meilleure gouvernance.
+</br></br>
+
+**Rollback facile** : En cas d'erreur, il suffit de revenir à une version précédente dans Git pour restaurer l'état souhaité.
+</br></br>
+
+**Automatisation des déploiements** : Plus besoin de lancer manuellement des scripts ou des outils, tout se fait automatiquement via des commits.
+</div>
+
+---
+
+# Qu'est-ce que le Continuous Delivery (CD) ?
+
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+<div style="text-align: left;">
+
+## Définition du Continuous Delivery
+
+Le Continuous Delivery (CD) est une pratique où les modifications de code sont automatiquement testées, intégrées, et prêtes à être déployées en production. 
+</br></br>
+
+Le processus de déploiement est automatisé mais reste sous contrôle manuel : une validation humaine est nécessaire avant le déploiement en production.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Cycle du Continuous Delivery
+**Développement** : Les développeurs soumettent des modifications dans le dépôt de code source (Git).  
+</br></br>
+
+**Intégration continue (CI)** : Les changements sont automatiquement testés et validés pour garantir leur bon fonctionnement.  
+</br></br>
+
+**Delivery (CD)** : Les modifications sont automatiquement préparées pour le déploiement sur l'environnement cible (staging, production, etc.).
+</div>
+
+---
+
+
+<div style="text-align: left;">
+
+## Avantages du Continuous Delivery
+
+**Amélioration de la qualité**: Les erreurs sont détectées rapidement grâce aux tests continus.  
+</br></br>
+
+**Déploiement rapide** : Les versions prêtes à être déployées sont toujours disponibles, ce qui permet une livraison plus rapide des nouvelles fonctionnalités.  
+</br></br>
+
+**Automatisation** : Réduction des interventions manuelles, rendant le processus de livraison plus fiable et reproductible.
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Architecture d'ArgoCD 
+
+ArgoCD est composé de plusieurs composants principaux :
+
+1. **ArgoCD Server**
+Le serveur ArgoCD gère l'interface utilisateur et les API. Il est responsable de la communication avec les dépôts Git, du suivi des applications et de l'application des changements dans le cluster Kubernetes.
+
+2. **Application Controller**
+Ce contrôleur est responsable de l'application des changements d'état dans le cluster Kubernetes. Il compare l'état réel de l'application dans le cluster à l'état défini dans Git, et applique les changements si nécessaire.
+
+3. **Repository Server**
+Le Repository Server se connecte aux dépôts Git et récupère les fichiers YAML pour les applications. Il les interprète et les prépare pour que le contrôleur puisse les appliquer au cluster Kubernetes.
+
+4. **CLI ArgoCD**
+ArgoCD propose une interface en ligne de commande (CLI) pour interagir avec le serveur ArgoCD. Elle permet de gérer les applications, de visualiser l'état, et d'effectuer des synchronisations.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Déployer des applications avec ArgoCD et GitOps
+
+**Étape 1** : Configurer un dépôt Git avec des manifests Kubernetes  
+Tout d'abord, les manifests YAML pour vos applications doivent être présents dans un dépôt Git. Ces fichiers décrivent l'état souhaité de vos applications (par exemple, un Deployment, un Service, etc.).
+
+**Étape 2** : Créer une application dans ArgoCD  
+Via l'interface web ou la CLI, vous pouvez créer une nouvelle application qui lie le dépôt Git contenant vos manifests Kubernetes au cluster où vous souhaitez les déployer.
+
+Exemple de commande CLI pour créer une application :
+```yaml
+argocd app create my-app \
+  --repo https://github.com/user/repo \
+  --path ./manifests \
+  --dest-server https://kubernetes.default.svc \
+  --dest-namespace default
+```
+
+**Étape 3** : Synchronisation des applications  
+Une fois l'application créée, ArgoCD commence à surveiller l'état de l'application. Si des changements sont détectés dans Git, ArgoCD peut soit automatiquement les appliquer (si l'auto-sync est activé), soit attendre une synchronisation manuelle.
+
+Commande pour synchroniser une application via la CLI :  
+```argocd app sync my-app```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Gestion avancée avec ArgoCD
+
+**Automatisation des synchronisations**  
+Pour activer la synchronisation automatique des applications dès qu'un changement est détecté dans Git, vous pouvez configurer l'auto-sync dans ArgoCD.
+
+```bash
+argocd app set my-app --sync-policy automated
+```
+
+</br>
+
+**Notifications et alertes**  
+ArgoCD peut s'intégrer à des systèmes d'alerte comme Slack, Prometheus, ou d'autres outils pour envoyer des notifications lorsque des écarts d'état sont détectés ou des synchronisations sont nécessaires.
+
+</br>
+
+**Rollback d'une application**  
+Si une mise à jour échoue ou entraîne un problème, ArgoCD facilite le rollback à une version précédente de l'application :
+
+```bash 
+argocd app rollback my-app <revision>
+```
+
+</div>
+---
+
+<div style="text-align: left;">
+
+## GitOps avec ArgoCD - Best Practices
+
+1. **Un dépôt Git unique pour chaque environnement**  
+Séparer les manifests Kubernetes pour chaque environnement (dev, staging, production) dans des dépôts Git distincts pour éviter les erreurs de déploiement accidentelles.  
+
+</br>
+
+2. **Utiliser des branches pour gérer les environnements**  
+Utiliser différentes branches pour les environnements de staging et production permet de tester les changements avant de les fusionner dans la branche principale (production).  
+
+</br>
+
+3. **Automatisation complète avec CI/CD**  
+Intégrer ArgoCD dans une pipeline CI/CD où chaque changement dans le dépôt Git déclenche automatiquement des tests, et, une fois validé, est synchronisé avec le cluster via ArgoCD.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Récap
+
+ArgoCD est une solution puissante pour gérer des déploiements Kubernetes de manière déclarative via GitOps.  
+
+</br>
+
+En centralisant l'état des applications dans un dépôt Git et en automatisant leur déploiement, il assure une livraison continue rapide, fiable et traçable.  
+
+</br>
+
+Son intégration dans des environnements CI/CD modernes fait de lui un outil incontournable pour les équipes cherchant à adopter les meilleures pratiques DevOps.
+
+
+</div>

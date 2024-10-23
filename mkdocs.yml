@@ -180,8 +180,8 @@ nav:
   - Slides:
       - Présentation générale:
         - Hello Momo !: slides/presentation/hello-momo/hello-momo.md
-        - YNOV - CI/CD: slides/presentation/ynov-cicd/ynov-cicd.md
-        - YNOV - DevOps: slides/presentation/ynov-devops/ynov-devops.md
+        - TP - CI/CD: slides/presentation/tp-cicd/tp-cicd.md
+        - TP - DevOps: slides/presentation/tp-devops/tp-devops.md
       - Méthodologies DevOps:
         - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
         - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
@@ -201,9 +201,15 @@ nav:
       - Cloud Provider:
         - AWS - Principales ressources [TODO]: slides/cloud-provider/aws/main-resources/main-resources.md
       - CI/CD - TP:   
-        - 00 - Introduction à GitlabCI : slides/TP/introduction-a-gitlabci/introduction-a-gitlabci.md
-        - 01 - Premier workflow avec NodeJS: slides/TP/premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
-        - 02 - Introduction à Docker & Dockerfile: slides/TP/introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
+        - 00 - Introduction à GitlabCI : slides/TP-cicd/00-introduction-a-gitlabci/introduction-a-gitlabci.md
+        - 01 - Premier workflow avec NodeJS: slides/TP-cicd/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
+        - 02 - Introduction à Docker & Dockerfile: slides/TP-cicd/02-introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
+      - DevOps & Monitoring - TP: 
+        - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
+        - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md
+        - 03 - ArgoCD, Continuous Delivery & GitOps: slides/TP-devops-et-monitoring/03-argocd-continuous-delivery-et-gitops/argocd-continuous-delivery-et-gitops.md
+        - 04 - Collecte, Traitement et Envoi de Logs, Métriques et Traces avec Vector: slides/TP-devops-et-monitoring/04-collecte-traitement-envoi-logs-metrics-traces-avec-vector/data-pipeline-avec-vector.md
+        - 05 - Stockage des métriques avec Grafana Mimir / VictoriaMetrics: slides/TP-devops-et-monitoring/05-stockage-metrics-grafana-mimir-victoria-metrics/stockage-metrics-grafana-mimir-victoria-metrics.md
   - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:

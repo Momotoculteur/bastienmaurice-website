@@ -1,4 +1,5 @@
-# TSDB (Time Series Database) avec VictoriaLogs et Grafana Loki
+# Gestion des logs 
+## VictoriaLogs et Grafana Loki
 
 Bastien MAURICE
 <!-- .slide: data-background="#009485" -->

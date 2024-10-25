@@ -1,4 +1,5 @@
-# TSDB (Time Series Database) avec VictoriaMetrics et Grafana Mimir
+# Gestion des métriques 
+## VictoriaMetrics et Grafana Mimir
 
 Bastien MAURICE
 <!-- .slide: data-background="#009485" -->

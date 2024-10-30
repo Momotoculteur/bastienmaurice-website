@@ -196,6 +196,7 @@ nav:
         - 00 - Introduction à GitlabCI : slides/TP-cicd/00-introduction-a-gitlabci/introduction-a-gitlabci.md
         - 01 - Premier workflow avec NodeJS: slides/TP-cicd/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
         - 02 - Introduction à Docker & Dockerfile: slides/TP-cicd/02-introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
+        - 03 - DevSecOps et Méthodologie Shift Left : slides/TP-cicd/03-devsecops-methodologie-shift-left/devsecops-methodologie-shift-left.md
       - DevOps & Monitoring - TP: 
         - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
         - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md

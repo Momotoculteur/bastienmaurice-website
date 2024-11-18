@@ -1,0 +1,163 @@
+# DevSecOps et Méthodologie Shift Left
+
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+
+<div style="text-align: left;">
+
+## Introduction à DevSecOps
+
+DevSecOps (Development, Security, and Operations) est une approche qui intègre la **sécurité** dans le cycle de vie DevOps.
+
+Le but est de s'assurer que la sécurité est présente dès les **premières étapes du développement logiciel et tout au long du processus**, plutôt que d'attendre les phases finales de validation.  
+
+Cela permet d'identifier et de** corriger les vulnérabilités plus tôt**, de **réduire les coûts** et de prévenir **les failles de sécurité**.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Introduction à DevSecOps
+
+**Les objectifs principaux de DevSecOps :**  
+- Intégrer la sécurité dans chaque phase du développement.
+- Automatiser la sécurité avec des outils de scan de vulnérabilités et de détection de menaces.
+- Collaborer entre les équipes Dev, Sec et Ops pour un workflow unifié.
+- Réduire les coûts en traitant les problèmes de sécurité avant la mise en production.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Introduction à DevSecOps
+
+**Les Principes de DevSecOps**  
+- Collaboration accrue : La sécurité est considérée comme une responsabilité partagée.
+- Automatisation de la sécurité : L'intégration continue (CI/CD) inclut des tests de sécurité.
+- Surveillance et feedback continus : Les menaces potentielles sont identifiées en temps réel.
+- Amélioration continue : Les politiques et les configurations de sécurité évoluent.
+
+</div>
+
+---
+
+
+<div style="text-align: left;">
+
+## Introduction au Shift Left
+
+La méthodologie Shift Left en sécurité encourage à **déplacer les pratiques de sécurité vers les étapes précoces du cycle de développement**.  
+
+Elle fait référence à l'idée de prendre en compte les problématiques de sécurité **dès la phase de conception et de développement**, au lieu d'attendre la phase de test ou de déploiement.
+
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Introduction au Shift Left
+
+**Les objectifs de la méthodologie Shift Left :**
+- Réduction des risques : Les failles de sécurité sont détectées plus tôt.
+- Amélioration de l'efficacité : Moins de corrections de dernière minute.
+- Réduction des coûts : Les erreurs détectées tôt sont moins coûteuses à corriger.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Implémentation de Shift Left dans DevSecOps
+
+Le Shift Left dans DevSecOps implique de :
+
+Introduire des **scans de sécurité automatisés** dans les premières phases de développement (tests statiques et dynamiques de sécurité).  
+
+Effectuer des analyses de code pour détecter les vulnérabilités potentielles **dès la phase de codage**.  
+
+Mettre en place des **outils de contrôle de sécurité** sur les dépendances et les bibliothèques tierces.
+Intégrer des tests de sécurité dans les pipelines CI/CD.  
+
+Établir **des pratiques de revue de code de sécurité** entre développeurs et experts en sécurité.
+</div>
+
+---
+
+
+<div style="text-align: left;">
+
+## Processus de Shift Left dans DevSecOps
+
+- **Analyse de sécurité des applications (SAST)** : Détection des vulnérabilités dans le code source.
+- **Test de sécurité dynamique (DAST)** : Analyse des applications en temps réel pour identifier les vulnérabilités exécutables.
+- **Sécurité des dépendances** : Vérification des bibliothèques et dépendances utilisées dans l’application.
+- **Security-as-Code** : Automatisation des configurations de sécurité dans des scripts et des templates.
+</div>
+
+---
+
+
+<div style="text-align: left;">
+
+## Pratiques et Outils pour le DevSecOps et le Shift Left - Pratiques
+
+- **Automatisation de la sécurité** : Exécution de tests de sécurité réguliers et automatisés dans les pipelines CI/CD.
+- **Formation continue des développeurs** : Sensibilisation aux pratiques de codage sécurisé.
+- **Configuration de sécurité Infrastructure-as-Code (IaC)** : Sécuriser les configurations d'infrastructure dès le départ.
+- Utilisation de métriques de sécurité pour suivre les vulnérabilités détectées et résolues.
+
+</div>
+
+---
+
+
+<div style="text-align: left;">
+
+## Pratiques et Outils pour le DevSecOps et le Shift Left - Outils de Sécurité dans DevSecOps
+
+- **SAST (Static Application Security Testing)** : Outils comme SonarQube, Checkmarx pour détecter les failles dans le code source.
+- **DAST (Dynamic Application Security Testing)** : Outils comme OWASP ZAP, Burp Suite pour tester les applications en temps réel.
+- **Gestion des secrets** : HashiCorp Vault, AWS Secrets Manager.
+- **Sécurité des conteneurs** : Clair, Trivy pour scanner les images Docker.
+- **Surveillance en production** : Aqua Security, Sysdig pour la surveillance continue et l’identification des vulnérabilités dans les conteneurs.
+
+</div>
+
+---
+
+
+<div style="text-align: left;">
+
+## Avantages et Défis
+
+**Avantages**
+- **Réduction des risques de sécurité** : Les vulnérabilités sont détectées dès les premières phases.
+- **Diminution des coûts** : Moins de retours en arrière coûteux en fin de cycle.
+- **Amélioration de la qualité du logiciel** : Plus de transparence et de rigueur dans la gestion de la sécurité.
+
+**Défis**
+- **Augmentation de la charge pour les développeurs** : Nécessite des compétences en sécurité.
+- **Complexité de l’automatisation** : Tous les tests de sécurité ne peuvent être automatisés.
+- **Gestion des faux positifs** : Les outils peuvent parfois identifier à tort des éléments comme vulnérables.
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Récap
+
+Le **DevSecOps** et la **méthodologie Shift Left** sont des approches puissantes pour intégrer la sécurité au développement logiciel.  
+
+Avec des pratiques telles que **l’automatisation**, la **collaboration** accrue entre équipes, et l’utilisation d’**outils adaptés**, les organisations peuvent construire des applications plus sûres et répondre aux menaces de manière proactive.
+
+</div>

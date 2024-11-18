@@ -188,28 +188,23 @@ nav:
         - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
         - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
         - DRY Terraform configuration avec Terragrunt: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
-        - Logs & métriques scrapping TODO: slides/devops/logs-metrics-scrapping/logs-metrics-scrapping.md
-        - Logs & métriques storage TODO: slides/devops/logs-metrics-storage/logs-metrics-storage.md
-        - Monitoring & Dashboards TODO: slides/devops/monitoring-dashboards/monitoring-dashboards.md
-      - CI/CD - Théorie:
-        - Continuous Integration: slides/cicd/ci/continuous-integration.md
-        - Continuous Delivery & Deployment: slides/cicd/cd/continuous-delivery-deployment.md
       - Container & Virtual Machine :
         - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
         - Orchestration de container avec Kubernetes [TODO]: slides/container-virtual-machine/kubernetes/kubernetes.md
         - Kubernetes Resources [TODO]: slides/container-virtual-machine/kubernetes-resources/kubernetes-resources.md
-      - Cloud Provider:
-        - AWS - Principales ressources [TODO]: slides/cloud-provider/aws/main-resources/main-resources.md
       - CI/CD - TP:   
         - 00 - Introduction à GitlabCI : slides/TP-cicd/00-introduction-a-gitlabci/introduction-a-gitlabci.md
         - 01 - Premier workflow avec NodeJS: slides/TP-cicd/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
         - 02 - Introduction à Docker & Dockerfile: slides/TP-cicd/02-introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
+        - 03 - DevSecOps et Méthodologie Shift Left : slides/TP-cicd/03-devsecops-methodologie-shift-left/devsecops-methodologie-shift-left.md
       - DevOps & Monitoring - TP: 
         - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
         - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md
         - 03 - ArgoCD, Continuous Delivery & GitOps: slides/TP-devops-et-monitoring/03-argocd-continuous-delivery-et-gitops/argocd-continuous-delivery-et-gitops.md
         - 04 - Collecte, Traitement et Envoi de Logs, Métriques et Traces avec Vector: slides/TP-devops-et-monitoring/04-collecte-traitement-envoi-logs-metrics-traces-avec-vector/data-pipeline-avec-vector.md
-        - 05 - Stockage des métriques avec Grafana Mimir / VictoriaMetrics: slides/TP-devops-et-monitoring/05-stockage-metrics-grafana-mimir-victoria-metrics/stockage-metrics-grafana-mimir-victoria-metrics.md
+        - 05 - Stockage des métriques avec Grafana Mimir et VictoriaMetrics: slides/TP-devops-et-monitoring/05-stockage-metrics-grafana-mimir-victoria-metrics/stockage-metrics-grafana-mimir-victoria-metrics.md
+        - 06 - Stockage des logs avec Grafana Loki et VictoriaLogs: slides/TP-devops-et-monitoring/06-stockage-logs-grafana-loki-victoria-logs/stockage-logs-grafana-loki-victoria-logs.md
+        - 07 - Stockage des traces avec Grafana Tempo, Jaeger et Zipkin: slides/TP-devops-et-monitoring/07-stockage-traces-grafana-tempo-jaeger-zipkin/stockage-traces-grafana-tempo-jaeger-zipkin.md
   - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:
@@ -233,9 +228,6 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
       line_spans: __span

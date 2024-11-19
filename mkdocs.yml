@@ -154,15 +154,16 @@ nav:
       - Data pipeline:
           - Logs collector & aggregator avec Vector.dev: culture-devops/data-pipeline/logs-collector-aggregator-vector.md
           - Logs collector avec Prometheus: culture-devops/data-pipeline/logs-collector-prometheus.md
-      - Stack de monitoring - Logs :
+      - Monitoring - Logs :
           - VictoriaLogs & Intégration dans Grafana: culture-devops/monitoring-stack/logs-with-victoria-logs.md
           - Grafana Loki: culture-devops/monitoring-stack/logs-with-grafana-loki.md
-      - Stack de monitoring - Métriques :
+      - Monitoring - Métriques :
           - Grafana Mimir : culture-devops/monitoring-stack/metrics-with-grafana-mimir.md
           - VictoriaMetrics & Intégration dans Grafana: culture-devops/monitoring-stack/metrics-with-victoria-metrics.md
-      # - Monitoring:
-          # - Dashboard Grafana depuis VictoriaMetrics (TODO): culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
-          # - Alerting avec PagerDuty (tTODO): culture-devops/monitoring/alerting-pager-duty.md
+      - Monitoring - Traces :
+          - Tracing applicatif avec OpenTelemetry: culture-devops/monitoring-stack/applicative-tracing-with-open-telemetry.md
+          - Tracing distribué via eBPF avec Grafana Beyla: culture-devops/monitoring-stack/distributed-tracing-ebpf-with-grafana-beyla.md
+          - Stockage des traces avec Grafana Tempo ou Jaeger: culture-devops/monitoring-stack/traces-storage-with-grafana-tempo-and-jaeger.md
       # - Infra as code:
           # - Principes de base (TODO): culture-devops/infra-as-code/principes.md
           # - Terraform (TODO): culture-devops/infra-as-code/terraform.md

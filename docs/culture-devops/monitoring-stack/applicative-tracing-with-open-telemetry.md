@@ -59,3 +59,96 @@ L’instrumentation automatique consiste à utiliser un agent OpenTelemetry pour
 - **Mesurer l’impact** : Assurez-vous de surveiller la surcharge éventuelle des performances et d’ajuster les paramètres d’échantillonnage des traces si nécessaire.
 - **Documentation et maintien des traces** : En cas d’utilisation du SDK, documentez bien les points de traçage ajoutés pour faciliter la maintenance à long terme.
 
+
+
+
+
+## Installation & configuration du Helm chart OpenTelemetry Operator
+
+```terraform
+resource "argocd_application" "opentelemetry_operator" {
+    spec {
+        source {
+            repo_url        = "https://open-telemetry.github.io/opentelemetry-helm-charts"
+            chart           = "opentelemetry-operator"
+            target_revision = "0.74.0"
+
+            helm {
+                release_name = "opentelemetry-operator"
+                values = yamlencode({
+                    manager = {
+                        extraArgs = [
+                            "--enable-go-instrumentation=true"
+                        ]
+                        collectorImage = {
+                            repository = "otel/opentelemetry-collector"
+                        }
+                    }
+                })
+            }
+        }
+    }
+}
+```
+
+!!!info
+    Ici je vous ais laissé un extra argurments pour la prise en compte d'applicaton Golang, qui ne le sont pas de base. Je voud le montre à titre d'example seulement car ici je test avec une application Python
+
+
+```yaml
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-collector
+  namespace: otel
+spec:
+  mode: deployment
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    exporters:
+      debug:
+        verbosity: "detailed"
+    processors: 
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: []
+          exporters: [debug]
+```
+
+```yaml
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: auto-injector-python
+  namespace: otel
+spec:
+  exporter:
+    endpoint: http://otel-collector.otel.svc.cluster.local:4318
+  propagators:
+    - tracecontext
+    - baggage
+  sampler:
+    type: parentbased_traceidratio
+    argument: "1"
+  python:
+    env:
+      - name: OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED
+        value: 'true'
+```
+
+### Otel sidecar vs deploy ?
+
+
+### Otel auto instrumentation
+discuter OTEL en mode deploy + initcontainer injection by mutating webhook
+
+### Otel SK instrumentation
+

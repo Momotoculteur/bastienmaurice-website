@@ -1,0 +1,242 @@
+# Tests unitaires, d'intégrations et E2E
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+# Tests unitaires
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+<div style="text-align: left;">
+
+## Introduction aux Tests Unitaires
+
+Les tests unitaires vérifient le comportement de petites portions de code (unités) indépendamment.
+
+#### Outils 
+- **Jest** : Framework de test JavaScript.
+- **React Testing Library** : Fournit des utilitaires pour tester les composants React en simulant l’interaction utilisateur.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Exemple de test unitaire - Partie code 
+
+```js
+// Button.js
+import React from 'react';
+
+export function Button({ onClick, children }) {
+  return <button onClick={onClick}>{children}</button>;
+}
+
+// Button.test.js
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Button } from './Button';
+
+test('Button renders with correct text and handles clicks', () => {
+  const handleClick = jest.fn();
+  render(<Button onClick={handleClick}>Click Me</Button>);
+
+  const button = screen.getByText('Click Me');
+  expect(button).toBeInTheDocument();
+
+  fireEvent.click(button);
+  expect(handleClick).toHaveBeenCalledTimes(1);
+});
+```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Exemple de test unitaire - Partie GitlabCI 
+
+```yaml
+stages:
+  - test
+
+unit_tests:
+  stage: test
+  image: node:latest
+  script:
+    - npm ci
+    - npm test -- --coverage
+  artifacts:
+    paths:
+      - coverage/
+```
+
+</div>
+
+---
+
+# Tests d'intégration
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+<div style="text-align: left;">
+
+## Introduction aux Tests d'Intégration
+
+Les tests d'intégration vérifient le fonctionnement de plusieurs composants du système ensemble.
+
+#### Outils 
+- **Node.js** : API backend 
+- **MongoDB** : Database NoSQL 
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Exemple de test unitaire - Partie code 
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_DATABASE: testdb
+```
+
+```js
+// app.js
+const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+app.use(express.json());
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/testdb', { useNewUrlParser: true, useUnifiedTopology: true });
+
+app.get('/items', async (req, res) => {
+  const items = await Item.find();
+  res.json(items);
+});
+
+module.exports = app;
+
+// item.test.js
+const request = require('supertest');
+const mongoose = require('mongoose');
+const app = require('./app');
+
+beforeAll(async () => {
+  await mongoose.connect('mongodb://localhost:27017/testdb', { useNewUrlParser: true, useUnifiedTopology: true });
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
+});
+
+test('GET /items returns items from MongoDB', async () => {
+  const response = await request(app).get('/items');
+  expect(response.statusCode).toBe(200);
+});
+```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Exemple de test unitaire - Partie GitlabCI 
+
+```yaml
+stages:
+  - test
+
+integration_tests:
+  stage: test
+  services:
+    - mongo:latest
+  variables:
+    MONGO_URL: 'mongodb://mongo:27017/testdb'
+  image: node:latest
+  script:
+    - npm ci
+    - docker-compose up -d
+    - npm test
+```
+
+</div>
+
+---
+
+
+# Tests end-to-end
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+<div style="text-align: left;">
+
+## Introduction aux Tests E2E
+
+Les tests E2E simulent l'interaction d'un utilisateur avec l'application pour vérifier que l'ensemble des fonctionnalités fonctionne correctement.
+
+#### Outils 
+- **Playwright** : Framework de test
+- **Jest** : Orchestrateur de test
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Exemple de test unitaire - Partie code 
+
+```js
+// example.test.js
+const { test, expect } = require('@playwright/test');
+
+test('homepage has title', async ({ page }) => {
+  await page.goto('http://localhost:3000');
+  await expect(page).toHaveTitle(/My App/);
+});
+```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Exemple de test unitaire - Partie GitlabCI 
+
+```yaml
+stages:
+  - e2e
+
+e2e_tests:
+  stage: e2e
+  image: mcr.microsoft.com/playwright:focal
+  script:
+    - npm ci
+    - npm run test:e2e
+  artifacts:
+    paths:
+      - reports/
+``` 
+
+</div>

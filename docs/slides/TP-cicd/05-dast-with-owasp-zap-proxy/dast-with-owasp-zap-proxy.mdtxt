@@ -1,0 +1,116 @@
+# DAST avec OWASP Zap Proxy
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+
+<div style="text-align: left;">
+
+## OWASP ZAP Proxy - Introduction
+
+ZAP (Zed Attack Proxy) est un outil open-source développé par OWASP pour détecter les vulnérabilités web.
+
+Il est idéal pour :
+- Les tests de sécurité automatisés.
+- L’analyse manuelle des applications web.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## OWASP ZAP Proxy - Introduction
+
+Pourquoi l'utiliser ?
+
+- **Gratuit et open-source** : Facilement accessible à tous.
+
+- **Puissant et flexible** : Supporte les tests passifs et actifs.
+
+- **Intégration facile** : Peut être intégré dans des pipelines CI/CD.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Fonctionnalités principales
+
+##### Scan passif
+- Analyse des requêtes et réponses HTTP pour identifier les vulnérabilités sans interagir directement avec l'application.
+</br></br>
+
+##### Scan actif
+- Envoie des requêtes malveillantes pour tester la sécurité de l'application en profondeur.
+- Risque de modifier ou endommager des données (recommandé en environnement de test).
+</br></br>
+
+##### Proxy d'interception
+- Permet d’analyser manuellement le trafic HTTP pour identifier des failles.
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Configuration GitLab CI pour ZAP
+
+```yaml
+stages:
+  - security_scan
+
+zap_scan:
+  stage: security_scan
+  image: owasp/zap2docker-stable
+  variables:
+    TARGET_URL: "http://myapp:8080"
+  script:
+    - zap-baseline.py -t $TARGET_URL -r zap_report.html
+  artifacts:
+    paths:
+      - zap_report.html
+```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Intégration avancée
+
+##### Scans supplémentaires
+- **zap-baseline.py** : Effectue un scan passif de l'URL cible (idéal pour CI).
+- **zap-full-scan.py** : Réalise un scan actif, détecte plus de vulnérabilités mais prend plus de temps.
+- **zap-api-scan.py** : Cible les API REST pour des tests de sécurité.
+
+</br></br>
+
+##### Exclusion des alertes
+- Utilisez le fichier de configuration généré par -g gen.conf pour exclure les alertes spécifiques.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Conclusion
+
+- OWASP ZAP est un outil essentiel pour la sécurité des applications web.
+- Intégration simple dans GitLab CI pour automatiser les tests de sécurité.
+- Flexibilité avec différents types de scans (passif, actif, API).
+</div>
+
+---
+
+<div style="text-align: left;">
+</div>
+
+---
+
+<div style="text-align: left;">
+</div>

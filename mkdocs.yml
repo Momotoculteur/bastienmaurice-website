@@ -198,6 +198,9 @@ nav:
         - 01 - Premier workflow avec NodeJS: slides/TP-cicd/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
         - 02 - Introduction à Docker & Dockerfile: slides/TP-cicd/02-introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
         - 03 - DevSecOps et Méthodologie Shift Left : slides/TP-cicd/03-devsecops-methodologie-shift-left/devsecops-methodologie-shift-left.md
+        - 04 - SAST avec Trivy: slides/TP-cicd/04-sast-with-trivy/sast-with-trivy.md
+        - 05 - DAST avec Owasp Zap Proxy: slides/TP-cicd/05-dast-with-owasp-zap-proxy/dast-with-owasp-zap-proxy.md
+        - 06 - Tests unitaires, d'intégrations et E2E: slides/TP-cicd/06-test-unit-integration-end-to-end/test-unit-integration-end-to-end.md
       - DevOps & Monitoring - TP: 
         - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
         - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md

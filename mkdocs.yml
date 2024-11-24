@@ -154,15 +154,16 @@ nav:
       - Data pipeline:
           - Logs collector & aggregator avec Vector.dev: culture-devops/data-pipeline/logs-collector-aggregator-vector.md
           - Logs collector avec Prometheus: culture-devops/data-pipeline/logs-collector-prometheus.md
-      - Stack de monitoring - Logs :
+      - Monitoring - Logs :
           - VictoriaLogs & Intégration dans Grafana: culture-devops/monitoring-stack/logs-with-victoria-logs.md
           - Grafana Loki: culture-devops/monitoring-stack/logs-with-grafana-loki.md
-      - Stack de monitoring - Métriques :
+      - Monitoring - Métriques :
           - Grafana Mimir : culture-devops/monitoring-stack/metrics-with-grafana-mimir.md
           - VictoriaMetrics & Intégration dans Grafana: culture-devops/monitoring-stack/metrics-with-victoria-metrics.md
-      # - Monitoring:
-          # - Dashboard Grafana depuis VictoriaMetrics (TODO): culture-devops/monitoring/dashboard-grafana-from-victoria-metrics.md
-          # - Alerting avec PagerDuty (tTODO): culture-devops/monitoring/alerting-pager-duty.md
+      - Monitoring - Traces :
+          - Tracing applicatif avec OpenTelemetry: culture-devops/monitoring-stack/applicative-tracing-with-open-telemetry.md
+          - Tracing distribué via eBPF avec Grafana Beyla: culture-devops/monitoring-stack/distributed-tracing-ebpf-with-grafana-beyla.md
+          - Stockage des traces avec Grafana Tempo ou Jaeger: culture-devops/monitoring-stack/traces-storage-with-grafana-tempo-and-jaeger.md
       # - Infra as code:
           # - Principes de base (TODO): culture-devops/infra-as-code/principes.md
           # - Terraform (TODO): culture-devops/infra-as-code/terraform.md
@@ -197,6 +198,9 @@ nav:
         - 01 - Premier workflow avec NodeJS: slides/TP-cicd/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
         - 02 - Introduction à Docker & Dockerfile: slides/TP-cicd/02-introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
         - 03 - DevSecOps et Méthodologie Shift Left : slides/TP-cicd/03-devsecops-methodologie-shift-left/devsecops-methodologie-shift-left.md
+        - 04 - SAST avec Trivy: slides/TP-cicd/04-sast-with-trivy/sast-with-trivy.md
+        - 05 - DAST avec Owasp Zap Proxy: slides/TP-cicd/05-dast-with-owasp-zap-proxy/dast-with-owasp-zap-proxy.md
+        - 06 - Tests unitaires, d'intégrations et E2E: slides/TP-cicd/06-test-unit-integration-end-to-end/test-unit-integration-end-to-end.md
       - DevOps & Monitoring - TP: 
         - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
         - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md

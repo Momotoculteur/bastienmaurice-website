@@ -1,0 +1,98 @@
+# Tests de charge avec Grafana k6
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+
+<div style="text-align: left;">
+
+## Introduction 
+
+Les tests de charge sont cruciaux pour évaluer **la performance d'une application** sous une charge importante.  
+
+Grafana k6 est un outil open-source conçu pour effectuer des tests de charge, capable de **simuler des utilisateurs virtuel**s, de **générer des métriques de performance**, et de suivre des résultats de test via des dashboards.  
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Pourquoi Grafana K6 ?
+
+- **Scalabilité** : Permet d’exécuter des tests avec un grand nombre d’utilisateurs (écrit en golang)
+- **Intégration facile/Utilisation** : Facilité d'intégration en CI/CD
+- **Flexibilité** : Basé sur JavaScript, il est facile d’écrire des scénarios complexes.
+- **Visualisation** : Peut être combiné avec Grafana pour des rapports visuels, même si il en propose un built-in
+- **Extensible** : Nombreuse extensions (prometheus, kafka, loki, OTEL, elastic, etc.)
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Example de test
+
+```js
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+export let options = {
+  vus: 50, // Nombre d'utilisateurs virtuels
+  duration: '30s', // Durée du test
+};
+
+export default function () {
+  let res = http.get('https://exemple.com');
+  check(res, {
+    'status est 200': (r) => r.status === 200,
+    'temps de réponse < 500ms': (r) => r.timings.duration < 500,
+  });
+  sleep(1);
+}
+```
+
+Explication:
+- **options** : Définit le nombre d’utilisateurs virtuels et la durée.
+- **check** : Permet de valider certains critères (statut de la réponse, temps de réponse, etc.).
+- **sleep** : Met en pause chaque itération pour simuler des utilisateurs réels.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+##  Intégration dans GitLab CI
+
+```yaml
+stages:
+  - test
+
+load_test:
+  stage: test
+  image: grafana/k6
+  script:
+    - k6 run tests/load-test.js
+  artifacts:
+    paths:
+      - test-results/
+    expire_in: 1 day
+```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Analyse des Résultats et Optimisation
+Une fois les tests effectués, analysez les résultats :
+
+**Temps de réponse moyen** : Vérifiez si les temps de réponse sont conformes aux objectifs.
+**Taux de succès** : Assurez-vous qu'un maximum de requêtes répondent avec un statut 200.
+**Métriques Grafana** : Utilisez Grafana pour surveiller l’évolution des performances dans le temps.
+
+</div>

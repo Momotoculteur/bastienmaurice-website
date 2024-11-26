@@ -14,7 +14,12 @@ Bastien MAURICE
 
 ## Introduction aux Tests Unitaires
 
-Les tests unitaires vérifient le comportement de petites portions de code (unités) indépendamment.
+Le test unitaire vise à tester une **fonction individuelle** ou un composant **isolé** de l’application pour s'assurer que son comportement est conforme aux attentes.
+
+#### Caractéristiques 
+- Couvre une seule unité de code, comme une fonction, une méthode, ou un composant React.
+- Exécuté de manière isolée, sans dépendances extérieures (ex. : bases de données, services externes).
+- Rapide à exécuter car il ne dépend pas de l'infrastructure.
 
 #### Outils 
 - **Jest** : Framework de test JavaScript.
@@ -89,7 +94,12 @@ unit_tests:
 
 ## Introduction aux Tests d'Intégration
 
-Les tests d'intégration vérifient le fonctionnement de plusieurs composants du système ensemble.
+Le test d'intégration vérifie la **communication entre plusieurs modules** de l'application pour s’assurer qu'ils fonctionnent correctement ensemble.
+
+#### Caractéristiques 
+- Couvre plusieurs composants travaillant ensemble (ex. : une API et une base de données).
+- Teste les dépendances extérieures (ex. : la base de données, les microservices, l’API externe).
+- Moins rapide que les tests unitaires, car il nécessite des opérations de lecture/écriture en base de données ou de communication réseau.
 
 #### Outils 
 - **Node.js** : API backend 
@@ -192,7 +202,12 @@ integration_tests:
 
 ## Introduction aux Tests E2E
 
-Les tests E2E simulent l'interaction d'un utilisateur avec l'application pour vérifier que l'ensemble des fonctionnalités fonctionne correctement.
+Le test end-to-end simule le **comportement d’un utilisateur réel** dans l’application pour valider le bon fonctionnement des parcours critiques de bout en bout.
+
+#### Caractéristiques 
+- Couvre l’intégralité de l'application : de l'interface utilisateur jusqu'à la base de données.
+- Valide les interactions de bout en bout, reproduisant le parcours utilisateur.
+- Lent et souvent fragile, car il dépend de l’interface utilisateur et de tous les composants de l'application.
 
 #### Outils 
 - **Playwright** : Framework de test

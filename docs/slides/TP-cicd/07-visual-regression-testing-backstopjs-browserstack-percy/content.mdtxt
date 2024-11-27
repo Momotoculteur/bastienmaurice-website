@@ -1,0 +1,228 @@
+# Tests de régréssions visuels avec BackstopJS et Browserstack Percy
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+
+<div style="text-align: left;">
+
+## Introduction
+
+Un test de régression visuel est un type de test logiciel utilisé pour vérifier que les **modifications de code** n'ont pas introduit de **changements visuels non désirés** dans une application.  
+
+Contrairement aux tests unitaires ou fonctionnels, qui vérifient la l**ogique et le fonctionnement du code**, les tests de régression visuels se concentrent sur **l'apparence de l'application**.
+
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Pourquoi
+
+- **Assurent la cohérence de l'interface** : Ils aident à détecter les changements visuels inattendus, comme les décalages, les modifications de couleurs, ou les erreurs d'affichage, qui peuvent survenir lors d'une mise à jour ou d'un changement de code.
+- **Identifient les effets de bord visuels** : Parfois, une modification de style ou une nouvelle fonctionnalité peut impacter des éléments visuels ailleurs dans l'application. Les tests visuels permettent de repérer ces effets de bord.
+
+- **Accélèrent les validations de design** : En automatisant la comparaison des interfaces visuelles, ces tests facilitent le travail des équipes de design et de développement en fournissant rapidement un retour sur les différences.
+
+- **Réduisent les risques d'erreur en production** : Une interface cohérente est essentielle pour l'expérience utilisateur. Ces tests aident à éviter que des problèmes visuels n'atteignent les utilisateurs finaux, en validant les interfaces avant chaque déploiement.
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Fonctionnement
+
+Les tests de régression visuels comparent l’apparence de l'application actuelle avec une **version de référence**. Lorsqu’un test est lancé :
+
+1. Des captures d'écran de certaines pages ou composants sont prises.
+2. Ces captures sont comparées aux captures de référence. Les différences sont calculées au niveau des pixels, et des différences significatives sont identifiées.
+3. Un rapport de test visuel est généré, montrant les différences détectées, souvent avec un code de couleur pour distinguer les modifications.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## BackstopJS 
+
+BackstopJS est un outil de tests de régressions visuels qui utilise des captures d’écran et un système de comparaison basé sur des différences de pixels.  
+
+Il est basé sur Puppeteer et Chrome pour prendre des captures d'écran, ce qui permet de tester des pages web en local.
+
+</div>
+
+---
+
+
+<div style="text-align: left;">
+
+## BackstopJS - Configuration
+
+1. Initialiez le projet
+
+```bash
+backstop init
+```
+
+2. Configurer le projet
+
+```json
+{
+  "id": "project_name",
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1280,
+      "height": 800
+    }
+  ],
+  "scenarios": [
+    {
+      "label": "Homepage",
+      "url": "https://www.votresite.com",
+      "selectors": ["document"],
+      "misMatchThreshold": 0.1
+    }
+  ],
+  "paths": {
+    "bitmaps_reference": "backstop_data/bitmaps_reference",
+    "bitmaps_test": "backstop_data/bitmaps_test",
+    "engine_scripts": "backstop_data/engine_scripts",
+    "html_report": "backstop_data/html_report",
+    "ci_report": "backstop_data/ci_report"
+  },
+  "report": ["browser"],
+  "engine": "puppeteer",
+  "asyncCaptureLimit": 5,
+  "asyncCompareLimit": 50
+}
+```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## BackstopJS - Execution
+
+3. Création des images de référence : pour prendre les captures d’écran de référence, exécutez :
+
+```bash
+backstop reference
+```
+
+4. Exécution des tests : pour comparer les captures actuelles avec celles de référence :
+
+```bash
+backstop test
+```
+
+5. Affichage des résultats : un rapport HTML sera généré dans backstop_data/html_report. Utilisez backstop openReport pour le visualiser.
+
+
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## BackstopJS - GitlabCI
+
+```yaml
+image: node:14
+
+stages:
+  - visual_test
+
+visual_test:
+  stage: visual_test
+  script:
+    - npm install -g backstopjs
+    - backstop test || (echo "Visual differences detected" && exit 1)
+  artifacts:
+    paths:
+      - backstop_data/html_report
+```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Browerstack Percy
+
+Browserstack Percy est une solution de tests visuels hébergée qui simplifie le processus de comparaison des captures d’écran.  
+
+Il permet d'effectuer des tests dans divers navigateurs et résolutions, et fournit un dashboard pour gérer les différences visuelles.
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Browerstack Percy - Configuration
+
+
+1. npm install --save-dev @percy/cli @percy/puppeteer
+
+2. Percy utilise une variable d’environnement **PERCY_TOKEN** pour s'authentifier. Ajoutez votre jeton Percy à vos variables d'environnement GitLab CI.
+
+3. Configuration 
+
+```js
+// visual_test.js
+const Percy = require('@percy/puppeteer');
+const puppeteer = require('puppeteer');
+
+(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto('https://www.votresite.com');
+  
+  // Prendre une capture d'écran avec Percy
+  await Percy.screenshot(page, 'Homepage');
+  
+  await browser.close();
+})();
+```
+
+4. Pour exécuter des tests Percy localement  
+```bash
+npx percy exec -- node visual_test.js
+```
+
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Browerstack Percy - GitlabCI
+
+```yaml
+image: node:14
+
+stages:
+  - visual_test
+
+variables:
+  PERCY_TOKEN: "<votre_token_percy>"
+
+visual_test:
+  stage: visual_test
+  script:
+    - npm install
+    - npx percy exec -- node visual_test.js
+```
+
+</div>

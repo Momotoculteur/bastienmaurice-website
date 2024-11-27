@@ -3,7 +3,7 @@ site_name: Bastien MAURICE
 site_author: Bastien MAURICE
 site_url: https://bastienmaurice.fr
 site_dir: public
-copyright: Copyright &copy; 2023 - 2023 Bastien MAURICE
+copyright: Copyright &copy; 2023 - 2025 Bastien MAURICE
 site_description: |
   Développeur en génie logiciel de formation, je suis aujourd'hui avec quelques années d'expériences DevOps chez Betclic (Bordeaux, France).
   Je m'intéresse aussi au domaine du machine & deep learning.
@@ -201,6 +201,9 @@ nav:
         - 04 - SAST avec Trivy: slides/TP-cicd/04-sast-with-trivy/sast-with-trivy.md
         - 05 - DAST avec Owasp Zap Proxy: slides/TP-cicd/05-dast-with-owasp-zap-proxy/dast-with-owasp-zap-proxy.md
         - 06 - Tests unitaires, d'intégrations et E2E: slides/TP-cicd/06-test-unit-integration-end-to-end/test-unit-integration-end-to-end.md
+        - 07 - Test de régressions visuels avec BackstopJS / Browserstack Percy: slides/TP-cicd/07-visual-regression-testing-backstopjs-browserstack-percy/main.md
+        - 08 - Test de charge avec Grafana K6: slides/TP-cicd/08-load-testing-with-grafana-k6/main.md
+        - 09 - Clean code avec Sonarqube : slides/TP-cicd/09-clean-code-with-sonarqube/main.md
       - DevOps & Monitoring - TP: 
         - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
         - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md

@@ -203,6 +203,7 @@ nav:
         - 06 - Tests unitaires, d'intégrations et E2E: slides/TP-cicd/06-test-unit-integration-end-to-end/test-unit-integration-end-to-end.md
         - 07 - Test de régressions visuels avec BackstopJS / Browserstack Percy: slides/TP-cicd/07-visual-regression-testing-backstopjs-browserstack-percy/main.md
         - 08 - Test de charge avec Grafana K6: slides/TP-cicd/08-load-testing-with-grafana-k6/main.md
+        - 09 - Clean code avec Sonarqube : slides/TP-cicd/09-clean-code-with-sonarqube/main.md
       - DevOps & Monitoring - TP: 
         - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
         - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md

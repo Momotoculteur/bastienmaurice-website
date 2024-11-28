@@ -142,7 +142,7 @@ nav:
       - Nightly:
           - Stage Load-testing: cicd/nightly/load-testing.md
           - Stage E2E-testing : cicd/nightly/e2e-testing.md
-          - Stage Pentests: cicd/nightly/pentests.md
+          - Stage Pentests avec OWASP ZAP (DAST): cicd/nightly/pentests-with-owasp-zap-dast.md
   - Culture DevOps:
       - Tooling:
           - Monitorer son cluster Kubernetes efficacement: culture-devops/tooling/monitoring-with-lens-and-k9s.md

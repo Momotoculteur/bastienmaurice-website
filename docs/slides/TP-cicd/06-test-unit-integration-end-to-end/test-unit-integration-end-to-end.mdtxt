@@ -177,13 +177,13 @@ stages:
 integration_tests:
   stage: test
   services:
-    - mongo:latest
+    - name: mongo:latest
+      alias: mongo
   variables:
     MONGO_URL: 'mongodb://mongo:27017/testdb'
   image: node:latest
   script:
     - npm ci
-    - docker-compose up -d
     - npm test
 ```
 

@@ -207,6 +207,7 @@ nav:
         - 10 - Cross-browser testing avec BrowserStack Automate: slides/TP-cicd/10-cross-browser-testing-with-browserstack-automate/main.md
         - 11 - Introduction à Kubernetes: slides/TP-cicd/11-kubernetes-introduction/main.md
         - 12 - Helm, package manager de Kubernetes: slides/TP-cicd/12-kubernetes-package-manager-helm/main.md
+        - 13 - GitOps avec ArgoCD : slides/TP-cicd/13-gitops-with-argocd/main.md
       - DevOps & Monitoring - TP: 
         - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
         - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md

@@ -111,7 +111,7 @@ Le test d'intégration vérifie la **communication entre plusieurs modules** de 
 
 <div style="text-align: left;">
 
-## Exemple de test unitaire - Partie code 
+## Exemple de test d'intégration - Partie code 
 
 ```yaml
 # docker-compose.yml
@@ -168,7 +168,7 @@ test('GET /items returns items from MongoDB', async () => {
 
 <div style="text-align: left;">
 
-## Exemple de test unitaire - Partie GitlabCI 
+## Exemple de test d'intégration - Partie GitlabCI 
 
 ```yaml
 stages:
@@ -177,13 +177,13 @@ stages:
 integration_tests:
   stage: test
   services:
-    - mongo:latest
+    - name: mongo:latest
+      alias: mongo
   variables:
     MONGO_URL: 'mongodb://mongo:27017/testdb'
   image: node:latest
   script:
     - npm ci
-    - docker-compose up -d
     - npm test
 ```
 
@@ -219,7 +219,7 @@ Le test end-to-end simule le **comportement d’un utilisateur réel** dans l’
 
 <div style="text-align: left;">
 
-## Exemple de test unitaire - Partie code 
+## Exemple de test E2E - Partie code 
 
 ```js
 // example.test.js
@@ -237,7 +237,7 @@ test('homepage has title', async ({ page }) => {
 
 <div style="text-align: left;">
 
-## Exemple de test unitaire - Partie GitlabCI 
+## Exemple de test E2E - Partie GitlabCI 
 
 ```yaml
 stages:

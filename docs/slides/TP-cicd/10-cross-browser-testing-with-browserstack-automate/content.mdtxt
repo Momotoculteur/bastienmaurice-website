@@ -1,0 +1,153 @@
+# Cross-browser testing avec BrowserStack Automate
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+<div style="text-align: left;">
+
+## Introduction
+
+Le cross browser testing est essentiel pour garantir que votre application web fonctionne correctement sur **différents navigateurs et appareils**.  
+
+BrowserStack Automate est un service cloud qui permet d'automatiser ces tests à l'aide d'outils comme **Selenium**, **Appium**, ou **Cypress**.
+
+</div>
+---
+<div style="text-align: left;">
+
+## Objectif principal du Cross Browser Testing
+
+L'objectif du cross browser testing est de garantir que votre application web fonctionne correctement sur :
+- **Différents navigateurs** (Chrome, Firefox, Safari, Edge, etc.).
+- **Différentes versions de navigateurs** (actuelles ou anciennes).
+- **Différents systèmes d'exploitation** (Windows, macOS, Linux, iOS, Android).
+- **Différents appareils** (smartphones, tablettes, ordinateurs).
+
+Cela permet de s'assurer que l'interface utilisateur et les fonctionnalités offrent une expérience cohérente, quel que soit le contexte technique de l'utilisateur final.
+
+https://caniuse.com/
+
+
+</div>
+---
+<div style="text-align: left;">
+
+## Valeur ajoutée du Cross Browser Testing - UX
+
+Les utilisateurs utilisent une grande variété de navigateurs et appareils.  
+
+Sans tests spécifiques, vous risquez des problèmes comme :
+- Éléments d'interface mal alignés.
+- Scripts JavaScript qui ne se chargent pas sur certains navigateurs.
+- Problèmes d'interactivité ou bugs CSS.
+
+Un bon cross browser testing garantit **une expérience uniforme**. 
+
+Une mauvaise compatibilité peut frustrer les utilisateurs et les inciter à abandonner votre produit ou service.
+</div>
+---
+<div style="text-align: left;">
+
+## Valeur ajoutée du Cross Browser Testing - Bugs spécifique des browsers
+
+Certains navigateurs interprètent différemment les standards web (HTML, CSS, JavaScript).  
+Exemples de problèmes typiques :
+- Internet Explorer/Edge : Prise en charge limitée des nouvelles fonctionnalités CSS ou JavaScript.
+- Safari (macOS/iOS) : Bugs liés à des animations ou comportements particuliers de WebKit.
+- Firefox : Différences dans le rendu des polices ou des transitions CSS.
+
+</div>
+---
+<div style="text-align: left;">
+
+## Quand faut-il prioriser le Cross Browser Testing ?
+
+- **Audience large et variée** : Si votre application est utilisée par des personnes avec différents navigateurs et appareils.
+- **Applications publiques ou sensibles** : Par exemple, des applications bancaires ou des sites e-commerce.
+- **Avant une mise en production majeure** : Garantir la stabilité après de gros changements.
+
+</div>
+---
+<div style="text-align: left;">
+
+## Limites du Cross Browser Testing
+
+Bien qu'essentiel, il ne remplace pas d'autres types de tests :
+- Il se concentre sur la compatibilité et l'UX, pas sur les fonctionnalités internes ou la sécurité.
+- Peut être coûteux en termes de temps et d'exécution si mal optimisé.
+
+</div>
+---
+<div style="text-align: left;">
+
+## Exemple d'un test Selenium
+
+```js
+const { Builder, By } = require('selenium-webdriver');
+
+// Configurer BrowserStack
+const USERNAME = "votre_nom_utilisateur";
+const ACCESS_KEY = "votre_access_key";
+const URL = `https://${USERNAME}:${ACCESS_KEY}@hub-cloud.browserstack.com/wd/hub`;
+
+const capabilities = {
+    os: 'Windows',
+    osVersion: '10',
+    browserName: 'Chrome',
+    browserVersion: 'latest',
+    'bstack:options': {
+        sessionName: 'Cross Browser Test' // Nom du test
+    }
+};
+
+(async function runTest() {
+    let driver;
+
+    try {
+        // Créer une instance de WebDriver
+        driver = await new Builder()
+            .usingServer(URL)
+            .withCapabilities(capabilities)
+            .build();
+
+        // Exemple de test
+        await driver.get("https://www.example.com");
+        const title = await driver.getTitle();
+        console.assert(title.includes("Example"), "Le titre ne contient pas 'Example'");
+    } catch (error) {
+        console.error("Une erreur s'est produite :", error);
+    } finally {
+        // Fermer le driver
+        if (driver) {
+            await driver.quit();
+        }
+    }
+})();
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## Exemple d'un test Selenium - GitlabCI
+
+```yaml
+stages:
+  - test
+
+browserstack-tests:
+  image: node:20
+  stage: test
+  script:
+    - npm install
+    - node test_browserstack.js
+  only:
+    - merge_requests
+    - main
+  variables:
+    BROWSERSTACK_USERNAME: $BROWSERSTACK_USERNAME
+    BROWSERSTACK_ACCESS_KEY: $BROWSERSTACK_ACCESS_KEY
+```
+
+</div>

@@ -91,9 +91,23 @@ resource "argocd_application" "opentelemetry_operator" {
 }
 ```
 
-!!!info
+!!! info
     Ici je vous ais laissé un extra argurments pour la prise en compte d'applicaton Golang, qui ne le sont pas de base. Je voud le montre à titre d'example seulement car ici je test avec une application Python
 
+
+Une fois que l'opérateur est bien installé avec ses CRDs, il va pouvoir interpreter nos prochains manifest YAML.
+
+Nous devons initialiser 2 éléments :  
+- Le collecteur général  
+- l'injecteur du traceur   
+
+### Mise en place du Zero-code (auto-instrumentation)
+#### Mise en place du collecteur global
+On commence ici par créer un nouveau fichier qui va nous permettre de déclarer un collecteur.
+
+Ici, on le déploit en mode **deployment**, mais qui peut aussi s'installer en mode **daemon**. 
+
+Voyez OTEL en mode **Agent** ou en mode **Aggregator** via ces 2 types d'installations.
 
 ```yaml
 apiVersion: opentelemetry.io/v1beta1
@@ -123,6 +137,10 @@ spec:
           exporters: [debug]
 ```
 
+
+#### Mise en place de l'injecteur de l'auto-instrumentation
+On va expliquer ici tout la magie de l'auto-instrumentation.
+
 ```yaml
 apiVersion: opentelemetry.io/v1alpha1
 kind: Instrumentation
@@ -144,11 +162,112 @@ spec:
         value: 'true'
 ```
 
-### Otel sidecar vs deploy ?
+Quelques parties à expliquer ici : 
+
+- **propagators** : cela permet de savoir quoi remonter dans les traces, quel contexte y ajouter. Plus d'infos vers la [documentation](https://opentelemetry.io/docs/languages/sdk-configuration/general/#otel_propagators)  
+- **sampler** : cela permet de savoir quand et comment remonter les traces. Plus d'infos vers la [documentation](https://opentelemetry.io/docs/languages/sdk-configuration/general/#otel_traces_sampler)
+
+#### Installation d'une app à instrumenter
+Afin d'indiquer à OTEL de surveiller tel ou tel pod, il va falloir rajouter des annotations particulières. Ici je te montre un example pour un simple serveur **Flask** sous **Python** packagé avec Helm
+
+```yaml
+#values.yaml
+podAnnotations:
+  "instrumentation.opentelemetry.io/inject-python"        = "otel/auto-injector-python"
+  "instrumentation.opentelemetry.io/otel-python-platform" = "glibc" 
+```
+
+A vous de bien surveiller la documentation afin d'y ajouter le bon language, mais aussi le bon framework de serveur web.
+
+Example de framework pris en charge (liste non exhaustive):  
+
+  - **JavaScript (Node.js)**  
+    - Express, Fastify...
+  - **Python**  
+    - Flask, Django, FastAPI...
+  - **Java**  
+    - Spring Boot, Jersey...
+  - **.NET**  
+    - ASP.NET Core, Kestrel...
+  - **Go**  
+    - Frameworks utilisant les modules standards HTTP de Go, etc...
+  - **Ruby**  
+    - Rails, Sinatra...
+  - **PHP**  
+    - Les bibliothèques d'instrumentation pour les frameworks PHP sont encore limitées mais en développement actif.
+
+Liste des [languages disponible](https://opentelemetry.io/docs/zero-code/) pour l'auto-instrumentation.
+
+La première annotation permet d'indiquer l'injecteur que l'on souhaite utiliser.  
+
+Elle peut avoir plusieurs valeurs comme true, false, Instrumentation_Name, Namespace/Instrumentation_Name, etc.
+
+On appelle injecteur car il va agir comme un init-container.
 
 
-### Otel auto instrumentation
-discuter OTEL en mode deploy + initcontainer injection by mutating webhook
+???+ question  
+    Mais comment mon application l'intègre avec un init container ? Comment fonctionne cette instrumentation auto ?
 
-### Otel SK instrumentation
 
+Et bien cela fonctionne avec les mutating webhook.  
+
+!!! abstract  
+    Un mutating webhook est une fonctionnalité dans Kubernetes qui permet d’intercepter 
+    et de modifier les requêtes envoyées à l’API Server avant qu’elles ne soient persistées dans etcd. C'est un mécanisme puissant utilisé pour ajuster ou enrichir dynamiquement les ressources Kubernetes lors de leur création, mise à jour ou suppression.
+
+En résumé OTEL utilise certaines ressources de kubernetes, qui va permettre d'aller modifier à la volée mon chart qui installe mon application et va alors pouvoir injecter au niveau kernel les élèments qu'il a besoin afin de récuperer toute nos traces. Une sorte de middleware :)
+
+### Mise en place du SDK (code-based instrumentation)
+
+Le but ici c'est d'instrumenter nos applications par nous même. On va avoir un peu plus de boulot ici mais on va pouvoir avoir des traces aux petits oignons et ajouter d'un grains beaucoup plus fins nos traces.
+
+
+
+#### Mise en place du collecteur global
+
+
+```yaml
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-collector
+  namespace: otel
+spec:
+  mode: sidecar
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318
+    exporters:
+      debug:
+        verbosity: "detailed"
+    processors: 
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: []
+          exporters: [debug]
+```
+
+#### Mise en place du sidecar pour le SDK
+Ici j'indique avec un example d'une application **Golang** packagé avec Helm, avec le framework web **net/http**
+
+```yaml
+#values.yaml
+podAnnotations:
+  "instrumentation.opentelemetry.io/inject-go" = "otel/otel-collector"
+  "instrumentation.opentelemetry.io/otel-go-auto-target-exe" = "/hello-world"
+```
+
+Cette première annotation peut avoir plusieurs valeurs comme true, false, OpenTelemetryCollector_Name, Namespace/OpenTelemetryCollector_Name, etc.
+
+La seconde permet d'indiquer à OTEL le main de mon application Go.
+
+Ce sont ces 2 annotations qui vont permettre  de demander à OTEL Operator de nous ajouter un sidecar a notre application (revient à ajouter un container à notre pod, dans d'autres termes).
+
+A vous par la suite d'utiliser les SDK d'OTEL dans votre application pour envoyer vos traces vers le **sidecar du Pod**.

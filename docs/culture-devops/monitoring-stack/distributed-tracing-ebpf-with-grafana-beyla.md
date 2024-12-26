@@ -124,3 +124,7 @@ spec:
           processors: []
           exporters: [debug]
 ```
+
+Vous pouvez dorénavant aller sur la console de votre pod d'OTEL pour aller regarder vos nouveaux logs qui y sont projetés : ce sont vos traces 😁
+
+La prochaine étapes est de les envoyers vers une Time-series Database afin de les stocker et qu'ils puissent y être consulter via un dashboard Grafana par exemple.

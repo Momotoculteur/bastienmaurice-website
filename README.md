@@ -9,6 +9,9 @@ Axé  sur le machine learning, deep learning et l'IA en général
 
 
 ## Docs
+### PyEnv
+
+
 ### Affiche un ficher dans un md file
 ```
 {% with pdf_file = "./ressource/cv/cv.pdf" %}

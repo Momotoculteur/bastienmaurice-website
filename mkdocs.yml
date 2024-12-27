@@ -22,6 +22,12 @@ extra:
       link: https://deeplylearning.fr/
     - icon: fontawesome/brands/gitlab
       link: https://gitlab.com/Momotoculteur
+    - icon: fontawesome/brands/paypal
+      link: https://www.paypal.com/paypalme/bmaurice
+    - icon: fontawesome/solid/gift
+      link: https://ko-fi.com/Momotoculteur
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:bastien_maurice@hotmail.com
 
 
 theme:
@@ -138,7 +144,7 @@ nav:
           - Stage Visual regression : cicd/integration-continue/visual-regression.md
       - Deploiement continu:
           - Deploy sur Gitlab Pages son site web: cicd/deploiement-continu/deploy-gitlab-pages-static-website.md
-          - Deploy sur AWS S3 Bucket son site web: cicd/deploiement-continu/deploy-aws-s3-bucket-static-website.md
+          #- Deploy sur AWS S3 Bucket son site web: cicd/deploiement-continu/deploy-aws-s3-bucket-static-website.md
       - Nightly:
           - Stage Load-testing: cicd/nightly/load-testing.md
           - Stage E2E-testing : cicd/nightly/e2e-testing.md

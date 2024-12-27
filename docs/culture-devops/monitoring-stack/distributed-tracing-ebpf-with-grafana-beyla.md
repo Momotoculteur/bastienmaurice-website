@@ -14,6 +14,7 @@ eBPF exécute le code au niveau du noyau Linux, ce qui le rend extrêmement perf
 eBPF peut être utilisé pour tracer différents types d'événements : appel réseau, accès aux fichiers, création de processus, etc. Il est facilement extensible pour créer des programmes de traçage adaptés à des besoins spécifiques.
 
 **Cas d'Utilisation du Tracing avec eBPF**  
+
 - **Surveillance des performances réseau** : Suivre et analyser les connexions TCP/UDP pour diagnostiquer les problèmes de latence réseau, de goulots d’étranglement, ou de pannes.
 - **Détection d’anomalies** : Identifier des comportements suspects en analysant les appels systèmes inhabituels ou les volumes de trafic.
 - **Suivi des ressources CPU et mémoire** : Observer l'utilisation des ressources pour chaque service, aidant à optimiser l’allocation des ressources dans des environnements multi-services comme Kubernetes.
@@ -123,3 +124,7 @@ spec:
           processors: []
           exporters: [debug]
 ```
+
+Vous pouvez dorénavant aller sur la console de votre pod d'OTEL pour aller regarder vos nouveaux logs qui y sont projetés : ce sont vos traces 😁
+
+La prochaine étapes est de les envoyers vers une Time-series Database afin de les stocker et qu'ils puissent y être consulter via un dashboard Grafana par exemple.

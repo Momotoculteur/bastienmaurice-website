@@ -1,0 +1,58 @@
+<!-- Tags -->
+{% if "material/tags" in config.plugins and tags %}
+{% include "partials/tags.html" %}
+{% endif %}
+
+
+<!-- Actions -->
+{% include "partials/actions.html" %}
+
+
+<!--
+  Hack: check whether the content contains a h1 headline. If it doesn't, the
+  page title (or respectively site name) is used as the main headline.
+-->
+{% if "\x3ch1" not in page.content %}
+<h1>{{ page.title | d(config.site_name, true)}}</h1>
+{% endif %}
+
+
+<!-- Page content -->
+{{ page.content }}
+
+
+<!-- Source file information -->
+{% include "partials/source-file.html" %}
+
+
+<!-- Custom donation section -->
+<br>
+<div style="display: flex; flex-direction: column; align-items: center;">
+    <div style="margin-bottom: 10px;">
+        ☕️ Si tu souhaites soutenir mon travail, tu peux m'offrir un café ici.
+    </div>
+    <div style="display: flex; flex-direction: row;">
+        <div>
+            <a href="https://paypal.me/bmaurice" target="_blank">
+                <img src="https://img.shields.io/badge/PayPal-00457C?style=for-the-badge&logo=paypal&logoColor=white"
+                    alt="PayPal">
+            </a>
+        </div>
+        <div style="width: 10px;"></div>
+        <div>
+            <a href="https://ko-fi.com/Momotoculteur" target="_blank">
+                <img src="https://img.shields.io/badge/Ko--fi-F16061?style=for-the-badge&logo=ko-fi&logoColor=white"
+                    alt="Ko-Fi">
+            </a>
+        </div>
+    </div>
+</div>
+<br>
+
+
+<!-- Was this page helpful? -->
+{% include "partials/feedback.html" %}
+
+
+<!-- Comment system -->
+{% include "partials/comments.html" %}

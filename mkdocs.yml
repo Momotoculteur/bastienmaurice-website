@@ -22,6 +22,12 @@ extra:
       link: https://deeplylearning.fr/
     - icon: fontawesome/brands/gitlab
       link: https://gitlab.com/Momotoculteur
+    - icon: fontawesome/brands/paypal
+      link: https://www.paypal.com/paypalme/bmaurice
+    - icon: fontawesome/solid/gift
+      link: https://ko-fi.com/Momotoculteur
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:bastien_maurice@hotmail.com
 
 
 theme:

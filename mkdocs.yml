@@ -29,7 +29,6 @@ extra:
     - icon: fontawesome/solid/paper-plane
       link: mailto:bastien_maurice@hotmail.com
 
-
 theme:
   custom_dir: overrides
   icon:
@@ -136,93 +135,107 @@ nav:
           - Stage Static-analysis: cicd/integration-continue/static-analysis.md
           - Stage Security-analysis (SAST): cicd/integration-continue/security-analysis-sast.md
           - Stage Build: cicd/integration-continue/build.md
-          - Stage Unit-testing : cicd/integration-continue/unit-testing.md
+          - Stage Unit-testing: cicd/integration-continue/unit-testing.md
           - Stage Integration-Testing: cicd/integration-continue/integration-testing.md
           - Stage Helm: cicd/integration-continue/helm.md
-          - Stage Quality-Gate : cicd/integration-continue/quality-gate.md
-          - Stage Cross-Browser-Testing : cicd/integration-continue/cross-browser-testing.md
-          - Stage Visual regression : cicd/integration-continue/visual-regression.md
+          - Stage Quality-Gate: cicd/integration-continue/quality-gate.md
+          - Stage Cross-Browser-Testing: cicd/integration-continue/cross-browser-testing.md
+          - Stage Visual regression: cicd/integration-continue/visual-regression.md
       - Deploiement continu:
           - Deploy sur Gitlab Pages son site web: cicd/deploiement-continu/deploy-gitlab-pages-static-website.md
           #- Deploy sur AWS S3 Bucket son site web: cicd/deploiement-continu/deploy-aws-s3-bucket-static-website.md
       - Nightly:
           - Stage Load-testing: cicd/nightly/load-testing.md
-          - Stage E2E-testing : cicd/nightly/e2e-testing.md
+          - Stage E2E-testing: cicd/nightly/e2e-testing.md
           - Stage Pentests avec OWASP ZAP (DAST): cicd/nightly/pentests-with-owasp-zap-dast.md
-  - Culture DevOps:
+  - DevOps:
       - Tooling:
-          - Monitorer son cluster Kubernetes efficacement: culture-devops/tooling/monitoring-with-lens-and-k9s.md
+          - Monitorer son cluster Kubernetes efficacement: devops/tooling/monitoring-with-lens-and-k9s.md
       # - Secrets:
-          # - Gère tes secrets dans Git et CI/CD via SOPS [TODO]: culture-devops/secrets/secrets-management-with-sops.md
-          # - Kubernetes, Sealed Secrets
+      # - Gère tes secrets dans Git et CI/CD via SOPS [TODO]: culture-devops/secrets/secrets-management-with-sops.md
+      # - Kubernetes, Sealed Secrets
       - Exposer des metriques:
-          - Kube-state-metrics: culture-devops/expose-metrics/kube-state-metrics.md
+          - Kube-state-metrics: devops/expose-metrics/kube-state-metrics.md
       - Data pipeline:
-          - Logs collector & aggregator avec Vector.dev: culture-devops/data-pipeline/logs-collector-aggregator-vector.md
-          - Logs collector avec Prometheus: culture-devops/data-pipeline/logs-collector-prometheus.md
-      - Monitoring - Logs :
-          - VictoriaLogs & Intégration dans Grafana: culture-devops/monitoring-stack/logs-with-victoria-logs.md
-          - Grafana Loki: culture-devops/monitoring-stack/logs-with-grafana-loki.md
-      - Monitoring - Métriques :
-          - Grafana Mimir : culture-devops/monitoring-stack/metrics-with-grafana-mimir.md
-          - VictoriaMetrics & Intégration dans Grafana: culture-devops/monitoring-stack/metrics-with-victoria-metrics.md
-      - Monitoring - Traces :
-          - Tracing applicatif avec OpenTelemetry: culture-devops/monitoring-stack/applicative-tracing-with-open-telemetry.md
-          - Tracing distribué via eBPF avec Grafana Beyla: culture-devops/monitoring-stack/distributed-tracing-ebpf-with-grafana-beyla.md
-          - Stockage des traces avec Grafana Tempo ou Jaeger: culture-devops/monitoring-stack/traces-storage-with-grafana-tempo-and-jaeger.md
+          - Logs collector & aggregator avec Vector.dev: devops/data-pipeline/logs-collector-aggregator-vector.md
+          - Logs collector avec Prometheus: devops/data-pipeline/logs-collector-prometheus.md
+      - Monitoring - Logs:
+          - VictoriaLogs & Intégration dans Grafana: devops/monitoring-stack/logs-with-victoria-logs.md
+          - Grafana Loki: devops/monitoring-stack/logs-with-grafana-loki.md
+      - Monitoring - Métriques:
+          - Grafana Mimir: devops/monitoring-stack/metrics-with-grafana-mimir.md
+          - VictoriaMetrics & Intégration dans Grafana: devops/monitoring-stack/metrics-with-victoria-metrics.md
+      - Monitoring - Traces:
+          - Tracing applicatif avec OpenTelemetry: devops/monitoring-stack/applicative-tracing-with-open-telemetry.md
+          - Tracing distribué via eBPF avec Grafana Beyla: devops/monitoring-stack/distributed-tracing-ebpf-with-grafana-beyla.md
+          - Stockage des traces avec Grafana Tempo ou Jaeger: devops/monitoring-stack/traces-storage-with-grafana-tempo-and-jaeger.md
       # - Infra as code:
-          # - Principes de base (TODO): culture-devops/infra-as-code/principes.md
-          # - Terraform (TODO): culture-devops/infra-as-code/terraform.md
-          # - Terragrunt (TODO): culture-devops/infra-as-code/terragrunt.md
+      # - Principes de base (TODO): culture-devops/infra-as-code/principes.md
+      # - Terraform (TODO): culture-devops/infra-as-code/terraform.md
+      # - Terragrunt (TODO): culture-devops/infra-as-code/terragrunt.md
       - GitOps:
           # - Principes de base (TODO): culture-devops/git-ops/principes.md
           # - FluxCD (TODO): culture-devops/git-ops/flux-cd.md
-          - ArgoCD: culture-devops/git-ops/argo-cd.md
-      # - Kubernetes & FinOps:
-          # - Maîtrise les coûts de ton cluster avec OpenCost ou KubeCost (TODO): culture-devops/kubernetes-finops/k8s-finops-with-opencost-and-kubecost.md
+          - ArgoCD: devops/git-ops/argo-cd.md
+      - Kubernetes:
+        - Sécurise l'upgrade de ton cluster avec KubePug: devops/kubernetes/smooth-upgrade-with-kubepug.md
+        - Sécurise l'upgrade de ton cluster avec KubeNT: devops/kubernetes/smooth-upgrade-with-kubent.md
+      # - Maîtrise les coûts de ton cluster avec OpenCost ou KubeCost (TODO): culture-devops/kubernetes-finops/k8s-finops-with-opencost-and-kubecost.md
       # - Messaging:
-          # - Message et stream avec RabbitMQ (TODO): culture-devops/messaging/rabbit-mq.md
+      # - Message et stream avec RabbitMQ (TODO): culture-devops/messaging/rabbit-mq.md
+  - SecOps: 
+    - Infra as Code:
+      - Trivy - tfSec: secops/infra-as-code/trivy-tfsec.md
+      - Terrascan: secops/infra-as-code/terrascan.md
+    - Cloud Provider: 
+      - Sécurise ton cloud avec Prowler: secops/cloud-provider/audit-with-prowler.md
+      - Sécurise ton cloud avec Kics: secops/cloud-provider/audit-with-kics.md
+    - Kubernetes: 
+      - Falco: secops/cloud-provider/falco.md
+      - Tetragon: secops/cloud-provider/tetragon.md
+      - KubeArmor: secops/cloud-provider/kubearmor.md
+      - KubeHound: secops/cloud-provider/kubehound.md
+  - Machine & Deep learning: https://deeplylearning.fr/
+  - Cours & TP:
+      - Présentation générale:
+          - Hello Momo !: slides/presentation/hello-momo/hello-momo.md
+          - TP - CI/CD: slides/presentation/tp-cicd/tp-cicd.md
+          - TP - DevOps: slides/presentation/tp-devops/tp-devops.md
+      - Méthodologies DevOps:
+          - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
+          - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
+          - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
+          - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
+          - DRY Terraform configuration avec Terragrunt: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
+      - Container & Virtual Machine:
+          - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
+          - Orchestration de container avec Kubernetes [TODO]: slides/container-virtual-machine/kubernetes/kubernetes.md
+          - Kubernetes Resources [TODO]: slides/container-virtual-machine/kubernetes-resources/kubernetes-resources.md
+      - CI/CD - TP:
+          - 00 - Introduction à GitlabCI: slides/TP-cicd/00-introduction-a-gitlabci/introduction-a-gitlabci.md
+          - 01 - Premier workflow avec NodeJS: slides/TP-cicd/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
+          - 02 - Introduction à Docker & Dockerfile: slides/TP-cicd/02-introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
+          - 03 - DevSecOps et Méthodologie Shift Left: slides/TP-cicd/03-devsecops-methodologie-shift-left/devsecops-methodologie-shift-left.md
+          - 04 - SAST avec Trivy: slides/TP-cicd/04-sast-with-trivy/sast-with-trivy.md
+          - 05 - DAST avec Owasp Zap Proxy: slides/TP-cicd/05-dast-with-owasp-zap-proxy/dast-with-owasp-zap-proxy.md
+          - 06 - Tests unitaires, d'intégrations et E2E: slides/TP-cicd/06-test-unit-integration-end-to-end/test-unit-integration-end-to-end.md
+          - 07 - Test de régressions visuels avec BackstopJS / BrowserStack Percy: slides/TP-cicd/07-visual-regression-testing-backstopjs-browserstack-percy/main.md
+          - 08 - Test de charge avec Grafana K6: slides/TP-cicd/08-load-testing-with-grafana-k6/main.md
+          - 09 - Clean code avec Sonarqube: slides/TP-cicd/09-clean-code-with-sonarqube/main.md
+          - 10 - Cross-browser testing avec BrowserStack Automate: slides/TP-cicd/10-cross-browser-testing-with-browserstack-automate/main.md
+          - 11 - Introduction à Kubernetes: slides/TP-cicd/11-kubernetes-introduction/main.md
+          - 12 - Helm, package manager de Kubernetes: slides/TP-cicd/12-kubernetes-package-manager-helm/main.md
+          - 13 - GitOps avec ArgoCD: slides/TP-cicd/13-gitops-with-argocd/main.md
+      - DevOps & Monitoring - TP:
+          - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
+          - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md
+          - 03 - ArgoCD, Continuous Delivery & GitOps: slides/TP-devops-et-monitoring/03-argocd-continuous-delivery-et-gitops/argocd-continuous-delivery-et-gitops.md
+          - 04 - Collecte, Traitement et Envoi de Logs, Métriques et Traces avec Vector: slides/TP-devops-et-monitoring/04-collecte-traitement-envoi-logs-metrics-traces-avec-vector/data-pipeline-avec-vector.md
+          - 05 - Stockage des métriques avec Grafana Mimir et VictoriaMetrics: slides/TP-devops-et-monitoring/05-stockage-metrics-grafana-mimir-victoria-metrics/stockage-metrics-grafana-mimir-victoria-metrics.md
+          - 06 - Stockage des logs avec Grafana Loki et VictoriaLogs: slides/TP-devops-et-monitoring/06-stockage-logs-grafana-loki-victoria-logs/stockage-logs-grafana-loki-victoria-logs.md
+          - 07 - Stockage des traces avec Grafana Tempo, Jaeger et Zipkin: slides/TP-devops-et-monitoring/07-stockage-traces-grafana-tempo-jaeger-zipkin/stockage-traces-grafana-tempo-jaeger-zipkin.md
   - Blog:
       - blog/index.md
-  - Slides:
-      - Présentation générale:
-        - Hello Momo !: slides/presentation/hello-momo/hello-momo.md
-        - TP - CI/CD: slides/presentation/tp-cicd/tp-cicd.md
-        - TP - DevOps: slides/presentation/tp-devops/tp-devops.md
-      - Méthodologies DevOps:
-        - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
-        - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
-        - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
-        - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
-        - DRY Terraform configuration avec Terragrunt: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
-      - Container & Virtual Machine :
-        - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
-        - Orchestration de container avec Kubernetes [TODO]: slides/container-virtual-machine/kubernetes/kubernetes.md
-        - Kubernetes Resources [TODO]: slides/container-virtual-machine/kubernetes-resources/kubernetes-resources.md
-      - CI/CD - TP:   
-        - 00 - Introduction à GitlabCI : slides/TP-cicd/00-introduction-a-gitlabci/introduction-a-gitlabci.md
-        - 01 - Premier workflow avec NodeJS: slides/TP-cicd/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md
-        - 02 - Introduction à Docker & Dockerfile: slides/TP-cicd/02-introduction-docker-et-dockerfile/introduction-docker-et-dockerfile.md
-        - 03 - DevSecOps et Méthodologie Shift Left : slides/TP-cicd/03-devsecops-methodologie-shift-left/devsecops-methodologie-shift-left.md
-        - 04 - SAST avec Trivy: slides/TP-cicd/04-sast-with-trivy/sast-with-trivy.md
-        - 05 - DAST avec Owasp Zap Proxy: slides/TP-cicd/05-dast-with-owasp-zap-proxy/dast-with-owasp-zap-proxy.md
-        - 06 - Tests unitaires, d'intégrations et E2E: slides/TP-cicd/06-test-unit-integration-end-to-end/test-unit-integration-end-to-end.md
-        - 07 - Test de régressions visuels avec BackstopJS / BrowserStack Percy: slides/TP-cicd/07-visual-regression-testing-backstopjs-browserstack-percy/main.md
-        - 08 - Test de charge avec Grafana K6: slides/TP-cicd/08-load-testing-with-grafana-k6/main.md
-        - 09 - Clean code avec Sonarqube : slides/TP-cicd/09-clean-code-with-sonarqube/main.md
-        - 10 - Cross-browser testing avec BrowserStack Automate: slides/TP-cicd/10-cross-browser-testing-with-browserstack-automate/main.md
-        - 11 - Introduction à Kubernetes: slides/TP-cicd/11-kubernetes-introduction/main.md
-        - 12 - Helm, package manager de Kubernetes: slides/TP-cicd/12-kubernetes-package-manager-helm/main.md
-        - 13 - GitOps avec ArgoCD : slides/TP-cicd/13-gitops-with-argocd/main.md
-      - DevOps & Monitoring - TP: 
-        - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
-        - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md
-        - 03 - ArgoCD, Continuous Delivery & GitOps: slides/TP-devops-et-monitoring/03-argocd-continuous-delivery-et-gitops/argocd-continuous-delivery-et-gitops.md
-        - 04 - Collecte, Traitement et Envoi de Logs, Métriques et Traces avec Vector: slides/TP-devops-et-monitoring/04-collecte-traitement-envoi-logs-metrics-traces-avec-vector/data-pipeline-avec-vector.md
-        - 05 - Stockage des métriques avec Grafana Mimir et VictoriaMetrics: slides/TP-devops-et-monitoring/05-stockage-metrics-grafana-mimir-victoria-metrics/stockage-metrics-grafana-mimir-victoria-metrics.md
-        - 06 - Stockage des logs avec Grafana Loki et VictoriaLogs: slides/TP-devops-et-monitoring/06-stockage-logs-grafana-loki-victoria-logs/stockage-logs-grafana-loki-victoria-logs.md
-        - 07 - Stockage des traces avec Grafana Tempo, Jaeger et Zipkin: slides/TP-devops-et-monitoring/07-stockage-traces-grafana-tempo-jaeger-zipkin/stockage-traces-grafana-tempo-jaeger-zipkin.md
-  - Machine & Deep learning: https://deeplylearning.fr/
 
 markdown_extensions:
   # Python Markdown

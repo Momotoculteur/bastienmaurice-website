@@ -173,16 +173,3 @@ terrascan-terraform-iac:
 ```
 
 ![Alt text](./img/terrascan-iac-analysis.png)
-
-### IaC Terraform analysis - Kics
-Il existe d'autres outils pour scanner ton infra as code, tel que **Kics**.  
-Plus d'infos :  
-
-- https://github.com/Checkmarx/kics
-
-
-## Cloud provider analysis - Prowler
-**Prowler** est un tool qui va te permettre de mettre en évidence des soucis de configuration. Il va te donner les best-practices selon ton cloud provider.
-
-![cloud-provider-analysis-prowler](./img/cloud-provider-analysis-prowler.png)
-![cloud-provider-analysis-prowler2](./img/cloud-provider-analysis-prowler2.png)

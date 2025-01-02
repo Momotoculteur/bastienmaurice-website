@@ -185,16 +185,16 @@ nav:
       # - Message et stream avec RabbitMQ (TODO): culture-devops/messaging/rabbit-mq.md
   - SecOps: 
     - Infra as Code:
-      - Trivy - tfSec: secops/infra-as-code/trivy-tfsec.md
+      - Trivy (anciennement TfSec): secops/infra-as-code/trivy-tfsec.md
       - Terrascan: secops/infra-as-code/terrascan.md
     - Cloud Provider: 
       - Sécurise ton cloud avec Prowler: secops/cloud-provider/audit-with-prowler.md
       - Sécurise ton cloud avec Kics: secops/cloud-provider/audit-with-kics.md
     - Kubernetes: 
-      - Falco: secops/cloud-provider/falco.md
-      - Tetragon: secops/cloud-provider/tetragon.md
-      - KubeArmor: secops/cloud-provider/kubearmor.md
-      - KubeHound: secops/cloud-provider/kubehound.md
+      #- Falco: secops/cloud-provider/falco.md
+      #- Tetragon: secops/cloud-provider/tetragon.md
+      #- KubeArmor: secops/cloud-provider/kubearmor.md
+      - KubeHound: secops/kubernetes/kubehound.md
   - Machine & Deep learning: https://deeplylearning.fr/
   - Cours & TP:
       - Présentation générale:

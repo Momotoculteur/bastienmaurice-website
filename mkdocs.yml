@@ -191,10 +191,11 @@ nav:
       - Sécurise ton cloud avec Prowler: secops/cloud-provider/audit-with-prowler.md
       - Sécurise ton cloud avec Kics: secops/cloud-provider/audit-with-kics.md
     - Kubernetes: 
-      #- Falco: secops/cloud-provider/falco.md
+      - Comparaison des solutions pour sécuriser ton cluster: secops/kubernetes/defense-solutions-comparison.md
+      - Détection d'actions frauduleuse avec Falco: secops/kubernetes/falco.md
       #- Tetragon: secops/cloud-provider/tetragon.md
       #- KubeArmor: secops/cloud-provider/kubearmor.md
-      - KubeHound: secops/kubernetes/kubehound.md
+      - Détection de point d'entrée avec KubeHound: secops/kubernetes/kubehound.md
   - Machine & Deep learning: https://deeplylearning.fr/
   - Cours & TP:
       - Présentation générale:

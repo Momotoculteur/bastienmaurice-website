@@ -192,8 +192,8 @@ nav:
       - Sécurise ton cloud avec Kics: secops/cloud-provider/audit-with-kics.md
     - Kubernetes: 
       - Comparaison des solutions pour sécuriser ton cluster: secops/kubernetes/defense-solutions-comparison.md
-      - Détection d'actions frauduleuse avec Falco: secops/kubernetes/falco.md
-      #- Tetragon: secops/cloud-provider/tetragon.md
+      - Détection d'actions frauduleuse avec Falco: secops/kubernetes/fraud-detection-with-falco.md
+      - Blocage en temps réel de menace avec Tetragon: secops/kubernetes/real-time-security-with-tetragon.md
       #- KubeArmor: secops/cloud-provider/kubearmor.md
       - Détection de point d'entrée avec KubeHound: secops/kubernetes/kubehound.md
   - Machine & Deep learning: https://deeplylearning.fr/

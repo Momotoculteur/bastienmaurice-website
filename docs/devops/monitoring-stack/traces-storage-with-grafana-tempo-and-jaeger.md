@@ -112,8 +112,6 @@ spec:
         protocols:
           grpc:
             endpoint: 0.0.0.0:4317
-          http:
-            endpoint: 0.0.0.0:4318
     exporters:
       otlp/tempo:
         endpoint: "tempo.monitoring.svc.cluster.local:4317"
@@ -215,8 +213,6 @@ spec:
         protocols:
           grpc:
             endpoint: 0.0.0.0:4317
-          http:
-            endpoint: 0.0.0.0:4318
     exporters:
       otlp/tempo:
         endpoint: "tempo-distributor.monitoring.svc.cluster.local:4317" // tempo-distributed
@@ -299,7 +295,7 @@ resource "argocd_application" "tempo" {
 ```
 
 ### Grafana datasource
-On ajute ici le nouvel endpoint qui pointe directement vers la gateway de notre nouveau chart :
+On ajoute ici le nouvel endpoint qui pointe directement vers la gateway de notre nouveau chart :
 
 ```terraform
 resource "grafana_data_source" "tempo-distributed" {
@@ -311,3 +307,148 @@ resource "grafana_data_source" "tempo-distributed" {
 ```
 
 ## Configuration de Jaeger
+Je te montre ici un exemple de résultat que j'ai obtenu avec Jaeger UI
+
+![jaeger-trace-example-simple-view](./img/jaeger-trace-example-simple-view.png)
+
+![jaeger-trace-example-detailled-view](./img/jaeger-trace-example-detailled-view.png)
+
+### Beyla Configuration
+Ici la configuration reste identique.
+
+```terraform
+env = {
+    "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT" = "otel-collector-global-collector.otel.svc.cluster.local:4317"
+}
+```
+
+### OTEL Configuration
+Ici on choisi le bon endpoint qui target le bon port pour envoyer via gRPC.
+
+```yaml
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel-collector-global
+  namespace: otel
+spec:
+  mode: deployment
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+    processors:
+      memory_limiter:
+        check_interval: 5s
+        limit_mib: 500
+        spike_limit_mib: 150
+      batch:
+        send_batch_size: 512
+        send_batch_max_size: 1024
+    exporters:
+      otlp/jaeger:
+        endpoint: "jaeger-agent.monitoring.svc.cluster.local:4317" // a ajuster
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch, memory_limiter]
+          exporters: [otlp/jaeger]
+```
+
+Je me suis permit d'ajouter 2 processors (complétement optionnel) pour me limiter ma conso CPU/RAM afin d'empêcher mon laptop de prendre feu.
+
+### Jaeger Helm Chart
+Pour des raisons de performances sur mon petit laptop, je vais devoir customiser le chart :
+
+- **allInOne** : mode permettant d'avoir tout dans un seul pod
+- **storage** : en production il faut que tu utilises un backend de type Cassandra ou ElasticSearch. Pour des raisons de perfo, je vais utiliser un type de backend me permettant de sauvegarder mes traces en mémoire. Ce qui implique donc de tout perdre si mon pod/laptop redemarre, on a ici aucune persistence de données.
+- **provisionDataStore** : je désactive tout car je n'utilise pas ces backend
+- **agent** : pas besoin d'agent car j'utilise OTEL comme collecteur de trace (avec Beyla bien évidemment)
+
+```terraform
+resource "argocd_application" "jaeger" {
+  depends_on = [kubernetes_namespace.monitoring_ns, helm_release.argo_cd]
+  metadata {
+    name      = "jaeger"
+    namespace = "argocd"
+  }
+
+  spec {
+
+    destination {
+      server    = "https://kubernetes.default.svc"
+      namespace = kubernetes_namespace.monitoring_ns.metadata[0].name
+    }
+
+    sync_policy {
+      automated {
+        prune       = false
+        self_heal   = true
+        allow_empty = true
+      }
+
+      sync_options = ["Validate=true"]
+      retry {
+        limit = "5"
+        backoff {
+          duration     = "30s"
+          max_duration = "2m"
+          factor       = "2"
+        }
+      }
+    }
+
+    source {
+      repo_url        = "https://jaegertracing.github.io/helm-charts"
+      chart           = "jaeger"
+      target_revision = "3.3.4"
+
+      helm {
+        release_name = "jaeger"
+        values = yamlencode({
+          provisionDataStore = {
+            cassandra     = false
+            elasticsearch = false
+          }
+
+          ingester = {
+            enabled = false
+          }
+
+          storage = {
+            type = "memory"
+          }
+
+          allInOne = {
+            enabled = true
+          }
+
+          agent = {
+            enabled = false
+          }
+        })
+      }
+    }
+  }
+}
+```
+
+### Grafana datasource
+On crée la data source as code de cette façon là :
+
+```terraform
+resource "grafana_data_source" "jaeger" {
+  type       = "jaeger"
+  name       = "jaeger-datasource"
+  url        = "http://jaeger-agent.monitoring.svc.cluster.local:16686"
+}
+```
+
+Tadaaaa !
+
+![jaeger-trace-example-with-grafana](./img/jaeger-trace-example-with-grafana.png)

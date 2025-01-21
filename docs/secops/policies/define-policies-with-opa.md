@@ -15,7 +15,7 @@ Pour écrire tes politiques, OPA utilise un langage appelé Rego. C'est un langa
 
 ## Example de code 
 ### Limiter l'installation de dependances 
-J'ai lu il a de cela quelque temps que des dev avait crée un module NPM, qui lui même embarqué des dependances. Ici rien d'anormal, sauf que ses dependances faisait réf à l'ensemble des packages disponible de la plateforme NPM. Cela se résume à installer des milliers voir millions de packages.
+J'ai lu il a de cela quelque temps que des dev avait crée un module NPM (everything ou encore no-one-left-behind), qui lui même embarquait des dependances. Ici rien d'anormal, sauf que ses dependances faisait réf à l'ensemble des packages disponible de la plateforme NPM. Cela se résume à installer des milliers voir millions de packages.
 
 !!! question
     Quelles conséquences me diriez vous ?

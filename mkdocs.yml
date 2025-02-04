@@ -193,8 +193,8 @@ nav:
     - Kubernetes: 
       - Comparaison des solutions pour sécuriser ton cluster: secops/kubernetes/defense-solutions-comparison.md
       - Détection d'actions frauduleuse avec Falco: secops/kubernetes/fraud-detection-with-falco.md
-      - Blocage en temps réel de menace avec Tetragon: secops/kubernetes/real-time-security-with-tetragon.md
-      - Blocage en temps réel de menace avec KubeArmor: secops/cloud-provider/real-time-security-with-kubearmor.md
+      #- Blocage en temps réel de menace avec Tetragon(todo): secops/kubernetes/real-time-security-with-tetragon.md
+      #- Blocage en temps réel de menace avec KubeArmor(todo): secops/kubernetes/real-time-security-with-kubearmor.md
       - Détection de point d'entrée avec KubeHound: secops/kubernetes/kubehound.md
     - Policies:
       - Définir des policies avec OpenPolicyAgent: secops/policies/define-policies-with-opa.md

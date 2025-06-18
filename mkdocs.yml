@@ -204,6 +204,8 @@ nav:
           - Hello Momo !: slides/presentation/hello-momo/hello-momo.md
           - TP - CI/CD: slides/presentation/tp-cicd/tp-cicd.md
           - TP - DevOps: slides/presentation/tp-devops/tp-devops.md
+      - Kubernetes: 
+        - Certification KCNA: slides/kubernetes/certification-kcna/certification-kcna.md
       - Méthodologies DevOps:
           - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
           - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md

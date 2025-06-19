@@ -13,6 +13,7 @@ Bastien MAURICE
 
 <img src="../../../ressource/img/profile/photo.jpeg" style="border-radius: 50%; width: 200px;" alt="Photo de profil" />
 
+2 ans Fullstack Engineer - Thales<br>
 2 ans DevOps Engineer - Thales<br>
 2 ans+ Platform Engineer - Betclic<br>
 
@@ -22,19 +23,15 @@ Bastien MAURICE
 
 </div>
 ---
+
 <div style="text-align: left;">
 
 ## Certification liste
 
-**Kubernetes and Cloud Native Associate (KCNA)**  
-Kubernetes and Cloud Native Security Associate (KCSA)  
-
-Certified Kubernetes Application Developer (CKAD)  
-Certified Kubernetes Administrator (CKA)  
-
-Certified Kubernetes Security Specialist (CKS)  
-
 </div>
+
+<img src="./img/kubernetes-certification-path.png" alt="kubernetes-certification-path" width="120%"/>
+
 ---
 
 <div style="text-align: left;">
@@ -123,7 +120,7 @@ Le **Control Plane** orchestre l’état global du cluster.
 - 🧠 **kube-scheduler**  
   Planifie les pods sur les nœuds.
 - 🛡️ **kube-controller-manager**  
-  Gère les boucles de contrôle (réplicas, endpoints…).
+  Gère les boucles de contrôle (daemonset, node, namespace...).
 - 🔐 **cloud-controller-manager** *(optionnel)*  
   Intégration cloud provider (load balancers, volumes...).
 
@@ -523,14 +520,15 @@ kind: Service
 metadata:
   name: myservice
 spec:
-  type: NodePort
   selector:
     app: myapp
   ports:
     - port: 80
-      targetPort: 8080
-      nodePort: 30036
+      targetPort: 80
 ```
+
+Client ---> [Service] ---> [Pods avec les bons labels]  
+          (IP stable)       (IPs dynamiques)
 
 </div>
 
@@ -784,7 +782,7 @@ roleRef:
 - **MicroK8s**, **Minikube**, **k3s** : légers, idéals pour dev/test
 
 **🧩 Autres distributions populaires**  
-- **OpenShift** (Red Hat) : Kubernetes + outils CI/CD, sécurité intégrée  
+- **RedHat OpenShift** : Kubernetes + outils CI/CD, monitoring, sécurité intégrée (SELinux,APPArmor...)
 - **VMware Tanzu**, **Canonical Charmed K8s**, etc.
 
 
@@ -816,6 +814,7 @@ roleRef:
 
 
 ---
+<div style="text-align: left;">
 
 ## Runtime 
 
@@ -824,24 +823,34 @@ roleRef:
 
 **🔄 Compatibilité avec Kubernetes**  
 - Kubernetes utilise le standard **Container Runtime Interface (CRI)**  
-- Permet d’utiliser différents runtimes conformes :  
-  - **containerd** (par défaut)  
-  - **CRI-O**  
-  - (Docker n’est plus directement supporté)
+  - Permet d’utiliser différents runtimes conformes :  
+
+| Runtime                            | Langage      | Statut        | Particularités                                                                                                 |
+| ---------------------------------- | ------------ | ------------- | -------------------------------------------------------------------------------------------------------------- |
+| **containerd**                     | Go           | 🔥 Recommandé | Léger, stable, maintenu par la CNCF. Utilisé par défaut par Kubernetes via `kubelet`.                          |
+| **CRI-O**                          | Go           | ✅ Stable      | Minimaliste, conçu spécifiquement pour Kubernetes et 100 % compatible avec CRI. Utilisé par Red Hat/OpenShift. |
+| **Docker (dockershim)**            | Go           | ❌ Déprécié    | Docker a longtemps été utilisé, mais **n'est plus supporté** directement par Kubernetes depuis v1.24.          |
+| **gVisor**                         | Go/C         | ✅ Stable      | Sandbox avec isolation accrue (Google). Moins performant mais plus sécurisé.                                   |
+| **Kata Containers**                | Rust/C       | ✅ Stable      | Chaque conteneur tourne dans une VM légère. Très sécurisé.                                                     |
+| **Wasmtime / runwasi**             | Rust         | 🧪 En test    | Permet d’exécuter du WebAssembly (WASM) à la place des conteneurs classiques.                                  |
+| **MirageOS / Nabla / Firecracker** | OCaml / Rust | Expérimentaux | Runtimes ultra-légers et sécurisés pour des cas très spécifiques (IoT, serverless, etc.)                       |
+
 
 **📦 Rôle du runtime**  
 - Télécharger les images  
 - Créer, exécuter, stopper et supprimer les conteneurs  
 - Gérer les volumes et le réseau
+</div>
 
 ---
+
 <div style="text-align: left;">
 
 ## Helm
 
 **📦 Qu’est-ce que Helm ?**  
-- **Gestionnaire de packages Kubernetes**  
-- Permet d’installer, configurer et maintenir des applications via des **charts**
+**Gestionnaire de packages Kubernetes**  
+Permet d’installer, configurer et maintenir des applications via des **charts**
 
 **🧩 Concepts clés**  
 - **Chart** : ensemble de fichiers YAML modélisant une app (templates + valeurs)  
@@ -861,29 +870,80 @@ helm upgrade myapp bitnami/nginx --set service.type=NodePort
 
 ---
 
+<img src="./img/what-is-helm-package-manage.png" alt="what-is-helm-package-manage" width="80%"/>
+
+---
+<div style="text-align: left;">
+
 ## Kustomize 
 
 - Outil natif Kubernetes pour **personnaliser les manifests YAML**  
 - Permet de créer des variantes sans dupliquer les fichiers  
 - Basé sur une approche **patch & overlay**
 
+</br></br>
+
 **Fonctionnalités clés** 
 - Ajout/modification de labels, annotations  
 - Fusion ou remplacement de champs dans les manifests  
 - Gestion de plusieurs environnements (dev, staging, prod) facilement  
-- Support des ConfigMaps et Secrets générés à la volée
+
+</br></br>
+
+💡 Kustomize facilite la **gestion déclarative** et la réutilisation des configurations Kubernetes
+
+</div>
+---
+
+<div style="text-align: left;">
+
+## Kustomize - Exemple
 
 ```bash
-kustomization.yaml
+myapp/
+├── base/
+│   ├── deployment.yaml
+│   └── kustomization.yaml
+└── overlays/
+    └── prod/
+        ├── kustomization.yaml
+        └── patch.yaml
+```
+
+```bash
+# base/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+spec:
+  replicas: 1
+```
+
+```bash
+# base/kustomization.yaml
 resources:
   - deployment.yaml
-  - service.yaml
+```
 
+```bash
+# overlays/prod/patch.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  replicas: 3
+```
+
+```bash
+# overlays/prod/kustomization.yaml
+resources:
+  - ../../base
 patchesStrategicMerge:
   - patch.yaml
 ```
 
-💡 Kustomize facilite la **gestion déclarative** et la réutilisation des configurations Kubernetes
+</div>
+
 ---
 
 <div style="text-align: left;">
@@ -959,6 +1019,9 @@ S'adapte selon le traffic users, selon des règles & events
 **Vertical Pod Autoscaler (VPA)**  
 - Ajuste automatiquement les ressources (CPU, mémoire) allouées aux pods  
 - Optimise les performances sans changer le nombre de pods  
+- ⚠️ Ne scale pas le nombre de pods, seulement les ressources allouées.
+- ⚠️ Requiert souvent des redémarrages de pods → impact potentiel sur la disponibilité.
+
 
 </div>
 
@@ -982,6 +1045,9 @@ S'adapte selon le traffic users, selon des règles & events
 </div>
 
 ---
+
+<div style="text-align: left;">
+
 ## Serverless & Function as a Service (FaaS)
 
 **Qu’est-ce que le Serverless ?**  
@@ -1001,7 +1067,11 @@ S'adapte selon le traffic users, selon des règles & events
 
 💡 Serverless simplifie le déploiement et la gestion d’applications événementielles
 
+</div>
+
 ---
+
+<div style="text-align: left;">
 
 ## Open Standards
 
@@ -1010,20 +1080,31 @@ S'adapte selon le traffic users, selon des règles & events
 - Développée et maintenue par une communauté ou un organisme indépendant  
 - Favorise l’interopérabilité entre différents systèmes et fournisseurs
 
+</br></br>
+
 **Pourquoi c’est important ?** 
 - Évite la **dépendance propriétaire** (vendor lock-in)  
 - Facilite la collaboration et l’intégration  
 - Assure la pérennité et l’évolution des technologies
 
+</div>
+
+---
+<div style="text-align: left;">
+
+## Open Standards - Exemple
+
 **Exemples dans Kubernetes & Cloud Native**  
 - **OpenTelemetry** : standard d’instrumentation et de télémétrie  
-- **CNCF** : défini plusieurs standards et spécifications  
-- **OCI** (Open Container Initiative) : standards pour conteneurs et images
-- **CNI** (Container Networking Interface) : standards pour les interfaces réseaux sur les containers Linux
-- **CRI** (Container Runtime Interface) : standards pour les interfaces entre kubelet et container runtime
+- **OCI** (Open Container Initiative) : Format standard des images et la manière dont les conteneurs doivent être exécutés (docker, podman, buildah)
+- **CNI** (Container Networking Interface) : Standards ppour connecter les pods à un réseau, gère l’allocation d’IP, la configuration réseau, le routage, etc (calico, cilium)
+- **CRI** (Container Runtime Interface) : Standards entre Kubernetes et le runtime de conteneur, permet à k8s de lancer des conteneurs sans dépendre de Docker (containerd, cri-o)
 
+</br></br>
 
 💡 Utiliser des standards ouverts favorise un écosystème robuste et flexible
+
+</div>
 
 ---
 
@@ -1035,9 +1116,13 @@ S'adapte selon le traffic users, selon des règles & events
 - Permettent de **définir de nouveaux types de ressources** personnalisées  
 - Facilite l’ajout de fonctionnalités spécifiques sans modifier le cœur Kubernetes
 
+</br></br>
+
 **🌟 Exemples courants**  
 - **cert-manager** : gestion automatisée des certificats SSL/TLS  
 - **Prometheus Operator** : gestion simplifiée des instances Prometheus  
+
+</br></br>
 
 💡 **Les CRDs ouvrent la voie à un Kubernetes extensible et adaptable aux besoins métiers !**
 
@@ -1092,11 +1177,15 @@ metadata:
 
 ---
 
+<div style="text-align: left;">
+
 ## ConfigMaps
 
 - Stockent les **configurations non sensibles** (fichiers de config, variables d’environnement)  
 - Séparent la configuration du code → facilite les mises à jour sans redéployer l’app  
 - Doivent rester **lisibles** et non sensibles  
+
+</br></br>
 
 💡 **Astuce :** utiliser des volumes ou variables d’environnement pour injecter ConfigMaps/Secrets dans les pods en évitant la duplication.
 
@@ -1117,6 +1206,7 @@ data:
 
 
 ---
+<div style="text-align: left;">
 
 ## Secrets
 
@@ -1138,6 +1228,8 @@ data:
   DB_PASSWORD: cGFzc3dvcmQ=  # "password" encodé en base64
 ```
 
+</div>
+
 ---
 
 <div style="text-align: left;">
@@ -1151,6 +1243,9 @@ data:
 - 🔀 **Routage** avancé du trafic entre services  
 - 📊 Collecte de **métriques** fines au niveau service  
 - 🔐 Sécurité renforcée via **mTLS** (mutual TLS)  
+- Ne modifie pas le code des applications
+
+</br></br>
 
 💡 **Bénéfices** : visibilité, contrôle et sécurité renforcée pour les communications inter-services.
 
@@ -1196,8 +1291,12 @@ data:
 
 💡 **Objectif Cloud Native** : surveillance proactive et analyse visuelle centralisée !
 
-![grafana-dashboard](./img/grafana-dashboard.png)
+
+
 </div>
+
+<img src="./img/grafana-dashboard.png" alt="grafana-dashboard" width="40%"/>
+
 
 ---
 
@@ -1205,17 +1304,19 @@ data:
 
 ## Logging et Tracing
 
-#### 📚 Logging
+**📚 Logging**
 - **Fluentd**, **Loki** : collecte, centralisation et recherche des logs  
 - Logs essentiels pour le debug et monitoring
 
-#### 🕵️‍♂️ Tracing
+**🕵️‍♂️ Tracing**
 - **Jaeger** : suivi des requêtes distribuées  
 - Analyse des performances et goulots d’étranglement
 
-#### 📏 OpenTelemetry
+**📏 OpenTelemetry**
 - Standard ouvert d’instrumentation  
 - Unifie collecte de métriques, logs, traces
+
+</br></br>
 
 💡 **Focus Cloud Native** : observabilité complète pour diagnostiquer efficacement !
 
@@ -1252,10 +1353,14 @@ data:
 - **Jenkins**, **GitLab CI** : automatisent build, tests, déploiement
 - Pipelines décrits sous forme de fichiers (`Jenkinsfile`, `.gitlab-ci.yml`)
 
+</br></br>
+
 **🌿 GitOps**
 - Déploiement **déclaratif** via Git (source de vérité)
 - Ex : **ArgoCD**, **FluxCD**
 - Suivi des changements via Git → synchronisation automatique avec le cluster
+
+</br></br>
 
 💡 **Objectif Cloud Native** : automatiser, versionner et sécuriser les déploiements !
 
@@ -1271,14 +1376,73 @@ data:
 **🚦 Admission Controllers**  
 - Contrôlent et valident les requêtes API avant leur application  
 - Permettent d’imposer des politiques de sécurité, conformité, bonnes pratiques  
+  
+**1. Built-in Admission Controllers**
+| Nom                   | Rôle                                                      |
+| --------------------- | --------------------------------------------------------- |
+| **NamespaceLifecycle**  | Empêche de créer des objets dans des namespaces supprimés |
+| **LimitRanger**         | Implique des limites de CPU/mémoire par défaut            |
+| **DefaultStorageClass** | Assigne une StorageClass si absente                       |
+
+**2. Dynamic Admission Controllers (Webhooks)**  
+
+📌 Mutating Admission Webhook
+- Peut modifier la requête (ex. injection automatique de sidecar Istio)
+- Exécuté avant validation
+
+📌 Validating Admission Webhook
+- Peut refuser ou valider la requête
+- Exécuté après mutation
+
+| Élément                     | Description                                                       |
+| --------------------------- | --------------------------------------------------------------    |
+| **Admission Controller** | Plugin de l’API Server, mutateur ou validateur                     |
+| **Built-in**             | Activé côté kube-apiserver (ex: LimitRanger)                       |
+| **Webhook**              | Service HTTP/HTTPS externe, flexible (ex: OPA Gatekeeper, Kyverno) |
+
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Sécurité de livraison 
 
 **🛡️ OPA & Gatekeeper**  
-- OPA (Open Policy Agent) : moteur de politique flexible  
-- Gatekeeper : implémentation Kubernetes d’OPA pour appliquer des règles personnalisées  
+- **OPA (Open Policy Agent)**
+  - C’est un moteur de décision généraliste basé sur un langage de policy : Rego.
+  - Tu lui envoies des données, il renvoie une décision (allow, deny, etc.).
+- **Gatekeeper**
+  - Intègre OPA en tant que moteur de policy (controller)
+  - Gère les règles et contraintes via des CRDs
+  - Se comporte comme un Validating Admission Webhook
+```yaml
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRequiredLabels
+metadata:
+  name: require-team-label
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Pod"]
+  parameters:
+    labels: ["team"]
+```
+→ Cela refuse tous les pods qui ne déclarent pas metadata.labels.team.
+</div>
+
+
+---
+<div style="text-align: left;">
+
+## Sécurité de livraison 
 
 **🔍 Scan d’images**  
 - **Trivy**, **Snyk** : détectent vulnérabilités, failles de sécurité dans les images conteneurs  
 - Intégration possible dans pipelines CI/CD pour blocage précoce  
+
+</br></br>
 
 💡 **But : garantir la sécurité et la conformité avant déploiement en production !**
 
@@ -1311,73 +1475,91 @@ data:
 
 ## CNCF – Cloud Native Computing Foundation
 
-- Fondation sous la Linux Foundation
-- Soutient l’écosystème **Cloud Native**
-- Accueille des projets comme Kubernetes, Prometheus, Envoy...
+Fondation sous la Linux Foundation  
+Soutient l’écosystème **Cloud Native**  
+Accueille des projets comme Kubernetes, Prometheus...  
+
+</br></br>
 
 **Gouvernance structurée** 
 - 📜 **Governing Board** (stratégie & finance)
 - 🧠 **Technical Oversight Committee (TOC)** (feuille de route technique)
 - 🛠️ **Special Interest Groups (SIGs)** (groupes d’experts thématiques)
 
-💡 CNCF = communauté + gouvernance + neutralité
+</br></br>
+
+| Structure              | Niveau                  | Rôle principal                         | Responsabilités clés                                                 | Membres typiques                      |
+| ---------------------- | ----------------------- | -------------------------------------- | -------------------------------------------------------------------- | ------------------------------------- |
+| 📜 **Governing Board** | Stratégique             | Vision, stratégie, financement         | Budgets, partenariats, décisions juridiques, croissance du projet    | Représentants des entreprises membres |
+| 🧠 **TOC**             | Technique (stratégique) | Supervision technique globale          | Feuille de route, cohérence des projets, validation technique        | Experts techniques élus ou nommés     |
+| 🛠️ **SIGs**           | Opérationnel            | Travail technique ciblé sur un domaine | Développement, maintenance, revue de code, support aux contributeurs | Mainteneurs, développeurs             |
+
 
 </div>
 ---
+
 <div style="text-align: left;">
 
 ## CNCF – Governing Board
 
-- Décide des **orientations stratégiques**  
-- Gère les **budgets**, **partenariats**, **membres**
-- Composé de représentants des membres Platinum + élus
+**🎯 Rôle**  
+Le Governing Board est l’instance décisionnelle stratégique et financière d’un projet ou d’une fondation.
 
-**Fonctions clés** 
-- Vote sur les budgets
-- Supervision des programmes CNCF
-- Relations avec la Linux Foundation
 
-💡 Le TOC s’occupe du technique, le Board du reste 🧩
+**⚙️ Responsabilités principales**  
+- Définir la stratégie globale (vision, expansion, partenariats)
+- Allouer les budgets (marketing, événements, développement, sécurité, etc.)
+- Gérer les relations avec les sponsors, membres fondateurs, et partenaires
+- Superviser les aspects juridiques et contractuels
+- Valider ou influencer les grandes décisions comme :
+  - L’admission de nouveaux projets dans la fondation
+  - Les changements de licence
+  - Les dépenses exceptionnelles
 
-</div>
----
-<div style="text-align: left;">
-
-## Technical Oversight Committee (TOC)
-
-- Supervise les **projets techniques**
-- Gère le **processus de maturité** :
-  - Sandbox
-  - Incubating
-  - Graduated
-
-**Responsabilités** 
-- Évaluer & accepter les projets
-- Maintenir la cohérence de l’écosystème
-- Éviter la duplication des efforts
-
-💡 Le TOC veille à la **qualité et l'intégration des projets** CNCF 🔍
+**👥 Composition**  
+Généralement constitué de représentants des entreprises membres (ex : Platinum Members dans la CNCF) ou d’élus.
 
 </div>
 
 ---
-
 <div style="text-align: left;">
 
-## Special Interest Groups (SIGs)
+## CNCF – Technical Oversight Committee (TOC)
 
-- Groupes de travail communautaires sur des **domaines techniques** précis  
-- Exemples :
-  - SIG Security
-  - SIG Observability
-  - SIG App Delivery
+**🎯 Rôle**  
+Le TOC est le garant de la cohérence technique du projet ou de l’écosystème soutenu par la fondation.
 
-**Objectifs** 
-- Rédiger des documents de design
-- Fournir des bonnes pratiques
-- Orienter les projets CNCF
+**⚙️ Responsabilités principales**  
+- Définir la feuille de route technique
+- Évaluer les projets candidats à une incubation ou graduation (ex. dans la CNCF : Envoy, Prometheus, OpenTelemetry…)
+- Maintenir la cohérence architecturale entre les projets
+- Piloter les bonnes pratiques, les exigences de sécurité, d’interopérabilité, de documentation…
+- Évaluer les projets abandonnés ou obsolètes
 
-💬 Un bon moyen pour contribuer à l’écosystème cloud native 🤝
+**👥 Composition**  
+Des experts techniques indépendants, souvent élus ou nommés par leurs pairs. Ils ont une vision neutre et long terme.
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## CNCF – Special Interest Groups (SIGs)
+
+**🎯 Rôle**  
+Les SIGs sont des groupes de travail thématiques. Ils opèrent au plus près du code et des usages.
+
+**⚙️ Responsabilités principales**  
+- Gérer une sous-partie technique du projet ou un domaine fonctionnel spécifique (ex : SIG Networking, SIG Security, SIG Observability…)
+- Proposer des améliorations, rédiger des Kubernetes Enhancement Proposals (KEP) ou équivalents
+- Revoir du code, proposer des APIs, expérimenter des features
+- Servir de point d’entrée pour les contributeurs
+- Participer à la documentation, tests et intégration continue
+
+**👥 Composition**  
+Ouverts à tous les contributeurs  
+Menés par des mainteneurs ou leads, souvent nommés par mérite  
+Fonctionnent via des réunions régulières, Slack, mailing lists, GitHub…  
 
 </div>
 
@@ -1414,8 +1596,7 @@ data:
   - 1 personne admise au Governing Board pour 5 members (max 3)
 - 🥉 **Silver**
   - 1 personne admise au Governing Board pour 1O members (max 3)
-- 🧪 **End User**
-- 👨‍🏫 **Academic**
+- 👨‍🏫 **Academic / Nonprofit institution**
 
 **Avantages** 
 - Visibilité dans la communauté
@@ -1429,7 +1610,7 @@ data:
 
 <div style="text-align: left;">
 
-## Quizz - Examen blanc - TODOOOOO
+## Quizz - Examen blanc
 
 </div>
 
@@ -1451,8 +1632,6 @@ data:
 ---
 
 <div style="text-align: left;">
-
-## Plan de Révision Express – KCNA
 
 **🎓 Concepts fondamentaux**
 - Qu’est-ce qu’un cluster Kubernetes ?

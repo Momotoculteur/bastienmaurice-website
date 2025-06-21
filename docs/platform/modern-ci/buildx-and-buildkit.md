@@ -35,12 +35,140 @@ Le cœur de l’architecture, c’est un déploiement de pods qui exécutent le 
 
 Tu peux démarrer avec 2 ou 3 pods, puis monter progressivement si besoin. Et si tu veux que le cluster adapte automatiquement sa capacité à la charge, tu peux ajouter un autoscaler (HPA ou même KEDA pour de l’event-driven).
 
+On commence par apply un deployment : 
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: buildkitd
+  name: buildkitd
+  namespace: gitlab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: buildkitd
+  template:
+    metadata:
+      labels:
+        app: buildkitd
+    # see buildkit/docs/rootless.md for caveats of rootless mode
+    spec:
+      containers:
+        - name: buildkitd
+          image: moby/buildkit:master-rootless
+          args:
+            - --addr
+            - unix:///run/user/1000/buildkit/buildkitd.sock
+            - --addr
+            - tcp://0.0.0.0:1234
+            - --oci-worker-no-process-sandbox
+          # the probe below will only work after Release v0.6.3
+          readinessProbe:
+            exec:
+              command:
+                - buildctl
+                - debug
+                - workers
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          # the probe below will only work after Release v0.6.3
+          livenessProbe:
+            exec:
+              command:
+                - buildctl
+                - debug
+                - workers
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          securityContext:
+            # Needs Kubernetes >= 1.19
+            seccompProfile:
+              type: Unconfined
+            # Needs Kubernetes >= 1.30
+            appArmorProfile:
+              type: Unconfined
+            # To change UID/GID, you need to rebuild the image
+            runAsUser: 1000
+            runAsGroup: 1000
+          ports:
+            - containerPort: 1234
+          volumeMounts:
+            # Dockerfile has `VOLUME /home/user/.local/share/buildkit` by default too,
+            # but the default VOLUME does not work with rootless on Google's Container-Optimized OS
+            # as it is mounted with `nosuid,nodev`.
+            # https://github.com/moby/buildkit/issues/879#issuecomment-1240347038
+            - mountPath: /home/user/.local/share/buildkit
+              name: buildkitd
+      volumes:
+        - name: buildkitd
+          emptyDir: {}
+```
+
+Puis on apply son service associé pour être accesible : 
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: buildkitd
+  name: buildkitd
+  namespace: gitlab
+spec:
+  ports:
+    - port: 1234
+      protocol: TCP
+      targetPort: 1234
+  selector:
+    app: buildkitd
+```
+
+!!! note
+    Tu as des versions pour le lancer sur un simple pod, sous forme de job... Tout les exemples disponible [ici](https://github.com/moby/buildkit)
 
 ## Intégrer BuildKit à GitLab CI : une pipeline simple et efficace
 Maintenant, place à la pratique. Imaginons que tu veux builder une image Docker simple depuis un job GitLab, mais au lieu d’utiliser DinD ou Kaniko, tu veux utiliser ton pool BuildKit sur Kubernetes.
 
+On commence par se créer un Dockerfile des plus minimal : 
+```dockerfile
+FROM alpine:3.20
+RUN echo "Hello from BuildKit!" > /hello.txt
+CMD ["cat", "/hello.txt"]
+```
+
+Je te met ensuite la configuration Gitlab qui contacte notre pod de `BuildKit`, via la cli `buildx`, pour un simple `docker build`.
+
+```yaml
+stages:
+  - build
+
+variables:
+  BUILDKIT_HOST: tcp://buildkitd.gitlab.svc.cluster.local:1234
+  DOCKER_TLS_CERTDIR: ""
+
+build_image:
+  stage: build
+  before_script:
+    - apk add --no-cache curl bash git docker-cli docker-cli-buildx docker-rootless-extras
+  script:
+    - docker context create buildkit --docker "host=$BUILDKIT_HOST"
+    - docker context use buildkit
+    - docker buildx create --name remote-builder --platform=linux/arm64 --driver remote --use --bootstrap
+    - docker buildx build -o type=docker,dest=- . > mon_image.tar
+```
+
+J'utilise ici une version rootless bien évidement, mais sans certificat, d'ou la présence de la variable `DOCKER_TLS_CERTDIR`, pour un gain de temps pour mon installation en local.
+
+!!! tip
+    La cli Buildx contient un max d'argument super intéressant, je met vraiment ici un exemple de buil le plus minimaliste possible.
+
+![docker-builkit-buildx](docker-builkit-buildx.png)
 
 ## Conclusion
-BuildKit, c’est vraiment la solution la plus moderne et scalable pour construire des images Docker dans un environnement Kubernetes. Couplé à GitLab CI par exemple, il te permet de sortir des vieilles pratiques risquées (comme DinD), tout en profitant de performances et de flexibilité inégalées.
+BuildKit, c’est vraiment la solution la plus moderne et scalable pour construire des images Docker dans un environnement Kubernetes. Couplé à GitLab CI par exemple, il te permet de sortir des vieilles pratiques risquées (comme DinD), tout en profitant de performances et de flexibilité inégalées, de build en multi-stage, etc.
 
-Et en prime, tu peux scaler ton infra BuildKit automatiquement, pour que ton cluster soit prêt à répondre aux pics de builds... sans jamais trop consommer en temps normal.
+Et en prime, tu peux scaler ton infra BuildKit automatiquement via HPA, pour que ton cluster soit prêt à répondre aux pics de builds... sans jamais trop consommer en temps normal.
+

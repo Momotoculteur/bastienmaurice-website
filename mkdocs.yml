@@ -198,6 +198,10 @@ nav:
       - Détection de point d'entrée avec KubeHound: secops/kubernetes/kubehound.md
     - Policies:
       - Définir des policies avec OpenPolicyAgent: secops/policies/define-policies-with-opa.md
+  - Platform: 
+    - Modern CI:
+      - Accélére tes pipelines Docker avec BuildX et BuiltKit: platform/modern-ci/buildx-and-buildkit.md
+      - GitlabCI runners sous Kubernetes: platform/modern-ci/gitlabci-runners-on-kubernetes.md
   - Machine & Deep learning: https://deeplylearning.fr/
   - Cours & TP:
       - Présentation générale:

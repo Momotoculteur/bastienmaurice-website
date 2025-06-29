@@ -48,7 +48,7 @@ Travailler le raisonnement, la communication, la capacité à s'exprimer, convra
 
 ### Design system
 - **System Design Interview – An insider's guide** (Alex Xu, *Jui. 2020*): Superbe ouvrage pour les gens qui n'ont aucune idée de comment désigner un système, on parle ici d'achi, de patter, de best practices pour un system disponible et scalable. Cerise sur le gateau on prends de vrais example ici, comment faire un Google Maps, comment faire un stockage de type S3, et on voit de nombreux exemple. Idéal d'ailleurs pour préparer vos entretiens si vous préparrez une boite US type Datadog, vous n'y échapperez pas à ce genre d'interview.
-- **System Design Interview – An Insider's Guide: Volume 2** (Alex Xu/Sahn Lam, *Mar. 2022*): On repprend ici la même recette qui a très bien fonctionné, et on y ajoute pleins de nouveaux use cases. Je ne peux que recommander.
+- **System Design Interview – An Insider's Guide: Volume 2** (Alex Xu/Sahn Lam, *Mar. 2022*): On reprend ici la même recette qui a très bien fonctionné, et on y ajoute pleins de nouveaux use cases. Je ne peux que recommander, même si la fin peut être un poil répétitif.
 
 ### C
 Mon premier language appris en IUT durant les études, j'en garde que de belles choses (non c'est faux)

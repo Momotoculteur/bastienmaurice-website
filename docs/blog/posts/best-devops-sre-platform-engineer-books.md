@@ -42,9 +42,8 @@ Travailler le raisonnement, la communication, la capacité à s'exprimer, convra
 
 ### DevOps/SRE/Platform
 
-- **Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations** (Nicole Forsgren/Jez Humble/Gene Kim, *Mar.2018*): en cours de lecture
-- **The Unicorn Project: A Novel about Developers, Digital Disruption, and Thriving in the Age of Data** (Gene Kim, *Nov. 2019*): todo
-- **The Phoenix Project: A Novel About IT, DevOps, and Helping Your Business Win** (Gene Kim/Kevin Behr/George Spafford, *Sep. 2024*): maybe
+- **Accelerate: The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations** (Nicole Forsgren/Jez Humble/Gene Kim, *Mar.2018*): Un chouette bouquin qui discute de comment améliorer les process via du lean, communication, ci/cd, etc. Défini des métriques pour savoir comment on se situe en terme de certaines bonnes pratique, comment diminuer le burn-out au sein des équipes, un must have à lire.
+
 
 ### Design system
 - **System Design Interview – An insider's guide** (Alex Xu, *Jui. 2020*): Superbe ouvrage pour les gens qui n'ont aucune idée de comment désigner un système, on parle ici d'achi, de patter, de best practices pour un system disponible et scalable. Cerise sur le gateau on prends de vrais example ici, comment faire un Google Maps, comment faire un stockage de type S3, et on voit de nombreux exemple. Idéal d'ailleurs pour préparer vos entretiens si vous préparrez une boite US type Datadog, vous n'y échapperez pas à ce genre d'interview.
@@ -59,3 +58,13 @@ Mon premier language appris en IUT durant les études, j'en garde que de belles 
 Mon second language de prédilection appris en IUT, toujours durant les études.
 
 - **Programmer en C++ moderne: De C++11 à C++20** (Claude Delannoy, *Oct. 2019*): Excellent bouquin, qui aborde la base du language en plus de parler des nouveautés. On est maintenant en version 23, le language évoluant, donc le bouquin risque d'avoir quelques trous désormais.
+
+
+### Todo-list
+
+Une liste de mes prochaines lectures, sur lesquelles j'ai lu de bon retours.
+
+#### DevOps/SRE/Platform
+
+- **The Unicorn Project: A Novel about Developers, Digital Disruption, and Thriving in the Age of Data** (Gene Kim, *Nov. 2019*)
+- **The Phoenix Project: A Novel About IT, DevOps, and Helping Your Business Win** (Gene Kim/Kevin Behr/George Spafford, *Sep. 2024*)

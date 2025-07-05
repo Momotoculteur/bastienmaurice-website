@@ -1,7 +1,7 @@
 ---
 date: 2024-02-26
 authors: [bmaurice]
-title: Deployer un serveur Wordpress sur des EC2, géré via un Auto Scaling Group (ASG) avec un Application Load Balancer (ALB) dans un subnet privée via un Virtual Private Cloud (VPC), accessible via un Internet et NAT Gateway (TODOOOOO___)
+title: Deployer un serveur Wordpress sur des EC2, géré via un Auto Scaling Group (ASG) avec un Application Load Balancer (ALB) dans un subnet privée via un Virtual Private Cloud (VPC), accessible via un Internet et NAT Gateway
 categories:
   - AWS
   - Cloud

@@ -33,7 +33,7 @@ Un pipeline est une série de tâches (ou jobs) exécutées dans un ordre préci
 Pour configurer GitLab CI/CD, tu dois créer un fichier nommé .gitlab-ci.yml à la racine de ton dépôt.  
 Ce fichier contient la configuration des pipelines : les stages, les jobs, et comment chaque job doit s'exécuter. Voici un exemple simple :
 
-<pre><code data-trim data-noescape>
+```yaml
 stages:
   - build
   - test
@@ -53,8 +53,8 @@ deploy_job:
   stage: deploy
   script:
     - echo "Deploying the project..."
+```
 
-</code></pre>
 
 </div>
 ---
@@ -281,9 +281,9 @@ Dans cet exemple, job1 et job2 héritent de la configuration définie dans .base
 ---
 <div style="text-align: left;">
 
-## Anchor Jobs avancé (extends)
+## Anchor Jobs avancé (YAML)
 
-Un **Anchor Job** permet de réutiliser des configurations communes dans plusieurs jobs au sein d'un pipeline GitLab CI, en utilisant les ancres YAML (`&anchor` et `*alias`). Cela simplifie la configuration en évitant la duplication du code.
+Un **Anchor Job** permet de réutiliser des configurations communes dans plusieurs jobs au sein d'un pipeline GitLab CI, en utilisant les ancres YAML (`&anchor` et `*alias`). Cela est une fonctionnalité propre au YAML standard.
 
 <pre><code data-trim data-noescape>
 .default_job: &default_job
@@ -301,9 +301,8 @@ job2:
     - echo "Tâche spécifique au job 2"
 </code></pre>
 
-**Avantages :**  
-- **Réduction de la duplication** : Évite de réécrire les mêmes instructions pour chaque job.
-- **Facilite la maintenance** : Les changements dans l'ancre se propagent automatiquement aux jobs qui l'utilisent.
+- `extends` est GitLab-spécifique, conçu pour les jobs : plus lisible, robuste, extensible.
+- `&` et `*` sont purement YAML : réutilisables partout mais moins intelligents côté GitLab CI.
 
 </div>
 
@@ -311,12 +310,12 @@ job2:
 
 <div style="text-align: left;">
 
-## Anchor Jobs avancé : !reference
+## Références
 
-Le mot-clé **`!reference`** permet de réutiliser des parties d'une configuration d'un autre pipeline ou fichier YAML. Cela simplifie la gestion en centralisant certaines parties communes, comme des scripts ou des variables, que l'on peut inclure dans plusieurs pipelines.
+Le mot-clé `!reference` permet de réutiliser des parties d'une configuration d'un autre pipeline ou fichier YAML. Cela simplifie la gestion en centralisant certaines parties communes, comme des scripts ou des variables, que l'on peut inclure dans plusieurs pipelines.
 
 <pre><code data-trim data-noescape>
-.default: &default_template
+.default:
   script:
     - echo "Commande par défaut"
 
@@ -329,6 +328,41 @@ job1:
 **Avantages** :
 - **Réutilisation du code** : Permet d'utiliser des fragments de configuration déjà définis.
 - **Simplification** : Facilite la gestion de configurations complexes en évitant la répétition.
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Scheduled / Nightly Pipelines
+
+- Pipeline déclenché automatiquement **à intervalle régulier**
+- Utilise une syntaxe de type **cron**
+- Utile pour :
+  - Des vérifications de Pentest (OWASP Zap Proxy)
+  - Des vérifications de sécurité (Trivy)
+  - Des tâches de maintenance (cleanup ancien build, artifacts, image docker...)
+  - Des tests E2E 
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Scheduled / Nightly Pipelines - Configuration
+
+1. Aller sur le **projet GitLab**
+2. Dans le menu de gauche : `CI/CD` → `Schedules`
+3. Cliquer sur **"New schedule"**
+
+</br></br>
+
+- **Description** : nom lisible (ex : "Build de nuit")
+- **Intervalle** : format `cron` (ex : `0 0 * * *` pour minuit chaque jour)
+- **Fuseau horaire** : important pour les équipes globales
+- **Branch cible** : sur laquelle le pipeline sera lancé
+- **Variables** (optionnel) : ajout de variables spécifiques à ce déclenchement
 
 </div>
 
@@ -372,15 +406,16 @@ trigger-deploy:
 
 ## Variables Prédéfinies 
 
-Les **variables prédéfinies** de GitLab CI sont des variables d'environnement automatiquement disponibles lors de l'exécution des pipelines. Elles fournissent des informations sur le projet, le pipeline, le commit, et bien plus, facilitant la configuration et l'automatisation.
+Les **variables prédéfinies** de GitLab CI sont des variables d'environnement automatiquement disponibles lors de l'exécution des pipelines.  
+Elles fournissent des informations sur le projet, le pipeline, le commit, et bien plus, facilitant la configuration et l'automatisation.
 
-### Exemple de variables prédéfinies :
-- **`CI_JOB_NAME`** : Nom du job en cours d'exécution.
-- **`CI_COMMIT_SHA`** : SHA du commit actuel.
-- **`CI_PROJECT_NAME`** : Nom du projet GitLab.
-- **`CI_PIPELINE_ID`** : ID unique du pipeline en cours.
+**Exemple de variables prédéfinies**
+- **CI_JOB_NAME** : Nom du job en cours d'exécution.
+- **CI_COMMIT_SHA** : SHA du commit actuel.
+- **CI_PROJECT_NAME** : Nom du projet GitLab.
+- **CI_PIPELINE_ID** : ID unique du pipeline en cours.
 
-### Exemple d'utilisation :
+**Exemple d'utilisation**
 
 <pre><code data-trim data-noescape>
 job1:
@@ -394,11 +429,97 @@ job1:
 
 ---
 
+<div style="text-align: left;">
+
+## Gitlab Template
+
+On a vu les templates locaux, mais on peut en inclure des distants
+
+Depôt `ci-templates`
+```yaml
+# templates/test-template.yml
+.test_template:
+  script:
+    - echo "Run test"
+```
+
+Dépôt `mon-repo`
+```yaml
+include:
+  - project: 'mon-org/ci-templates'
+    ref: 'main'
+    file: '/templates/test-template.yml'
+
+my_test_job:
+  extends: .test_template
+  stage: test
+```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Gitlab Component
+
+- Permettent d’utiliser des blocs modulaires avec des inputs/outputs
+- Similaire à des fonctions paramétrables
+- Syntaxe avec inputs, outputs et uses
+
+```yaml
+# .gitlab/components/docker-build.yml
+inputs:
+  image_name:
+    description: "Nom de l'image"
+    required: true
+
+default:
+  script:
+    - docker build -t $[[ inputs.image_name ]] .
+```
+
+```yaml
+build_image:
+  uses: .gitlab/components/docker-build
+  with:
+    image_name: "mon-image"
+```
+
+</div>
+
+
+---
+
+<div style="text-align: left;">
+
+## Templates vs Components
+
+| Critère                        | Templates (`include` + `extends`) | Components (`uses`)              |
+|-------------------------------|-----------------------------------|----------------------------------|
+| **Réutilisation**             | Oui                              | Oui                              |
+| **Paramétrisation**           | ❌ Non (sauf via `variables`)    | ✅ Oui (`inputs`)                |
+| **Encapsulation logique**     | Faible                           | Forte                            |
+| **Lisibilité**                | Moyenne                          | Excellente grâce aux `inputs`   |
+| **Composition de blocs**      | Oui (`extends`)                  | Oui (`uses`) avec `inputs`      |
+| **Couplage au projet**        | Moyen                            | Faible (modularité renforcée)   |
+| **Versionnage**               | Via `ref` (`branch`/`tag`)       | Via `ref` également              |
+| **Utilisation de plusieurs blocs** | Oui, mais difficile à combiner | ✅ Oui, avec paramètres          |
+| **Validation dans GitLab**    | Mûr et stable                    | Fonctionnalité récente           |
+| **Complexité d'apprentissage**| Faible                           | Moyenne                          |
+| **Cas d'usage typique**       | Mutualisation de jobs simples    | Pipelines modulaires complexes  |
+
+
+</div>
+
+---
 
 <div style="text-align: left;">
 
 ## Récap
 
-GitLab CI/CD est très puissant pour automatiser tout le processus de développement, du test au déploiement. Le fichier .gitlab-ci.yml te permet de configurer ces automatisations à l'aide de jobs, de stages et de runners, tout en tirant parti des variables, des artifacts et des conditions pour un pipeline flexible.
+GitLab CI/CD est très puissant pour automatiser tout le processus de développement, du test au déploiement. 
+
+Le fichier .gitlab-ci.yml te permet de configurer ces automatisations à l'aide de jobs, de stages et de runners, tout en tirant parti des variables, des artifacts et des conditions pour un pipeline flexible.
 
 </div>

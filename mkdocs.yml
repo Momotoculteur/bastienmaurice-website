@@ -5,7 +5,7 @@ site_url: https://bastienmaurice.fr
 site_dir: public
 copyright: Copyright &copy; 2023 - 2025 Bastien MAURICE
 site_description: |
-  Développeur en génie logiciel de formation, je suis aujourd'hui avec quelques années d'expériences DevOps chez Betclic (Bordeaux, France).
+  Développeur en génie logiciel de formation, je suis aujourd'hui avec quelques années d'expériences Platform Engineer chez Betclic (Ex. Thales, Bordeaux, France).
   Je m'intéresse aussi au domaine du machine & deep learning.
 
 extra:
@@ -203,7 +203,7 @@ nav:
       - Accélére tes pipelines Docker avec BuildX et BuiltKit: platform/modern-ci/buildx-and-buildkit.md
       - GitlabCI runners sous Kubernetes: platform/modern-ci/gitlabci-runners-on-kubernetes.md
   - Machine & Deep learning: https://deeplylearning.fr/
-  - Cours & TP:
+  - Slides Cours/TP:
       - Présentation générale:
           - Hello Momo !: slides/presentation/hello-momo/hello-momo.md
           - TP - CI/CD: slides/presentation/tp-cicd/tp-cicd.md
@@ -211,15 +211,14 @@ nav:
       - Kubernetes: 
         - Certification KCNA: slides/kubernetes/certification-kcna/certification-kcna.md
       - Méthodologies DevOps:
-          - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
-          - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
-          - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
-          - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
-          - DRY Terraform configuration avec Terragrunt: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
+        - Introduction aux CI/CD: slides/devops/cicd-introduction/cicd-introduction.md
+        - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md
+        - Shift Left Security - DevSecOps: slides/devops/shift-left-security-dev-sec-ops/shift-left-security-dev-sec-ops.md
+        - GitOps, c'est quoi ?: slides/devops/what-is-git-ops/git-ops.md
+        - Infrastructure as Code avec Terraform: slides/devops/infrastructure-as-code-with-terraform/infrastructure-as-code-with-terraform.md
+        - DRY Terraform configuration avec Terragrunt: slides/devops/dry-terraform-configuration-with-terragrunt/dry-terraform-configuration-with-terragrunt.md
       - Container & Virtual Machine:
           - Container avec Docker: slides/container-virtual-machine/container-virtual-machine-docker/docker.md
-          - Orchestration de container avec Kubernetes [TODO]: slides/container-virtual-machine/kubernetes/kubernetes.md
-          - Kubernetes Resources [TODO]: slides/container-virtual-machine/kubernetes-resources/kubernetes-resources.md
       - CI/CD - TP:
           - 00 - Introduction à GitlabCI: slides/TP-cicd/00-introduction-a-gitlabci/introduction-a-gitlabci.md
           - 01 - Premier workflow avec NodeJS: slides/TP-cicd/01-premier-workflow-avec-nodejs/premier-workflow-avec-nodejs.md

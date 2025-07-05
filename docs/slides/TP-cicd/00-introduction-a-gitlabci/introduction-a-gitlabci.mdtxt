@@ -33,7 +33,7 @@ Un pipeline est une série de tâches (ou jobs) exécutées dans un ordre préci
 Pour configurer GitLab CI/CD, tu dois créer un fichier nommé .gitlab-ci.yml à la racine de ton dépôt.  
 Ce fichier contient la configuration des pipelines : les stages, les jobs, et comment chaque job doit s'exécuter. Voici un exemple simple :
 
-<pre><code data-trim data-noescape>
+```yaml
 stages:
   - build
   - test
@@ -53,8 +53,8 @@ deploy_job:
   stage: deploy
   script:
     - echo "Deploying the project..."
+```
 
-</code></pre>
 
 </div>
 ---

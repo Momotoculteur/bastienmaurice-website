@@ -391,8 +391,7 @@ build-job:
 trigger-deploy:
   stage: deploy
   trigger:
-    include: path/to/another-pipeline.yml
-    strategy: depend
+    project: project-group/my-downstream-project
 </code></pre>
 
 **Avantages** :
@@ -488,7 +487,6 @@ build_image:
 
 </div>
 
-
 ---
 
 <div style="text-align: left;">
@@ -510,6 +508,64 @@ build_image:
 | **Cas d'usage typique**       | Mutualisation de jobs simples    | Pipelines modulaires complexes  |
 
 
+</div>
+
+---
+<div style="text-align: left;">
+
+## Gitlab Services
+
+Conteneur Docker auxiliaire utilisé pendant l'exécution d’un job   
+Partage le réseau et le système de fichiers avec le job principal     
+ 
+Permet d'ajouter facilement :
+- Une base de données
+- Un moteur de cache
+- Un démon Docker
+
+```yaml
+job_name:
+  image: node:18
+  services:
+    - name: mongo:6
+  script:
+    - npm test
+```
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## Gitlab Services - Persistance et timing
+
+- Les services sont réinitialisés à chaque job
+- Il peut y avoir un temps de démarrage :
+  - Utiliser healthcheck pour attendre un service prêt
+  - Exemples : sleep, ou script de vérification
+
+```yaml
+script:
+  - until xxxxxxxxxx ; do sleep 1; done
+  - python tests.py
+```
+
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## Gitlab Services - Syntaxe avancée
+
+```
+job:
+  services:
+    - name: mysql:8
+      alias: db
+      entrypoint: ["/entrypoint.sh"]
+      command: ["mysqld", "--character-set-server=utf8mb4"]
+```
 </div>
 
 ---

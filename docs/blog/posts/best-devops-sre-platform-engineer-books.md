@@ -36,7 +36,7 @@ Parce que l'évolution pour passer de junior dev -> advanced/mid dev -> senior d
 
 Travailler le raisonnement, la communication, la capacité à s'exprimer, convraincre, emmener ton équipe et top mangement à suivre tes choix est tout aussi voir davatange important que tes hard skills de techos.
 
-- **Staff Engineer: Leadership beyond the management track** (Will Larson/Tanya Reilly, *Jan. 2021*): en cours de lecture
+- **Staff Engineer: Leadership beyond the management track** (Will Larson/Tanya Reilly, *Jan. 2021*): bon livre, essaye de donner une vue globale d'un staff+ role, notamment avec le background de l'auteur. La fin nous donne quelques interview de staff/principal engineer dans de grosse boite, histoire de nous ammener quelque chose de bien plus palpable :)
 - **The Staff Engineer's Path: A Guide for Individual Contributors Navigating Growth and Change** (Tanya Reilly, *Sep. 2022*): en cours de lecture
 - **The Software Engineer's Guidebook: Navigating senior, tech lead, and staff engineer positions at tech companies and startups** (Gergely Orosz, *Fév. 2024*) : en cours de lecture
 

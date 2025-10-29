@@ -8,6 +8,8 @@ site_description: |
   Développeur en génie logiciel de formation, je suis aujourd'hui avec quelques années d'expériences Platform Engineer chez Betclic (Ex. Thales, Bordeaux, France).
   Je m'intéresse aussi au domaine du machine & deep learning.
 
+extra_css:
+  - extra-libs/extra.css
 extra:
   generator: false
   homepage: https://bastienmaurice.fr
@@ -159,6 +161,8 @@ nav:
       - Data pipeline:
           - Logs collector & aggregator avec Vector.dev: devops/data-pipeline/logs-collector-aggregator-vector.md
           - Logs collector avec Prometheus: devops/data-pipeline/logs-collector-prometheus.md
+      - Alerting: 
+        - Introduction à Prometheus AlertManger: devops/monitoring-stack/manage-alerts-with-grafana-alert-manager.md
       - Monitoring - Logs:
           - VictoriaLogs & Intégration dans Grafana: devops/monitoring-stack/logs-with-victoria-logs.md
           - Grafana Loki: devops/monitoring-stack/logs-with-grafana-loki.md
@@ -198,6 +202,8 @@ nav:
       - Détection de point d'entrée avec KubeHound: secops/kubernetes/kubehound.md
     - Policies:
       - Définir des policies avec OpenPolicyAgent: secops/policies/define-policies-with-opa.md
+    - Pentests:
+      - Proxy le réseau de ton smartphone avec OWASP ZAP: secops/pentests/proxy-network-with-owasp-zap-for-mobile-apps.md
   - Platform: 
     - Modern CI:
       - Accélére tes pipelines Docker avec BuildX et BuiltKit: platform/modern-ci/buildx-and-buildkit.md

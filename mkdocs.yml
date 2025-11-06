@@ -216,6 +216,8 @@ nav:
           - TP - DevOps: slides/presentation/tp-devops/tp-devops.md
       - Kubernetes: 
         - Certification KCNA: slides/kubernetes/certification-kcna/certification-kcna.md
+      - Testing: 
+        - Tests de charge avec Grafana K6: slides/tests/load-testing/grafana-k6.md
       - Méthodologies DevOps:
         - Introduction aux CI/CD: slides/devops/cicd-introduction/cicd-introduction.md
         - DevOps, c'est quoi ?: slides/devops/what-is-dev-ops/dev-ops.md

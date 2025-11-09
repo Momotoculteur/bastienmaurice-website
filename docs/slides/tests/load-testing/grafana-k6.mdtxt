@@ -341,6 +341,7 @@ export default function () {
 </div>
 
 ---
+<div style="text-align: left;">
 
 ## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
 
@@ -366,7 +367,10 @@ export default function () {
 - **Checks :** Validations qui n'arrêtent pas le test (mesurent le taux de succès)
 - **Thresholds :** Critères qui déterminent si le test passe ou échoue
 
+</div>
+
 ---
+<div style="text-align: left;">
 
 ## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
 
@@ -396,6 +400,7 @@ export default function () {
 - Tester avec des endpoints qui retournent différents codes HTTP
 - Observer le taux de succès des checks
 
+</div>
 ---
 
 # Fondamentaux et Scripting
@@ -405,6 +410,7 @@ export default function () {
 <!-- .slide: class="center" -->
 
 ---
+<div style="text-align: left;">
 
 ## 3.1 Théorie : Groupes et Organisation 
 
@@ -437,7 +443,9 @@ export default function () {
 - Facilite l'analyse des résultats
 - Meilleure lisibilité
 
+</div>
 ---
+<div style="text-align: left;">
 
 ### 3.2 Théorie : Options de Configuration (25 min)
 
@@ -477,8 +485,9 @@ export const options = {
   batchPerHost: 6,
 };
 ```
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## 3.3 Pratique : Gestion des Cookies et Sessions
 
@@ -510,8 +519,9 @@ export default function () {
   console.log(cookies);
 }
 ```
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## 3.3 Pratique : Gestion des Cookies et Sessions
 
@@ -521,7 +531,7 @@ export default function () {
 - Utiliser ce token pour des requêtes authentifiées
 - Grouper les actions par fonctionnalité
 - Ajouter des checks appropriés
-
+</div>
 ---
 
 # Fondamentaux et Scripting
@@ -531,6 +541,7 @@ export default function () {
 <!-- .slide: class="center" -->
 
 ---
+<div style="text-align: left;">
 
 ## 4.1 Théorie : Corrélations Techniques
 
@@ -558,8 +569,9 @@ export default function () {
   }
 }
 ```
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## 4.1 Théorie : Corrélations Techniques
 
@@ -581,8 +593,9 @@ export default function () {
   );
 }
 ```
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## 4.2 Pratique : Données Externes
 
@@ -615,8 +628,9 @@ user1,user1@example.com
 user2,user2@example.com
 user3,user3@example.com
 ```
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## 4.2 Pratique : Données Externes
 
@@ -634,8 +648,11 @@ export default function () {
   http.get(`https://api.example.com/products/${product.id}`);
 }
 ```
+</div>
 
 ---
+<div style="text-align: left;">
+
 ## 4.2 Pratique : Données Externes
 
 #### Variables d'environnement
@@ -656,8 +673,10 @@ Exécution :
 ```bash
 k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
 ```
+</div>
 
 ---
+<div style="text-align: left;">
 
 ## 4.2 Pratique : Données Externes
 
@@ -668,7 +687,10 @@ k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
 - Extraire un token de la réponse de login
 - Utiliser ce token pour des requêtes suivantes
 
+</div>
+
 ---
+<div style="text-align: left;">
 
 ## 4.3 Théorie et Introduction : K6 Browser
 
@@ -684,7 +706,11 @@ k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
 - Mesurer les métriques Web Vitals
 - Tests de bout en bout avec charge
 
+</div>
+
 ---
+<div style="text-align: left;">
+
 ## 4.3 Théorie et Introduction : K6 Browser
 
 
@@ -730,8 +756,9 @@ export default async function () {
   }
 }
 ```
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## Fin de la Journée 1
 
@@ -745,8 +772,9 @@ export default async function () {
 - ✅ Options de configuration
 - ✅ Gestion des cookies
 - ✅ Corrélations et données externes
-- ✅ Introduction à K6 Browser
+- ✅ Introduction à K6 **Browser**
 
+</div>
 ---
 
 
@@ -758,6 +786,7 @@ export default async function () {
 
 
 ---
+<div style="text-align: left;">
 
 ## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
 
@@ -779,8 +808,10 @@ export default function () {
   sleep(Math.random() * 5); // Think time aléatoire (0-5s)
 }
 ```
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
 
 #### Modèles fermés vs ouverts
@@ -802,8 +833,10 @@ export const options = {
   },
 };
 ```
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
 #### Modèles fermés vs ouverts
 
@@ -827,8 +860,11 @@ export const options = {
   },
 };
 ```
+</div>
 
 ---
+<div style="text-align: left;">
+
 ## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
 
 #### Executors disponibles
@@ -840,7 +876,9 @@ export const options = {
 6. **ramping-arrival-rate :** Taux d'arrivée avec rampe
 7. **externally-controlled :** Contrôle externe (API)
 
+</div>
 ---
+<div style="text-align: left;">
 
 ## 5.2 Pratique : Création de Scénarios Réalistes
 
@@ -863,8 +901,9 @@ export const options = {
   },
 };
 ```
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## 5.2 Pratique : Création de Scénarios Réalistes
 
@@ -904,8 +943,9 @@ export function writeScenario() {
   sleep(0.5);
 }
 ```
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## 5.2 Pratique : Création de Scénarios Réalistes
 
@@ -917,6 +957,7 @@ export function writeScenario() {
 - Utiliser des think times réalistes
 - Implémenter une rampe de charge progressive
 
+</div>
 ---
 
 ## Pause
@@ -929,6 +970,7 @@ export function writeScenario() {
 <!-- .slide: class="center" -->
 
 ---
+<div style="text-align: left;">
 
 ## 6.1 Théorie : Les Différents Types de Tests de Charge
 
@@ -958,8 +1000,11 @@ export const options = {
 - Temps de réponse moyen et P95/P99
 - Throughput stable
 - Taux d'erreur minimal
+</div>
 
 ---
+<div style="text-align: left;">
+
 ## 6.1 Théorie : Les Différents Types de Tests de Charge
 
 
@@ -988,7 +1033,9 @@ export const options = {
 - Pas de dégradation progressive
 - Pas de fuites de ressources
 
+</div>
 ---
+<div style="text-align: left;">
 
 ## 6.1 Théorie : Les Différents Types de Tests de Charge
 
@@ -1023,7 +1070,9 @@ export const options = {
 - Observer le comportement en surcharge
 - Vérifier la récupération après stress
 
+</div>
 ---
+<div style="text-align: left;">
 
 ## 6.1 Théorie : Les Différents Types de Tests de Charge
 
@@ -1054,8 +1103,10 @@ export const options = {
 - Réponse aux pics (ex: promotions, événements)
 - Auto-scaling
 - Récupération après le pic
-
+- 
+</div>
 ---
+<div style="text-align: left;">
 
 ## 6.1 Théorie : Les Différents Types de Tests de Charge
 
@@ -1085,7 +1136,9 @@ export const options = {
 };
 ```
 
+</div>
 ---
+<div style="text-align: left;">
 
 ### 6.2 Pratique : Implémentation des Types de Tests
 
@@ -1103,7 +1156,10 @@ export const options = {
 - Observer la dégradation des performances
 - Noter la capacité maximale
 
+</div>
 ---
+<div style="text-align: left;">
+
 ### 6.2 Pratique : Implémentation des Types de Tests
 
 #### Exercice 3 : Test de Pic (15 min)
@@ -1119,6 +1175,7 @@ export const options = {
 - Identifier les différences de comportement
 - Déterminer quel test a révélé le plus de problèmes
 
+</div>
 ---
 
 ## Pause
@@ -1131,6 +1188,8 @@ export const options = {
 <!-- .slide: class="center" -->
 
 ---
+<div style="text-align: left;">
+
 ## 7.1 Théorie : Définir des Seuils de Performance
 
 #### Qu'est-ce qu'un Threshold ?
@@ -1168,8 +1227,10 @@ export const options = {
   },
 };
 ```
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## 7.1 Théorie : Définir des Seuils de Performance
 
 #### Thresholds sur métriques custom
@@ -1202,8 +1263,10 @@ export default function () {
   }
 }
 ```
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## 7.1 Théorie : Définir des Seuils de Performance
 
 #### Thresholds par tag ou groupe
@@ -1225,8 +1288,10 @@ export default function () {
   });
 }
 ```
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## 7.1 Théorie : Définir des Seuils de Performance
 
 #### Abort on Fail
@@ -1241,6 +1306,7 @@ export const options = {
 ```
 
 ---
+<div style="text-align: left;">
 
 ## 7.2 Pratique : Définir des Objectifs de Performance
 
@@ -1265,8 +1331,11 @@ Créer des métriques pour :
 - Taux de conversion (vues → achats)
 
 Définir des thresholds sur ces métriques.
+</div>
 
 ---
+<div style="text-align: left;">
+
 ## 7.2 Pratique : Définir des Objectifs de Performance
 
 #### Exercice 3 : Thresholds Avancés (20 min)
@@ -1276,7 +1345,7 @@ Définir des thresholds sur ces métriques.
 - Thresholds par groupe fonctionnel
 - Abort on fail pour erreurs critiques
 - Thresholds progressifs (plus stricts au fil du test)
-
+</div>
 ---
 
 ## Pause 
@@ -1288,6 +1357,8 @@ Définir des thresholds sur ces métriques.
 <!-- .slide: class="center" -->
 
 ---
+<div style="text-align: left;">
+
 ## 8.1 Théorie : Formats de Sortie (20 min)
 
 #### Sortie console par défaut
@@ -1314,8 +1385,9 @@ k6 run --out influxdb=http://localhost:8086/k6 script.js
 ```bash
 K6_CLOUD_TOKEN=<token> k6 run --out cloud script.js
 ```
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## 8.2 Pratique : Installation et Configuration Grafana
 
@@ -1360,8 +1432,10 @@ Lancer :
 ```bash
 docker-compose up -d
 ```
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## 8.2 Pratique : Installation et Configuration Grafana
 
 #### Configuration de la datasource InfluxDB dans Grafana
@@ -1385,8 +1459,10 @@ docker-compose up -d
 ```bash
 k6 run --out influxdb=http://localhost:8086/k6 script.js
 ```
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## 8.2 Pratique : Installation et Configuration Grafana
 
 #### Exercice pratique
@@ -1396,7 +1472,9 @@ k6 run --out influxdb=http://localhost:8086/k6 script.js
 - Identifier les métriques clés
 - Créer des annotations pour marquer des événements
 
+</div>
 ---
+<div style="text-align: left;">
 
 ## 8.3 Pratique : Génération et Analyse de Rapports
 
@@ -1423,8 +1501,11 @@ export function handleSummary(data) {
   };
 }
 ```
+</div>
 
 ---
+<div style="text-align: left;">
+
 ## 8.3 Pratique : Génération et Analyse de Rapports
 
 #### Custom Summary
@@ -1442,8 +1523,10 @@ export function handleSummary(data) {
   };
 }
 ```
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## 8.3 Pratique : Génération et Analyse de Rapports
 
 
@@ -1464,7 +1547,10 @@ export function handleSummary(data) {
 - http_req_failed rate : Taux d'échec
 - Checks passed rate : Validations réussies
 
+</div>
 ---
+<div style="text-align: left;">
+
 ## 8.3 Pratique : Génération et Analyse de Rapports
 
 #### Exercice pratique
@@ -1477,6 +1563,7 @@ export function handleSummary(data) {
   - Le comportement des erreurs
   - Les recommandations d'optimisation
 
+</div>
 ---
 
 ## Pause 
@@ -1488,6 +1575,7 @@ export function handleSummary(data) {
 <!-- .slide: class="center" -->
 
 ---
+<div style="text-align: left;">
 
 ## Projet : Test Complet d'une Application E-commerce
 
@@ -1504,8 +1592,10 @@ Vous devez tester une application e-commerce avant un événement Black Friday p
 4. Utiliser des données externes
 5. Générer des rapports détaillés
 6. Visualiser dans Grafana
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## Projet : Test Complet d'une Application E-commerce
 
 #### Scénarios à implémenter
@@ -1529,8 +1619,9 @@ Vous devez tester une application e-commerce avant un événement Black Friday p
 - Consulter l'historique
 - Modifier le profil
 - Se déconnecter
-
+</div>
 ---
+<div style="text-align: left;">
 
 ## Projet : Test Complet d'une Application E-commerce
 
@@ -1545,8 +1636,10 @@ Vous devez tester une application e-commerce avant un événement Black Friday p
 - Configuration Grafana
 - Rapports HTML générés
 - Document d'analyse avec recommandations
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## Projet : Test Complet d'une Application E-commerce
 #### Structure de fichiers suggérée
 ```
@@ -1581,7 +1674,9 @@ project/
 - ✅ Visualisation Grafana configurée
 - ✅ Analyse et recommandations
 
+</div>
 ---
+<div style="text-align: left;">
 
 ## Fin de la Formation
 
@@ -1605,7 +1700,10 @@ project/
 - ✅ Analyse et rapports
 - ✅ Projet pratique complet
 
+</div>
 ---
+<div style="text-align: left;">
+
 
 ## Ressources Complémentaires
 
@@ -1640,7 +1738,9 @@ project/
 - Échange d'expériences
 - Conseils pour démarrer dans votre contexte
 
+</div>
 ---
+<div style="text-align: left;">
 
 ## Annexes
 #### A. Commandes K6 Utiles
@@ -1672,7 +1772,9 @@ k6 run archive.tar
 k6 run --paused script.js
 # Dans un autre terminal : k6 resume
 ```
+</div>
 ---
+<div style="text-align: left;">
 
 ## Annexes
 #### B. Checklist de Test
@@ -1699,7 +1801,10 @@ k6 run --paused script.js
 - [ ] Documentation
 - [ ] Partage avec les équipes
 
+</div>
 ---
+<div style="text-align: left;">
+
 ## Annexes
 #### C. Troubleshooting Commun
 
@@ -1718,7 +1823,9 @@ k6 run --paused script.js
 **Problème : Métriques manquantes dans Grafana**
 - Solution : Vérifier la connexion InfluxDB, le nom de la database, les timestamps
 
+</div>
 ---
+<div style="text-align: left;">
 
 ## Annexes
 #### D. Bonnes Pratiques
@@ -1746,8 +1853,10 @@ k6 run --paused script.js
 - Tester plusieurs fois pour confirmer
 - Considérer les conditions réseau
 - Analyser les logs applicatifs en parallèle
-
+</div>
 ---
+<div style="text-align: left;">
+
 ## Annexes
 #### E. **Glossaire**
 
@@ -1765,5 +1874,5 @@ k6 run --paused script.js
 - **Stage :** Phase d'un test avec rampe
 - **Think Time :** Pause simulant la réflexion utilisateur
 - **Graceful Stop :** Arrêt propre permettant de finir les itérations en cours
+</div>
 
----

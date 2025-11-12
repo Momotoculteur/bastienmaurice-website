@@ -52,7 +52,7 @@ Bastien MAURICE
 - 10h30 - 10h45 | Pause (15 min)
 - 10h45 - 12h30 | Module 6 : Types de Tests (1h45)
 - 12h30 - 13h30 | Pause Déjeuner (1h)
-- 13h30 - 15h00 | Module 7 : Thresholds et Objectifs (1h30)
+- 13h30 - 15h00 | Module 7 : Thresholds, Objectifs & CICD (1h30)
 - 15h00 - 15h15 | Pause (15 min)
 - 15h15 - 16h45 | Module 8 : Résultats et Grafana (1h30)
 - 17h00 - 18h00 | Module 9 : Projet Final Pratique (1h)
@@ -71,7 +71,7 @@ Bastien MAURICE
 
 ## 1.1 Théorie : Fondamentaux du Test de Charge
 
-#### Qu'est-ce qu'un test de charge ?
+**Qu'est-ce qu'un test de charge ?**
 
 - **Définition :** Processus de simulation de charges réalistes sur un système pour évaluer son comportement
 - **Objectifs principaux :**
@@ -86,7 +86,7 @@ Bastien MAURICE
 
 ## 1.1 Théorie : Fondamentaux du Test de Charge
 
-#### Pourquoi tester les performances ?
+**Pourquoi tester les performances ?**
 
 - **Coût des pannes :** Temps d'arrêt = perte financière
 - **Expérience utilisateur :** Performance = satisfaction client
@@ -100,7 +100,7 @@ Bastien MAURICE
 
 ## 1.1 Théorie : Fondamentaux du Test de Charge
 
-#### Métriques clés à surveiller**
+**Métriques clés à surveiller**
 
 - **Temps de réponse :** Latence moyenne, médiane, P95, P99
 - **Throughput :** Nombre de requêtes/seconde
@@ -113,10 +113,10 @@ Bastien MAURICE
 
 ## 1.1 Théorie : Fondamentaux du Test de Charge
 
-#### Introduction à K6
+**Introduction à K6**
 
 - **Historique :** Créé par Load Impact, maintenu par Grafana Labs
-- **Philosophie :** "Developer-centric, CLI-based, scriptable"
+- **Philosophie :** Developer-centric, CLI-based, scriptable
 - **Avantages :**
   - Scripts en JavaScript (ES6+)
   - Open source et gratuit
@@ -131,7 +131,7 @@ Bastien MAURICE
 
 ## 1.2 Pratique : Installation et Premier Test 
 
-#### Installation de K6
+**Installation de K6**
 
 **macOS (Homebrew)**
 ```bash
@@ -158,12 +158,14 @@ choco install k6
 
 ## 1.2 Pratique : Installation et Premier Test
 
-#### Vérification de l'installation
+**Vérification de l'installation**
+
 ```bash
 k6 version
 ```
 
-#### Premier script de test
+**Premier script de test**
+
 ```javascript
 // test-simple.js
 import http from 'k6/http';
@@ -175,7 +177,8 @@ export default function () {
 }
 ```
 
-#### Exécution du test
+**Exécution du test**
+
 ```bash
 k6 run test-simple.js
 ```
@@ -187,7 +190,8 @@ k6 run test-simple.js
 
 ## 1.2 Pratique : Installation et Premier Test
 
-#### Exercice pratique
+**Exercice pratique**
+
 **Objectif :** Créer et exécuter votre premier test K6
 - Créer un script qui teste une API publique (ex: https://jsonplaceholder.typicode.com)
 - Lancer le test avec 10 utilisateurs virtuels pendant 30 secondes
@@ -197,6 +201,9 @@ k6 run test-simple.js
 ---
 
 # Pause
+
+<!-- .slide: class="center" -->
+<!-- .slide: data-background="#434eefff" -->
 
 ---
 
@@ -211,7 +218,8 @@ k6 run test-simple.js
 
 ## 2.1 Théorie : Cycle de Vie d'un Script K6
 
-#### Structure d'un script K6
+**Structure d'un script K6**
+
 ```javascript
 // 1. Code d'initialisation (exécuté une fois)
 import http from 'k6/http';
@@ -244,7 +252,8 @@ export function teardown(data) {
 }
 ```
 
-#### Les 4 phases du cycle de vie
+**Les 4 phases du cycle de vie**
+
 1. **Init context :** Chargement des modules, définition des variables globales
 2. **Setup :** Préparation unique (création de données de test, authentification)
 3. **VU context :** Exécution répétée du code de test
@@ -256,7 +265,8 @@ export function teardown(data) {
 
 ## 2.1 Théorie : Cycle de Vie d'un Script K6
 
-#### Métriques natives de K6
+**Métriques natives de K6**
+
 - `http_reqs` : Nombre total de requêtes HTTP
 - `http_req_duration` : Temps total de requête
 - `http_req_blocked` : Temps bloqué avant la connexion
@@ -271,9 +281,42 @@ export function teardown(data) {
 ---
 <div style="text-align: left;">
 
+## 2.1 Théorie : Cycle de Vie d'un Script K6
+**Métriques custom**
+
+- Counter (Compteur) : compte le nombre total d'événements
+  - Exemple : nombre total de requêtes POST
+- Gauge (Jauge) : valeur instantanée qui peut monter/descendre
+  - Exemple : nombre d'utilisateurs actifs en temps réel
+- Rate (Taux) : pourcentage entre 0 et 1
+  - Exemple : taux d'erreur, taux de succès
+- Trend (Tendance) : collecte des statistiques (min, max, moyenne, percentiles)
+  - Exemple : temps de réponse personnalisé
+
+```js
+import { Counter, Gauge, Rate, Trend } from 'k6/metrics';
+
+// Métriques personnalisées
+const postRequests = new Counter('posts_requests_total'); // Compteur : nombre total de requêtes
+const activeUsers = new Gauge('active_users'); // Jauge : valeur instantanée
+const errorRate = new Rate('error_rate'); // Taux : pourcentage (0-1)
+const responseTime = new Trend('custom_response_time'); // Tendance : stats (min, max, avg, percentiles)
+
+export default function () {
+  // Simuler un utilisateur actif
+  activeUsers.add(1);
+  ...
+}
+```
+
+</div>
+---
+<div style="text-align: left;">
+
 ## 2.2 Pratique : Création de Requêtes HTTP
 
-#### Types de requêtes HTTP
+**Types de requêtes HTTP**
+
 ```javascript
 import http from 'k6/http';
 
@@ -311,7 +354,12 @@ export default function () {
 
 ## 2.2 Pratique : Création de Requêtes HTTP
 
-#### Requêtes batch (parallèles)
+**Requêtes batch (parallèles)**
+
+- `http.batch()` : méthode k6 qui exécute plusieurs requêtes HTTP simultanément
+- Plus efficace que de les faire séquentiellement
+- Retourne un tableau de réponses
+
 ```javascript
 import http from 'k6/http';
 
@@ -326,6 +374,9 @@ export default function () {
   console.log(responses[0].status); // 200
 }
 ```
+
+
+
 </div>
 
 ---
@@ -333,7 +384,8 @@ export default function () {
 
 ## 2.2 Pratique : Création de Requêtes HTTP
 
-#### Exercice pratique
+**Exercice pratique**
+
 **Objectif :** Créer un script avec différentes requêtes HTTP
 - Créer un test qui utilise l'API JSONPlaceholder
 - Implémenter GET /posts, POST /posts, PUT /posts/1, DELETE /posts/1
@@ -343,9 +395,13 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+## 2.3 Théorie et Pratique : Checks,Thresholds & Gestion d'Erreurs
+**Checks : Validations sans échec**
 
-#### Checks : Validations sans échec
+- Validations qui n'arrêtent pas le test (mesurent le taux de succès)
+- Pour valider la logique métier (données correctes, format JSON, etc.)
+
+
 ```javascript
 import http from 'k6/http';
 import { check } from 'k6';
@@ -363,9 +419,41 @@ export default function () {
 }
 ```
 
-#### Différence entre Checks et Thresholds
-- **Checks :** Validations qui n'arrêtent pas le test (mesurent le taux de succès)
-- **Thresholds :** Critères qui déterminent si le test passe ou échoue
+
+
+
+</div>
+---
+<div style="text-align: left;">
+
+## 2.3 Théorie et Pratique : Checks,Thresholds & Gestion d'Erreurs
+**Thresholds : Validations sans échec**
+
+- Critères qui déterminent si le test passe ou échoue
+- Pour définir des SLA de performance (temps max, taux d'erreur acceptable, etc.)
+- Définit les limites acceptables de performance
+- Permet l'intégration CI/CD (exit code 1 si échec)
+
+```javascript
+import http from 'k6/http';
+import { check } from 'k6';
+
+export const options = {
+    ... 
+    thresholds: {
+        // Le test ÉCHOUE si ces conditions ne sont pas remplies :
+        'http_req_duration': ['p(95)<500'],      // 95% des requêtes < 500ms
+        'http_req_duration': ['avg<300'],        // Temps moyen < 300ms
+        'http_req_failed': ['rate<0.05'],        // Moins de 5% d'erreurs
+        'http_reqs': ['rate>10'],                // Au moins 10 requêtes/seconde
+    },
+};
+
+export default function () {
+  const res = http.get('https://httpbin.org/get');
+}
+```
+
 
 </div>
 
@@ -374,27 +462,106 @@ export default function () {
 
 ## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
 
-#### Gestion des erreurs
-```javascript
-import http from 'k6/http';
-import { check } from 'k6';
+**1. Vérifier le status HTTP avec check()**
 
-export default function () {
-  const res = http.get('https://httpbin.org/status/500');
-  
-  if (!check(res, { 'status 200': (r) => r.status === 200 })) {
-    console.error(`Erreur: Status ${res.status}`);
-  }
-  
-  // Gestion des timeouts
-  const params = {
-    timeout: '10s',
-  };
-  const slowRes = http.get('https://httpbin.org/delay/5', params);
+- Continue le test même si ça échoue
+
+```javascript
+check(response, {
+  'Status est 200': (r) => r.status === 200,
+});
+```
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+
+**2. Gérer les timeouts**
+
+```javascript
+http.get(url, { timeout: '5s' });
+if (response.status === 0) {
+  // Erreur réseau ou timeout
+}
+```
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+
+**3. Parser le JSON avec try-catch**
+
+```javascript
+try {
+  const data = JSON.parse(response.body);
+} catch (error) {
+  console.error('Erreur parsing JSON');
+}
+```
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+
+**4. Arrêter le test avec `fail()`**
+
+- Arrête immédiatement le VU
+
+```javascript
+if (response.status === 0) {
+  fail('Service indisponible - Arrêt');
+}
+```
+</div>
+
+---
+
+<div style="text-align: left;">
+
+## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+
+**5. Catégoriser les erreurs**
+
+```javascript
+if (response.status >= 500) {
+  // Erreur serveur
+} else if (response.status >= 400) {
+  // Erreur client
 }
 ```
 
-#### Exercice pratique
+</div>
+
+---
+<div style="text-align: left;">
+
+## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+
+**6. Retry automatique**
+
+```javascript
+for (let i = 0; i < 3; i++) {
+  response = http.get(url);
+  if (response.status === 200) break;
+  sleep(2);
+}
+```
+</div>
+
+---
+<div style="text-align: left;">
+
+**Exercice pratique**
+
 **Objectif :** Implémenter des checks robustes
 - Ajouter des checks sur status, temps de réponse, et contenu
 - Tester avec des endpoints qui retournent différents codes HTTP
@@ -413,8 +580,14 @@ export default function () {
 <div style="text-align: left;">
 
 ## 3.1 Théorie : Groupes et Organisation 
+**Avantages des groupes**
 
-#### Utilisation des groupes
+- Organiser logiquement les tests (thresholds spécifiques...)
+- Mesures séparées par groupe
+- Facilite l'analyse des résultats (metrics...)
+- Meilleure lisibilité & analyse par catégorie
+
+
 ```javascript
 import http from 'k6/http';
 import { group, check } from 'k6';
@@ -437,19 +610,16 @@ export default function () {
 }
 ```
 
-#### Avantages des groupes
-- Organiser logiquement les tests
-- Mesures séparées par groupe
-- Facilite l'analyse des résultats
-- Meilleure lisibilité
+
 
 </div>
 ---
 <div style="text-align: left;">
 
-### 3.2 Théorie : Options de Configuration (25 min)
+### 3.2 Théorie : Options de Configuration
 
-#### Options principales
+**Options principales**
+
 ```javascript
 export const options = {
   // Utilisateurs virtuels et durée
@@ -491,7 +661,8 @@ export const options = {
 
 ## 3.3 Pratique : Gestion des Cookies et Sessions
 
-#### Cookies automatiques
+**Cookies automatiques**
+
 ```javascript
 import http from 'k6/http';
 
@@ -504,7 +675,8 @@ export default function () {
 }
 ```
 
-#### Gestion manuelle des cookies
+**Gestion manuelle des cookies**
+
 ```javascript
 import http from 'k6/http';
 
@@ -525,12 +697,14 @@ export default function () {
 
 ## 3.3 Pratique : Gestion des Cookies et Sessions
 
-#### Exercice pratique
+**Exercice pratique**
+
 **Objectif :** Créer un scénario d'authentification
 - Implémenter une connexion qui retourne un token/cookie
 - Utiliser ce token pour des requêtes authentifiées
 - Grouper les actions par fonctionnalité
 - Ajouter des checks appropriés
+
 </div>
 ---
 
@@ -543,9 +717,10 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 4.1 Théorie : Corrélations Techniques
+## 4.1 Outils Divers
 
-#### Extraction de données de réponse
+**Récupérer des informations contenue dans une requête**
+
 ```javascript
 import http from 'k6/http';
 import { check } from 'k6';
@@ -573,9 +748,10 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 4.1 Théorie : Corrélations Techniques
+## 4.1 Outils Divers
 
-#### Chaînage de requêtes
+**Chaînage de requêtes**
+
 ```javascript
 export default function () {
   // 1. Créer une ressource
@@ -594,16 +770,18 @@ export default function () {
 }
 ```
 </div>
+
 ---
 <div style="text-align: left;">
 
 ## 4.2 Pratique : Données Externes
 
-#### Utilisation de fichiers CSV
+**Utilisation de fichiers CSV**
+
 ```javascript
 import http from 'k6/http';
 import { SharedArray } from 'k6/data';
-import papaparse from 'https://jslib.k6.io/papaparse/5.1.1/index.js';
+import papaparse from 'papaparse';
 
 const csvData = new SharedArray('users', function () {
   return papaparse.parse(open('./users.csv'), { header: true }).data;
@@ -629,12 +807,14 @@ user2,user2@example.com
 user3,user3@example.com
 ```
 </div>
+
 ---
 <div style="text-align: left;">
 
 ## 4.2 Pratique : Données Externes
 
-#### Utilisation de fichiers JSON
+**Utilisation de fichiers JSON**
+
 ```javascript
 import { SharedArray } from 'k6/data';
 import http from 'k6/http';
@@ -648,6 +828,20 @@ export default function () {
   http.get(`https://api.example.com/products/${product.id}`);
 }
 ```
+
+Fichier `products.json` :
+```json
+[
+  {
+    "id": 1,
+    "name": "Laptop"
+  },
+  {
+    "id": 2,
+    "name": "Smartphone"
+  },...
+]
+```
 </div>
 
 ---
@@ -655,7 +849,34 @@ export default function () {
 
 ## 4.2 Pratique : Données Externes
 
-#### Variables d'environnement
+Le **SharedArray** dans k6 est une structure de données spéciale qui permet de partager des données en lecture seule entre tous les VUs (Virtual Users) de manière mémoire-efficiente.
+
+- Le fichier JSON n'est lu et parsé qu'une seule fois au début du test (read-only)
+- Les données sont stockées dans une zone mémoire partagée (évite la duplication des données en mémoire)
+- Tous les VUs accèdent aux mêmes données sans duplication
+
+```js
+const data = new SharedArray('products', function () {
+  return JSON.parse(open('./products.json'));
+});
+```
+
+</br></br>
+
+**Exemple concret**  
+Avec 100 VUs et un fichier de 1 000 produits :
+
+- Sans SharedArray : 100 copies × 1 000 produits = 100 000 objets en mémoire
+- Avec SharedArray : 1 copie × 1 000 produits = 1 000 objets en mémoire
+
+</div>
+---
+<div style="text-align: left;">
+
+## 4.2 Pratique : Données Externes
+
+**Variables d'environnement**
+
 ```javascript
 import http from 'k6/http';
 
@@ -680,7 +901,8 @@ k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
 
 ## 4.2 Pratique : Données Externes
 
-#### Exercice pratique
+**Exercice pratique**
+
 **Objectif :** Créer un test avec données dynamiques
 - Créer un fichier CSV avec des utilisateurs de test
 - Implémenter un script qui utilise ces données
@@ -693,30 +915,44 @@ k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
 <div style="text-align: left;">
 
 ## 4.3 Théorie et Introduction : K6 Browser
+**K6 browser** est une extension de Grafana k6 qui permet de réaliser des tests de charge basés sur un navigateur réel, en simulant le comportement d’un utilisateur humain dans un vrai navigateur Chromium embarqué.
 
-#### Qu'est-ce que K6 Browser ?
-- Extension de K6 pour tests de navigateur
+C’est une évolution majeure par rapport au **k6 "classique"**, qui ne teste que la charge HTTP au niveau protocolaire (sans navigateur, donc sans rendu DOM, JS, CSS, etc.).
+
+</br></br>
+
+**Cas d'usage**
 - Basé sur Playwright/Chromium
-- Permet de tester des applications web complètes (SPA, interactions JavaScript)
-- Complément aux tests API
-
-#### Cas d'usage
 - Tester des flux utilisateurs complets
 - Applications Single Page (React, Vue, Angular)
-- Mesurer les métriques Web Vitals
 - Tests de bout en bout avec charge
-
+- Complément aux tests API
 </div>
 
 ---
 <div style="text-align: left;">
 
+## 4.3 Théorie et Introduction : K6 Browser 
+
+| Caractéristique     | k6 “classique”                      | k6 browser                                           |
+| ------------------- | ----------------------------------- | ---------------------------------------------------- |
+| Type de test        | Backend / API                       | Frontend (navigateur)                                |
+| Niveau de test      | Protocolaire HTTP                   | Réel (navigateur complet)                            |
+| Rendu graphique     | ❌ Non                               | ✅ Oui (Chromium embarqué)                            |
+| Scénarios possibles | Appels API, endpoints REST, GraphQL | Navigation web, clics, formulaires, interactions DOM |
+| Mesures collectées  | Latence, taux d’erreur, throughput  | TTFB, LCP, FCP, DOMContentLoaded, layout shifts...   |
+
+
+</div>
+---
+<div style="text-align: left;">
+
 ## 4.3 Théorie et Introduction : K6 Browser
 
+**Script de base K6 Browser**
 
-#### Script de base K6 Browser
 ```javascript
-import { browser } from 'k6/experimental/browser';
+import { browser } from 'k6/browser';
 import { check } from 'k6';
 
 export const options = {
@@ -757,7 +993,9 @@ export default async function () {
 }
 ```
 </div>
+
 ---
+
 <div style="text-align: left;">
 
 ## Fin de la Journée 1
@@ -790,12 +1028,14 @@ export default async function () {
 
 ## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
 
-#### Comprendre les VUs (Virtual Users)
+**Comprendre les VUs (Virtual Users)**
+
 - **VU :** Instance d'exécution indépendante du script
 - Chaque VU exécute le code en boucle
 - Les VUs ne partagent pas d'état (sauf SharedArray)
 
-#### Think Times
+**Think Times**
+
 ```javascript
 import http from 'k6/http';
 import { sleep } from 'k6';
@@ -808,7 +1048,18 @@ export default function () {
   sleep(Math.random() * 5); // Think time aléatoire (0-5s)
 }
 ```
+
+**Dynamic Think Times**
+```js
+import { sleep } from 'k6';
+import { randomIntBetween } from 'k6-utils';
+
+export default function () {
+  sleep(randomIntBetween(1, 5)); // Think time entre 1 and 5 secondes
+}
+```
 </div>
+
 ---
 <div style="text-align: left;">
 
@@ -816,7 +1067,7 @@ export default function () {
 
 #### Modèles fermés vs ouverts
 
-**Modèle fermé (Closed Model) :**
+**Modèle fermé**
 - Nombre fixe d'utilisateurs
 - Chaque VU attend la fin de la requête avant la suivante
 - Simule des utilisateurs réels avec think time
@@ -840,7 +1091,7 @@ export const options = {
 ## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
 #### Modèles fermés vs ouverts
 
-**Modèle ouvert (Open Model) :**
+**Modèle ouvert**
 - Taux d'arrivée fixe (RPS)
 - Nouveaux utilisateurs arrivent indépendamment
 - Simule un flux constant de requêtes
@@ -861,6 +1112,17 @@ export const options = {
 };
 ```
 </div>
+
+---
+<div style="text-align: left;">
+
+## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
+#### Modèles fermés vs ouverts
+
+
+</div>
+
+![grafana k6 open-vs-closed-models](./img/open-vs-closed-models.png)
 
 ---
 <div style="text-align: left;">
@@ -959,9 +1221,108 @@ export function writeScenario() {
 
 </div>
 ---
+<div style="text-align: left;">
 
-## Pause
+## 5.3 Pratique : Options intéréssantes - GracefulStop
 
+C'est est une période de grâce qui permet aux itérations en cours de se terminer proprement avant l'arrêt forcé d'un scénario.
+
+**Sans GracefulStop (comportement par défaut)**
+
+- Les itérations en cours sont interrompues brutalement
+- Métriques incomplètes (requêtes HTTP non terminées)
+- Données corrompues dans les résultats
+
+```js
+const options = {
+  scenarios: {
+    my_test: {
+      executor: 'ramping-vus',
+      stages: [
+        { duration: '2m', target: 100 },
+        { duration: '5m', target: 100 },
+        { duration: '2m', target: 0 }, // Arrêt IMMÉDIAT à la fin
+      ],
+    },
+  },
+};
+```
+</div>
+
+---
+<div style="text-align: left;">
+
+## 5.3 Pratique : Options intéréssantes - GracefulStop
+
+**Avec GracefulStop**
+
+- Évite les métriques partielles
+- Préserve l'intégrité des données
+- Permet aux transactions de se compléter
+- Résultats de test plus précis
+
+```js
+const options = {...
+    executor: 'ramping-vus',
+    gracefulStop: '30s', // Période de grâce de 30 secondes
+    stages: [
+        { duration: '2m', target: 100 },
+        { duration: '5m', target: 100 },
+        { duration: '2m', target: 0 },
+    ],
+};
+```
+
+**Comment ça fonctionne ?**  
+Durée totale du test : 9m  
+├── 2m : Montée à 100 VUs  
+├── 5m : Maintien à 100 VUs   
+├── 2m : Descente à 0 VUs  
+└── 30s : GracefulStop (extra)  
+
+
+</div>
+---
+<div style="text-align: left;">
+
+## 5.3 Pratique : Options intéréssantes - Preallocated VU
+Pré-allouer les VUs au démarrage pour éviter la création progressive  
+Réduit les "cold start" et lisse les résultats  
+
+**Sans Preallocated VUs (comportement par défaut)**
+- Les VUs sont créées progressivement pendant la montée en charge
+- Démarrage lent au début du test
+
+```js
+options = {
+  stages: [
+    { duration: '1m', target: 100 }, // Monte à 100 VUs en 1 minute
+  ],
+};
+```
+
+**Avec Preallocated VUs**
+
+- 50 VUs sont déjà en mémoire quand le test commence
+- Démarrage immédiat d'une partie de la charge
+
+```js
+options = {
+  preAllocatedVUs: 50, // 50 VUs préchargées dès le début
+  stages: [
+    { duration: '1m', target: 100 },
+  ],
+};
+```
+
+</div>
+
+---
+
+---
+# Pause
+<!-- .slide: class="center" -->
+<!-- .slide: data-background="#434eefff" -->
 ---
 # Fondamentaux et Scripting
 ## Module 6 : Types de Tests
@@ -1178,11 +1539,12 @@ export const options = {
 </div>
 ---
 
-## Pause
-
+# Pause
+<!-- .slide: class="center" -->
+<!-- .slide: data-background="#434eefff" -->
 ---
 # Fondamentaux et Scripting
-## Module 7 : Thresholds et Objectifs
+## Module 7 : Thresholds, Objectifs & CICD
 
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
@@ -1192,12 +1554,8 @@ export const options = {
 
 ## 7.1 Théorie : Définir des Seuils de Performance
 
-#### Qu'est-ce qu'un Threshold ?
-- Critère de succès/échec du test
-- Définit les limites acceptables de performance
-- Permet l'intégration CI/CD (exit code 1 si échec)
+**Syntaxe des Thresholds**
 
-#### Syntaxe des Thresholds
 ```javascript
 export const options = {
   thresholds: {
@@ -1233,7 +1591,8 @@ export const options = {
 
 ## 7.1 Théorie : Définir des Seuils de Performance
 
-#### Thresholds sur métriques custom
+**Thresholds sur métriques custom**
+
 ```javascript
 import http from 'k6/http';
 import { Trend, Counter } from 'k6/metrics';
@@ -1269,7 +1628,8 @@ export default function () {
 
 ## 7.1 Théorie : Définir des Seuils de Performance
 
-#### Thresholds par tag ou groupe
+**Thresholds par tag ou groupe**
+
 ```javascript
 export const options = {
   thresholds: {
@@ -1294,7 +1654,8 @@ export default function () {
 
 ## 7.1 Théorie : Définir des Seuils de Performance
 
-#### Abort on Fail
+**Abort on Fail**
+
 ```javascript
 export const options = {
   thresholds: {
@@ -1310,7 +1671,8 @@ export const options = {
 
 ## 7.2 Pratique : Définir des Objectifs de Performance
 
-#### Exercice 1 : SLA E-commerce (20 min)
+**Exercice 1 : SLA E-commerce**
+
 **Objectif :** Définir des thresholds basés sur un SLA réel
 
 Contraintes SLA :
@@ -1321,7 +1683,8 @@ Contraintes SLA :
 
 Implémenter les thresholds correspondants et tester.
 
-#### Exercice 2 : Métriques Custom (20 min)
+**Exercice 2 : Métriques Custom**
+
 **Objectif :** Créer et surveiller des métriques métier
 
 Créer des métriques pour :
@@ -1338,7 +1701,8 @@ Définir des thresholds sur ces métriques.
 
 ## 7.2 Pratique : Définir des Objectifs de Performance
 
-#### Exercice 3 : Thresholds Avancés (20 min)
+**Exercice 3 : Thresholds Avancés**
+
 **Objectif :** Utiliser des thresholds conditionnels
 
 - Différents seuils pour API vs pages statiques
@@ -1348,7 +1712,10 @@ Définir des thresholds sur ces métriques.
 </div>
 ---
 
-## Pause 
+# Pause
+
+<!-- .slide: class="center" -->
+<!-- .slide: data-background="#434eefff" -->
 
 ---
 # Fondamentaux et Scripting
@@ -1359,29 +1726,29 @@ Définir des thresholds sur ces métriques.
 ---
 <div style="text-align: left;">
 
-## 8.1 Théorie : Formats de Sortie (20 min)
+## 8.1 Théorie : Formats de Sortie
 
-#### Sortie console par défaut
+**Sortie console par défaut**
 ```bash
 k6 run script.js
 ```
 
-#### Export JSON
+**Export JSON**
 ```bash
 k6 run --out json=results.json script.js
 ```
 
-#### Export CSV
+**Export CSV**
 ```bash
 k6 run --out csv=results.csv script.js
 ```
 
-#### InfluxDB
+**InfluxDB**
 ```bash
 k6 run --out influxdb=http://localhost:8086/k6 script.js
 ```
 
-#### Grafana Cloud K6
+**Grafana Cloud K6**
 ```bash
 K6_CLOUD_TOKEN=<token> k6 run --out cloud script.js
 ```
@@ -1391,7 +1758,7 @@ K6_CLOUD_TOKEN=<token> k6 run --out cloud script.js
 
 ## 8.2 Pratique : Installation et Configuration Grafana
 
-#### Installation avec Docker Compose
+**Installation avec Docker Compose**
 
 Créer `docker-compose.yml` :
 ```yaml
@@ -1438,7 +1805,7 @@ docker-compose up -d
 
 ## 8.2 Pratique : Installation et Configuration Grafana
 
-#### Configuration de la datasource InfluxDB dans Grafana
+**Configuration de la datasource InfluxDB dans Grafana**
 
 1. Accéder à Grafana : http://localhost:3000
 2. Configuration > Data Sources > Add data source
@@ -1449,13 +1816,14 @@ docker-compose up -d
    - User: admin
    - Password: admin
 
-#### Import du dashboard K6
+**Import du dashboard K6**
 
 1. Dashboards > Import
 2. ID : 2587 (Dashboard K6 Load Testing Results)
 3. Sélectionner la datasource InfluxDB
 
-#### Lancer un test avec export InfluxDB
+**Lancer un test avec export InfluxDB**
+
 ```bash
 k6 run --out influxdb=http://localhost:8086/k6 script.js
 ```
@@ -1465,7 +1833,8 @@ k6 run --out influxdb=http://localhost:8086/k6 script.js
 
 ## 8.2 Pratique : Installation et Configuration Grafana
 
-#### Exercice pratique
+**Exercice pratique**
+
 **Objectif :** Visualiser un test en temps réel
 - Lancer un test de 5 minutes avec rampe
 - Observer en temps réel dans Grafana
@@ -1478,7 +1847,7 @@ k6 run --out influxdb=http://localhost:8086/k6 script.js
 
 ## 8.3 Pratique : Génération et Analyse de Rapports
 
-#### Rapport HTML avec k6-reporter
+**Rapport HTML avec k6-reporter**
 
 Installation :
 ```bash
@@ -1508,7 +1877,8 @@ export function handleSummary(data) {
 
 ## 8.3 Pratique : Génération et Analyse de Rapports
 
-#### Custom Summary
+**Custom Summary**
+
 ```javascript
 export function handleSummary(data) {
   // Summary personnalisé en console
@@ -1529,8 +1899,7 @@ export function handleSummary(data) {
 
 ## 8.3 Pratique : Génération et Analyse de Rapports
 
-
-#### Analyse des métriques importantes
+**Analyse des métriques importantes**
 
 **Latence :**
 - P50 (médiane) : Expérience typique
@@ -1553,7 +1922,8 @@ export function handleSummary(data) {
 
 ## 8.3 Pratique : Génération et Analyse de Rapports
 
-#### Exercice pratique
+**Exercice pratique**
+
 **Objectif :** Analyser un rapport de test
 - Exécuter un test de stress complet
 - Générer un rapport HTML
@@ -1566,8 +1936,9 @@ export function handleSummary(data) {
 </div>
 ---
 
-## Pause 
-
+# Pause 
+<!-- .slide: class="center" -->
+<!-- .slide: data-background="#434eefff" -->
 ---
 # Fondamentaux et Scripting
 ## Module 9 : Projet Final Pratique
@@ -1579,13 +1950,17 @@ export function handleSummary(data) {
 
 ## Projet : Test Complet d'une Application E-commerce
 
-#### Contexte
+**Contexte**
+
 Vous devez tester une application e-commerce avant un événement Black Friday prévu dans 2 semaines. L'entreprise attend :
 - 10 000 utilisateurs simultanés au pic
 - 500 commandes par minute
 - Temps de réponse < 2s pour 95% des utilisateurs
 
-#### Objectifs du projet
+</br></br>
+
+**Objectifs du projet**
+
 1. Créer plusieurs scénarios utilisateurs
 2. Implémenter différents types de tests
 3. Définir des thresholds basés sur les SLA
@@ -1605,7 +1980,13 @@ Vous devez tester une application e-commerce avant un événement Black Friday p
 - Rechercher des produits
 - Consulter 3-5 pages produits
 - Think time : 2-5 secondes
+</div>
 
+---
+<div style="text-align: left;">
+
+## Projet : Test Complet d'une Application E-commerce
+#### Scénarios à implémenter
 **Scénario 2 : Achat (30% des utilisateurs)**
 - Parcourir des produits
 - Ajouter au panier
@@ -1613,22 +1994,30 @@ Vous devez tester une application e-commerce avant un événement Black Friday p
 - Remplir les informations
 - Valider le paiement
 - Think time : 1-3 secondes
+</div>
 
+---
+<div style="text-align: left;">
+
+## Projet : Test Complet d'une Application E-commerce
+#### Scénarios à implémenter
 **Scénario 3 : Compte utilisateur (10% des utilisateurs)**
 - Se connecter
 - Consulter l'historique
 - Modifier le profil
 - Se déconnecter
 </div>
+
 ---
 <div style="text-align: left;">
 
 ## Projet : Test Complet d'une Application E-commerce
-
 #### Types de tests à effectuer
 1. **Test nominal :** Charge quotidienne moyenne (1000 VUs)
 2. **Test de stress :** Monter progressivement jusqu'à 10 000 VUs
 3. **Test de pic :** Simuler le début des soldes (pic instantané)
+
+</br></br>
 
 #### Livrables attendus
 - Scripts K6 organisés et commentés
@@ -1675,38 +2064,11 @@ project/
 - ✅ Analyse et recommandations
 
 </div>
+
 ---
 <div style="text-align: left;">
-
-## Fin de la Formation
-
-### Récapitulatif Général
-
-#### Jour 1 - Couvert
-- ✅ Fondamentaux du test de charge
-- ✅ Installation et premiers pas K6
-- ✅ Scripting : cycle de vie, requêtes, checks
-- ✅ Organisation : groupes, options, cookies
-- ✅ Paramètres et corrélations
-- ✅ Données externes
-- ✅ K6 Browser
-
-#### Jour 2 - Couvert
-- ✅ Modélisation : VUs, think times, modèles
-- ✅ Types de tests : nominal, stress, spike, endurance, rupture
-- ✅ Thresholds et objectifs SLA
-- ✅ Formats de sortie
-- ✅ Grafana : installation, configuration, dashboards
-- ✅ Analyse et rapports
-- ✅ Projet pratique complet
-
-</div>
----
-<div style="text-align: left;">
-
 
 ## Ressources Complémentaires
-
 **Documentation officielle :**
 - https://k6.io/docs/
 - https://grafana.com/docs/k6/latest/
@@ -1727,13 +2089,20 @@ project/
 - https://github.com/grafana/k6-learn
 - https://k6.io/docs/examples/
 
-### Certification et Suite
+</div>
+
+---
+<div style="text-align: left;">
+
+
+## Ressources Complémentaires
+**Certification et Suite**
 - K6 n'a pas de certification officielle
 - Pratiquer avec des projets réels
 - Contribuer à la communauté
 - Explorer les extensions
 
-### Questions / Réponses
+**Questions / Réponses**
 - Session ouverte pour questions
 - Échange d'expériences
 - Conseils pour démarrer dans votre contexte
@@ -1786,12 +2155,26 @@ k6 run --paused script.js
 - [ ] Notifications configurées
 - [ ] Backup de données si nécessaire
 - [ ] Communication aux équipes
+</div>
+
+---
+<div style="text-align: left;">
+
+## Annexes
+#### B. Checklist de Test
 
 **Pendant le test :**
 - [ ] Surveillance en temps réel
 - [ ] Vérification des métriques système
 - [ ] Logs d'erreurs
 - [ ] Note des événements inhabituels
+</div>
+
+---
+<div style="text-align: left;">
+
+## Annexes
+#### B. Checklist de Test
 
 **Après le test :**
 - [ ] Génération des rapports
@@ -1842,6 +2225,14 @@ k6 run --paused script.js
 - Éviter les opérations lourdes dans VU context
 - Batch les requêtes quand possible
 
+</div>
+
+---
+<div style="text-align: left;">
+
+## Annexes
+#### D. Bonnes Pratiques
+
 **Sécurité :**
 - Ne jamais commiter de credentials
 - Utiliser des variables d'environnement
@@ -1854,6 +2245,7 @@ k6 run --paused script.js
 - Considérer les conditions réseau
 - Analyser les logs applicatifs en parallèle
 </div>
+
 ---
 <div style="text-align: left;">
 

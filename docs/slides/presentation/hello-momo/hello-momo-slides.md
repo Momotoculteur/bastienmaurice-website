@@ -1,13 +1,3 @@
-# Hello Momo !
-
-Bastien MAURICE
-<!-- .slide: data-background="#009485" -->
-<!-- .slide: class="center" -->
-
----
-
-
-
 ## Présentation 
 
 **Etudes**

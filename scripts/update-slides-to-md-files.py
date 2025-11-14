@@ -24,16 +24,19 @@ for dirpath, dirnames, filenames in os.walk(root_dir):
 
             # Regex pour détecter le bloc d'en-tête précis
             header_pattern = re.compile(
-                r"^"  # début du fichier
-                r"(?:# .+?\n)"  # titre Markdown
-                r"(?:.*Bastien MAURICE.*\n)"  # ligne contenant l'auteur
-                r"((?:<!-- .+?\.slide.+? -->\n)+)"  # au moins un commentaire Reveal.js .slide
-                r"---\s*\n",  # ligne de séparation
-                flags=re.DOTALL,
+                r"^#.*?\n"                       # Titre markdown sur la 1ère ligne
+                r"Bastien MAURICE\s*\n"          # Ligne suivante contenant ton nom
+                r"(?:<!--\s*\.slide.*?-->\s*\n)*"  # 0..n lignes slide
+                r"---\s*\n",                      # Ligne séparatrice
+                flags=re.DOTALL
             )
 
             # Supprimer le bloc uniquement si trouvé
-            content, count = re.subn(header_pattern, "", content, count=1)
+            content, count = re.subn(header_pattern, '', content, count=1)
+
+            # gere <img ... alt="bastien_maurice"/>
+            img_pattern = r'<img[^>]*alt="bastien_maurice"[^>]*>'
+            content = re.sub(img_pattern, '', content)
 
             # Écrire le nouveau fichier
             with open(new_path, "w", encoding="utf-8") as f:

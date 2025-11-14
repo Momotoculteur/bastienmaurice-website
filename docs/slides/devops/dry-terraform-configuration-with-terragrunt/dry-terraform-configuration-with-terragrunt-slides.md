@@ -1,14 +1,3 @@
-# Terragrunt  
-## Wrapper Terraform  
-
-Bastien MAURICE
-
-<!-- .slide: data-background="#009485" -->
-<!-- .slide: class="center" -->
-
----
-
-
 ## Terragrunt - DRY
 ### don't repeat yourself
 

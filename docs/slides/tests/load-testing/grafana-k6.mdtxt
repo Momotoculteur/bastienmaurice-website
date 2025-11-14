@@ -1,5 +1,4 @@
 # Loadtesting avec Grafana K6
-
 Bastien MAURICE
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
@@ -11,7 +10,7 @@ Bastien MAURICE
 </div>
 
 
-<img src="../../../ressource/img/profile/photo.jpeg" style="border-radius: 50%; width: 200px;" alt="Photo de profil" />
+<img src="../../../ressource/img/profile/photo.jpeg" style="border-radius: 50%; width: 200px;" alt="bastien_maurice" />
 
 2 ans Fullstack Engineer - Thales<br>
 2 ans DevOps Engineer - Thales<br>

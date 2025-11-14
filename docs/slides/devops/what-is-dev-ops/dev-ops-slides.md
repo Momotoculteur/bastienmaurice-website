@@ -1,12 +1,3 @@
-# DevOps 
-## Build better & faster
-Bastien MAURICE
-<!-- .slide: data-background="#009485" -->
-<!-- .slide: class="center" -->
-
----
-
-
 ## Un example d'avant - Une application JAVA
 
 Les dév font du logiciel

@@ -1,3 +1,58 @@
+## GitOps - C'est quoi ?  
+
+Modèle d'opération pour Kubernetes et autre technologies cloud-native  
+Gère l'infrastructure et la configuration de l'application  
+Donne d'avantage de contrôle sur le cycle de l'application  
+
+
+
+---
+
+
+
+## GitOps - Principes de base  
+
+- Git est la source de vérité
+- Déclaratif
+- Versionné et immutable
+- Système de **pull** automatique (ArgoCD, FluxCD)
+- Reconcilation automatique
+- Infrastucture et workflow consistent et standardisé
+
+
+
+---
+
+
+
+## GitOps - Atouts  
+
+- Deploiement & productivité plus rapide
+- Améliorer l'audit des modifications (Merge request, comment, etc)
+- Grande résilience via Git -> rollback facile
+
+
+
+---
+
+
+
+## GitOps - Example d'une pipeline  
+
+Git: Github, Gitlab  
+Registry: ACR, ECR, Artifactory  
+Build server: CI, Action, Jenkins  
+Orchestrateur container: Kubernetes  
+GitOps Agent: FluxCD, ArgoCD  
+Package Kubernetes manifest: Helm, Kustomize  
+Monitoring: Grafana, Datadog  
+
+
+
+![git-ops-pipeline-stack](./img/git-ops-pipeline-stack.png)<!-- .element: class="r-stretch" -->
+---
+
+
 ## GitOps - Type de modèle 1/2
 
 **Push**  

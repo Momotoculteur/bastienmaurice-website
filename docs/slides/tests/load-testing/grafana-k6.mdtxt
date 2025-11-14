@@ -69,7 +69,7 @@ Bastien MAURICE
 ---
 <div style="text-align: left;">
 
-## 1.1 Théorie : Fondamentaux du Test de Charge
+## 1.1 Fondamentaux du Test de Charge
 
 **Qu'est-ce qu'un test de charge ?**
 
@@ -84,7 +84,7 @@ Bastien MAURICE
 ---
 <div style="text-align: left;">
 
-## 1.1 Théorie : Fondamentaux du Test de Charge
+## 1.1 Fondamentaux du Test de Charge
 
 **Pourquoi tester les performances ?**
 
@@ -98,7 +98,7 @@ Bastien MAURICE
 ---
 <div style="text-align: left;">
 
-## 1.1 Théorie : Fondamentaux du Test de Charge
+## 1.1 Fondamentaux du Test de Charge
 
 **Métriques clés à surveiller**
 
@@ -111,7 +111,7 @@ Bastien MAURICE
 ---
 <div style="text-align: left;">
 
-## 1.1 Théorie : Fondamentaux du Test de Charge
+## 1.1 Fondamentaux du Test de Charge
 
 **Introduction à K6**
 
@@ -129,7 +129,7 @@ Bastien MAURICE
 ---
 <div style="text-align: left;">
 
-## 1.2 Pratique : Installation et Premier Test 
+## 1.2 Installation et Premier Test 
 
 **Installation de K6**
 
@@ -156,7 +156,7 @@ choco install k6
 ---
 <div style="text-align: left;">
 
-## 1.2 Pratique : Installation et Premier Test
+## 1.2 Installation et Premier Test
 
 **Vérification de l'installation**
 
@@ -188,7 +188,7 @@ k6 run test-simple.js
 <div style="text-align: left;">
 
 
-## 1.2 Pratique : Installation et Premier Test
+## 1.2 Installation et Premier Test
 
 **Exercice pratique**
 
@@ -216,7 +216,7 @@ k6 run test-simple.js
 ---
 <div style="text-align: left;">
 
-## 2.1 Théorie : Cycle de Vie d'un Script K6
+## 2.1 Cycle de Vie d'un Script K6
 
 **Structure d'un script K6**
 
@@ -263,7 +263,7 @@ export function teardown(data) {
 ---
 <div style="text-align: left;">
 
-## 2.1 Théorie : Cycle de Vie d'un Script K6
+## 2.1 Cycle de Vie d'un Script K6
 
 **Métriques natives de K6**
 
@@ -281,7 +281,7 @@ export function teardown(data) {
 ---
 <div style="text-align: left;">
 
-## 2.1 Théorie : Cycle de Vie d'un Script K6
+## 2.1 Cycle de Vie d'un Script K6
 **Métriques custom**
 
 - Counter (Compteur) : compte le nombre total d'événements
@@ -313,7 +313,7 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 2.2 Pratique : Création de Requêtes HTTP
+## 2.2 Création de Requêtes HTTP
 
 **Types de requêtes HTTP**
 
@@ -352,7 +352,7 @@ export default function () {
 
 <div style="text-align: left;">
 
-## 2.2 Pratique : Création de Requêtes HTTP
+## 2.2 Création de Requêtes HTTP
 
 **Requêtes batch (parallèles)**
 
@@ -374,15 +374,12 @@ export default function () {
   console.log(responses[0].status); // 200
 }
 ```
-
-
-
 </div>
 
 ---
 <div style="text-align: left;">
 
-## 2.2 Pratique : Création de Requêtes HTTP
+## 2.2 Création de Requêtes HTTP
 
 **Exercice pratique**
 
@@ -395,7 +392,7 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 2.3 Théorie et Pratique : Checks,Thresholds & Gestion d'Erreurs
+## 2.3 Checks, Thresholds & Gestion d'Erreurs
 **Checks : Validations sans échec**
 
 - Validations qui n'arrêtent pas le test (mesurent le taux de succès)
@@ -419,14 +416,12 @@ export default function () {
 }
 ```
 
-
-
-
 </div>
 ---
 <div style="text-align: left;">
 
-## 2.3 Théorie et Pratique : Checks,Thresholds & Gestion d'Erreurs
+## 2.3 Checks, Thresholds & Gestion d'Erreurs
+
 **Thresholds : Validations sans échec**
 
 - Critères qui déterminent si le test passe ou échoue
@@ -460,7 +455,7 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+## 2.3 Checks et Gestion d'Erreurs
 
 **1. Vérifier le status HTTP avec check()**
 
@@ -477,7 +472,7 @@ check(response, {
 
 <div style="text-align: left;">
 
-## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+## 2.3 Checks et Gestion d'Erreurs
 
 **2. Gérer les timeouts**
 
@@ -493,7 +488,7 @@ if (response.status === 0) {
 
 <div style="text-align: left;">
 
-## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+## 2.3 Checks et Gestion d'Erreurs
 
 **3. Parser le JSON avec try-catch**
 
@@ -510,7 +505,7 @@ try {
 
 <div style="text-align: left;">
 
-## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+## 2.3 Checks et Gestion d'Erreurs
 
 **4. Arrêter le test avec `fail()`**
 
@@ -527,7 +522,7 @@ if (response.status === 0) {
 
 <div style="text-align: left;">
 
-## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+## 2.3 Checks et Gestion d'Erreurs
 
 **5. Catégoriser les erreurs**
 
@@ -544,7 +539,7 @@ if (response.status >= 500) {
 ---
 <div style="text-align: left;">
 
-## 2.3 Théorie et Pratique : Checks et Gestion d'Erreurs
+## 2.3 Checks et Gestion d'Erreurs
 
 **6. Retry automatique**
 
@@ -579,7 +574,7 @@ for (let i = 0; i < 3; i++) {
 ---
 <div style="text-align: left;">
 
-## 3.1 Théorie : Groupes et Organisation 
+## 3.1 Groupes et Organisation 
 **Avantages des groupes**
 
 - Organiser logiquement les tests (thresholds spécifiques...)
@@ -616,7 +611,7 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-### 3.2 Théorie : Options de Configuration
+### 3.2 Options de Configuration
 
 **Options principales**
 
@@ -659,7 +654,7 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 3.3 Pratique : Gestion des Cookies et Sessions
+## 3.3 Gestion des Cookies et Sessions
 
 **Cookies automatiques**
 
@@ -695,7 +690,7 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 3.3 Pratique : Gestion des Cookies et Sessions
+## 3.3 Gestion des Cookies et Sessions
 
 **Exercice pratique**
 
@@ -774,7 +769,7 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 4.2 Pratique : Données Externes
+## 4.2 Données Externes
 
 **Utilisation de fichiers CSV**
 
@@ -811,7 +806,7 @@ user3,user3@example.com
 ---
 <div style="text-align: left;">
 
-## 4.2 Pratique : Données Externes
+## 4.2 Données Externes
 
 **Utilisation de fichiers JSON**
 
@@ -847,7 +842,7 @@ Fichier `products.json` :
 ---
 <div style="text-align: left;">
 
-## 4.2 Pratique : Données Externes
+## 4.2 Données Externes
 
 Le **SharedArray** dans k6 est une structure de données spéciale qui permet de partager des données en lecture seule entre tous les VUs (Virtual Users) de manière mémoire-efficiente.
 
@@ -873,7 +868,7 @@ Avec 100 VUs et un fichier de 1 000 produits :
 ---
 <div style="text-align: left;">
 
-## 4.2 Pratique : Données Externes
+## 4.2 Données Externes
 
 **Variables d'environnement**
 
@@ -899,7 +894,7 @@ k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
 ---
 <div style="text-align: left;">
 
-## 4.2 Pratique : Données Externes
+## 4.2  Données Externes
 
 **Exercice pratique**
 
@@ -996,26 +991,6 @@ export default async function () {
 
 ---
 
-<div style="text-align: left;">
-
-## Fin de la Journée 1
-
-#### Récapitulatif J1
-- ✅ Fondamentaux du test de charge
-- ✅ Installation et premier test K6
-- ✅ Cycle de vie et structure des scripts
-- ✅ Requêtes HTTP (GET, POST, PUT, DELETE)
-- ✅ Checks et validations
-- ✅ Groupes et organisation
-- ✅ Options de configuration
-- ✅ Gestion des cookies
-- ✅ Corrélations et données externes
-- ✅ Introduction à K6 **Browser**
-
-</div>
----
-
-
 # Modélisation et Résultats
 ## Module 5 : Modélisation de Scénarios
 
@@ -1026,7 +1001,7 @@ export default async function () {
 ---
 <div style="text-align: left;">
 
-## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
 
 **Comprendre les VUs (Virtual Users)**
 
@@ -1063,7 +1038,7 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
 
 #### Modèles fermés vs ouverts
 
@@ -1088,7 +1063,7 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
 #### Modèles fermés vs ouverts
 
 **Modèle ouvert**
@@ -1116,9 +1091,8 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
 #### Modèles fermés vs ouverts
-
 
 </div>
 
@@ -1127,47 +1101,139 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 5.1 Théorie : Utilisateurs Virtuels et Modèles de Charge
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
 
-#### Executors disponibles
-1. **shared-iterations :** Nombre total d'itérations partagées
-2. **per-vu-iterations :** Nombre d'itérations par VU
-3. **constant-vus :** VUs constants
-4. **ramping-vus :** VUs avec rampe
-5. **constant-arrival-rate :** Taux d'arrivée constant
-6. **ramping-arrival-rate :** Taux d'arrivée avec rampe
-7. **externally-controlled :** Contrôle externe (API)
+Les Executors dans k6 sont des moteurs d'exécution qui définissent comment et quand les VUs (Virtual Users) exécutent les itérations de test.
 
+Ils déterminent le pattern de charge de votre test :  
+- Combien de VUs sont actives
+- Quand elles démarrent/arrêtent
+- Comment la charge évolue dans le temps
+
+</br></br>
+
+**Choix de l'Executor**
+
+|Besoin|	Executor Recommandé|
+|---|---|
+|Charge| stable	constant-vus|
+|Montée progressive|	ramping-vus|
+Débit constant de requêtes|	constant-arrival-rate|
+Débit variable de requêtes|	ramping-arrival-rate|
+Nombre total d'itérations|	shared-iterations|
+Itérations par VU|	per-vu-iterations|
+Contrôle externe|	externally-controlled|
 </div>
 ---
 <div style="text-align: left;">
 
-## 5.2 Pratique : Création de Scénarios Réalistes
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
+**Shared Iterations** `(shared-iterations)`  
+Distribue un nombre fixe d'itérations entre tous les VUs en parallèle  
+Chaque VU exécute jusqu'à ce que le quota soit épuisé  
 
-#### Scénario avec rampe progressive
-```javascript
-export const options = {
-  scenarios: {
-    ramp_up_down: {
-      executor: 'ramping-vus',
-      startVUs: 0,
-      stages: [
-        { duration: '2m', target: 50 },  // Monter à 50 VUs en 2min
-        { duration: '5m', target: 50 },  // Maintenir 50 VUs pendant 5min
-        { duration: '2m', target: 100 }, // Monter à 100 VUs en 2min
-        { duration: '5m', target: 100 }, // Maintenir 100 VUs pendant 5min
-        { duration: '2m', target: 0 },   // Descendre à 0 en 2min
-      ],
-      gracefulRampDown: '30s',
-    },
-  },
-};
+```js
+executor: 'shared-iterations',
+options: {
+  vus: 10,
+  iterations: 100  // 100 itérations totales réparties entre les 10 VUs
+}
+``` 
+Cas d'usage : tester un nombre défini de requêtes sans durée limite.
+
+</br></br>
+
+**Per-VU Iterations** `(per-vu-iterations)`
+Chaque VU exécute exactement le même nombre d'itérations indépendamment  
+```js
+executor: 'per-vu-iterations',
+options: {
+  vus: 10,
+  iterations: 50  // Chaque VU fait 50 itérations = 500 totales
+}
 ```
+Cas d'usage : chaque utilisateur simulé fait un parcours identique.
+
 </div>
 ---
 <div style="text-align: left;">
 
-## 5.2 Pratique : Création de Scénarios Réalistes
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
+**Constant VUs** `(constant-vus)`  
+Maintient un nombre constant de VUs pendant une durée définie  
+Le plus simple et classique  
+```js
+executor: 'constant-vus',
+options: {
+  vus: 100,
+  duration: '5m'  // 100 VUs pendant 5 minutes
+}
+```
+Cas d'usage : charge stable, test de performance baseline.
+
+</br></br>
+
+**Ramping VUs** `(ramping-vus)`
+Augmente/diminue progressivement le nombre de VUs  
+Simule l'arrivée progressive d'utilisateurs
+```js
+executor: 'ramping-vus',
+options: {
+  stages: [
+    { duration: '1m', target: 50 },
+    { duration: '3m', target: 100 },
+    { duration: '2m', target: 0 }
+  ]
+}
+```
+Cas d'usage : simuler une journée réelle avec montée progressive, puis descente.
+
+</div>
+---
+<div style="text-align: left;">
+
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
+
+**Constant Arrival Rate** `(constant-arrival-rate)`  
+Maintient un taux d'arrivée constant (X requêtes par seconde)  
+Les VUs s'ajustent automatiquement pour maintenir le débit  
+```js
+executor: 'constant-arrival-rate',
+options: {
+  rate: 100,           // 100 requêtes/sec
+  timeUnit: '1s',
+  duration: '5m',
+  preAllocatedVUs: 50, // VUs pré-alloués
+  maxVUs: 200          // Limite max si besoin d'en créer plus
+}
+```
+Cas d'usage : charge réaliste orientée débit (SLA par requête/sec)
+
+</br></br>
+
+**Ramping Arrival Rate** `(ramping-arrival-rate)`
+Le taux d'arrivée augmente/diminue progressivement  
+```js
+executor: 'ramping-arrival-rate',
+options: {
+  stages: [
+    { duration: '2m', target: 50 },   // Rampe jusqu'à 50 req/sec
+    { duration: '3m', target: 100 },  // Puis 100 req/sec
+    { duration: '2m', target: 0 }     // Descente
+  ],
+  preAllocatedVUs: 100,
+  maxVUs: 300
+}
+``` 
+Cas d'usage : stress progressif avec débit contrôlé
+
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## 5.2  Création de Scénarios Réalistes
 
 #### Scénarios multiples
 ```javascript
@@ -1209,7 +1275,7 @@ export function writeScenario() {
 ---
 <div style="text-align: left;">
 
-## 5.2 Pratique : Création de Scénarios Réalistes
+## 5.2  Création de Scénarios Réalistes
 
 #### Exercice pratique
 **Objectif :** Créer un scénario e-commerce réaliste
@@ -1223,7 +1289,7 @@ export function writeScenario() {
 ---
 <div style="text-align: left;">
 
-## 5.3 Pratique : Options intéréssantes - GracefulStop
+## 5.3  Options intéréssantes - GracefulStop
 
 C'est est une période de grâce qui permet aux itérations en cours de se terminer proprement avant l'arrêt forcé d'un scénario.
 
@@ -1252,7 +1318,7 @@ const options = {
 ---
 <div style="text-align: left;">
 
-## 5.3 Pratique : Options intéréssantes - GracefulStop
+## 5.3  Options intéréssantes - GracefulStop
 
 **Avec GracefulStop**
 
@@ -1285,7 +1351,7 @@ Durée totale du test : 9m
 ---
 <div style="text-align: left;">
 
-## 5.3 Pratique : Options intéréssantes - Preallocated VU
+## 5.3  Options intéréssantes - Preallocated VU
 Pré-allouer les VUs au démarrage pour éviter la création progressive  
 Réduit les "cold start" et lisse les résultats  
 
@@ -1333,31 +1399,52 @@ options = {
 ---
 <div style="text-align: left;">
 
-## 6.1 Théorie : Les Différents Types de Tests de Charge
+## 6.1 Les Différents Types de Tests de Charge
 
-#### 1. Test de Charge Nominal (Load Testing)
-**Objectif :** Vérifier le comportement sous charge normale/attendue
-**Profil :** Charge constante et stable
+#### 0. Test minimal (Smoke test)
+**Objectif :** Vérifier le comportement logique  
+**Profil :** Throughput faible & courte période  
+
 
 ```javascript
 export const options = {
   scenarios: {
-    nominal_load: {
-      executor: 'constant-arrival-rate',
-      rate: 500, // 500 req/s
-      timeUnit: '1s',
-      duration: '10m',
-      preAllocatedVUs: 50,
+    smoke_load: {
+      duration: '1m',
+      vus: 3,
     },
-  },
-  thresholds: {
-    http_req_duration: ['p(95)<500'],
-    http_req_failed: ['rate<0.01'],
-  },
+  }
+};
+```
+
+**Ce qu'on cherche :**
+- Validation initiale d'un nouveau test
+- Vérifier le fonctionnement des scripts existant après une mise à jour
+- Permet d'itérer plus rapidement sur d'autres types de tests plus long
+
+</div>
+---
+
+<div style="text-align: left;">
+
+## 6.1 Les Différents Types de Tests de Charge
+
+#### 1. Test de Charge (Average Load Testing)
+**Objectif :** Vérifier le comportement sous charge normale/attendue  
+**Profil :** Charge constante et stable  
+
+```javascript
+export const options = {
+  stages: [
+    { duration: '5m', target: 100 },
+    { duration: '30m', target: 100 }, 
+    { duration: '5m', target: 0 }, 
+  ],
 };
 ```
 
 **Métriques clés :**
+
 - Temps de réponse moyen et P95/P99
 - Throughput stable
 - Taux d'erreur minimal
@@ -1366,26 +1453,19 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 6.1 Théorie : Les Différents Types de Tests de Charge
-
+## 6.1 Les Différents Types de Tests de Charge
 
 #### 2. Test d'Endurance (Soak Testing)
-**Objectif :** Détecter les fuites mémoire, dégradations sur la durée
-**Profil :** Charge nominale prolongée (plusieurs heures)
+**Objectif :** Détecter les fuites mémoire, dégradations sur la durée  
+**Profil :** Charge nominale prolongée (plusieurs heures)  
 
 ```javascript
 export const options = {
-  scenarios: {
-    endurance: {
-      executor: 'constant-vus',
-      vus: 100,
-      duration: '4h', // Test long
-    },
-  },
-  thresholds: {
-    http_req_duration: ['p(95)<500'],
-    // Observer si les temps augmentent avec le temps
-  },
+  stages: [
+    { duration: '5m', target: 100 },
+    { duration: '8h', target: 100 }, 
+    { duration: '5m', target: 0 },
+  ],
 };
 ```
 
@@ -1398,35 +1478,25 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 6.1 Théorie : Les Différents Types de Tests de Charge
+## 6.1 Les Différents Types de Tests de Charge
 
 #### 3. Test de Stress (Stress Testing)
-**Objectif :** Identifier la limite de capacité du système
-**Profil :** Augmentation progressive jusqu'à la rupture
+
+**Objectif :** Identifier la limite de capacité du système  
+**Profil :** Augmentation progressive jusqu'à la rupture  
 
 ```javascript
 export const options = {
-  scenarios: {
-    stress: {
-      executor: 'ramping-arrival-rate',
-      startRate: 50,
-      timeUnit: '1s',
-      stages: [
-        { duration: '2m', target: 50 },
-        { duration: '5m', target: 100 },
-        { duration: '5m', target: 200 },
-        { duration: '5m', target: 400 },
-        { duration: '5m', target: 800 },
-        { duration: '10m', target: 800 },
-      ],
-      preAllocatedVUs: 100,
-      maxVUs: 500,
-    },
-  },
+  stages: [
+    { duration: '10m', target: 200 },
+    { duration: '30m', target: 200 },
+    { duration: '5m', target: 0 },
+  ],
 };
 ```
 
 **Objectifs :**
+
 - Trouver le point de rupture
 - Observer le comportement en surcharge
 - Vérifier la récupération après stress
@@ -1435,65 +1505,44 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 6.1 Théorie : Les Différents Types de Tests de Charge
+## 6.1 Les Différents Types de Tests de Charge
 
 #### 4. Test de Pic (Spike Testing)
-**Objectif :** Vérifier le comportement lors de pics soudains
-**Profil :** Augmentation très rapide puis retour à la normale
+**Objectif :** Vérifier le comportement lors de pics soudains  
+**Profil :** Augmentation très rapide puis retour à la normale  
 
 ```javascript
 export const options = {
-  scenarios: {
-    spike: {
-      executor: 'ramping-vus',
-      startVUs: 0,
-      stages: [
-        { duration: '10s', target: 100 },  // Charge normale
-        { duration: '1m', target: 100 },
-        { duration: '10s', target: 1000 }, // Pic soudain
-        { duration: '1m', target: 1000 },
-        { duration: '10s', target: 100 },  // Retour
-        { duration: '1m', target: 100 },
-      ],
-    },
-  },
+  stages: [
+    { duration: '2m', target: 2000 },
+    { duration: '1m', target: 0 },
+  ],
 };
 ```
 
 **Ce qu'on teste :**
+
 - Réponse aux pics (ex: promotions, événements)
 - Auto-scaling
 - Récupération après le pic
-- 
+  
+
 </div>
 ---
 <div style="text-align: left;">
 
-## 6.1 Théorie : Les Différents Types de Tests de Charge
+## 6.1 Les Différents Types de Tests de Charge
 
 #### 5. Test de Rupture (Breakpoint Testing)
-**Objectif :** Déterminer la capacité maximale absolue
-**Profil :** Augmentation continue jusqu'à l'échec total
+**Objectif :** Déterminer la capacité maximale absolue  
+**Profil :** Augmentation continue jusqu'à l'échec total  
 
 ```javascript
 export const options = {
-  scenarios: {
-    breakpoint: {
-      executor: 'ramping-arrival-rate',
-      startRate: 100,
-      timeUnit: '1s',
-      stages: [
-        { duration: '5m', target: 200 },
-        { duration: '5m', target: 400 },
-        { duration: '5m', target: 800 },
-        { duration: '5m', target: 1600 },
-        { duration: '5m', target: 3200 },
-        // Continuer jusqu'à l'échec
-      ],
-      preAllocatedVUs: 200,
-      maxVUs: 1000,
-    },
-  },
+  executor: 'ramping-arrival-rate', // Assure l'augmentation progressive de la charge même si le système ralenti
+  stages: [
+    { duration: '2h', target: 20000 }, 
+  ],
 };
 ```
 
@@ -1501,16 +1550,16 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-### 6.2 Pratique : Implémentation des Types de Tests
+### 6.2  Implémentation des Types de Tests
 
-#### Exercice 1 : Test de Charge Nominal (15 min)
+#### Exercice 1 : Test de Charge Nominal
 **Objectif :** Créer un test de charge nominale
 - Définir la charge attendue (ex: 100 req/s)
 - Durée de 10 minutes
 - Définir des thresholds appropriés
 - Analyser si le système tient la charge
 
-#### Exercice 2 : Test de Stress (20 min)
+#### Exercice 2 : Test de Stress
 **Objectif :** Pousser le système à ses limites
 - Implémenter une rampe progressive
 - Identifier le point où les erreurs commencent
@@ -1521,16 +1570,16 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-### 6.2 Pratique : Implémentation des Types de Tests
+### 6.2  Implémentation des Types de Tests
 
-#### Exercice 3 : Test de Pic (15 min)
+#### Exercice 3 : Test de Pic
 **Objectif :** Simuler un événement promotionnel
 - Charge de fond : 50 req/s
 - Pic soudain : 500 req/s pendant 2 minutes
 - Retour à la normale
 - Vérifier la récupération
 
-#### Exercice 4 : Comparaison (10 min)
+#### Exercice 4 : Comparaison
 **Objectif :** Analyser les résultats des différents tests
 - Comparer les métriques (P95, taux d'erreur)
 - Identifier les différences de comportement
@@ -1552,7 +1601,7 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 7.1 Théorie : Définir des Seuils de Performance
+## 7.1 Définir des Seuils de Performance
 
 **Syntaxe des Thresholds**
 
@@ -1589,7 +1638,7 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 7.1 Théorie : Définir des Seuils de Performance
+## 7.1 Définir des Seuils de Performance
 
 **Thresholds sur métriques custom**
 
@@ -1626,7 +1675,7 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 7.1 Théorie : Définir des Seuils de Performance
+## 7.1 Définir des Seuils de Performance
 
 **Thresholds par tag ou groupe**
 
@@ -1652,7 +1701,7 @@ export default function () {
 ---
 <div style="text-align: left;">
 
-## 7.1 Théorie : Définir des Seuils de Performance
+## 7.1 Définir des Seuils de Performance
 
 **Abort on Fail**
 
@@ -1669,7 +1718,7 @@ export const options = {
 ---
 <div style="text-align: left;">
 
-## 7.2 Pratique : Définir des Objectifs de Performance
+## 7.2  Définir des Objectifs de Performance
 
 **Exercice 1 : SLA E-commerce**
 
@@ -1699,7 +1748,7 @@ Définir des thresholds sur ces métriques.
 ---
 <div style="text-align: left;">
 
-## 7.2 Pratique : Définir des Objectifs de Performance
+## 7.2  Définir des Objectifs de Performance
 
 **Exercice 3 : Thresholds Avancés**
 
@@ -1726,7 +1775,7 @@ Définir des thresholds sur ces métriques.
 ---
 <div style="text-align: left;">
 
-## 8.1 Théorie : Formats de Sortie
+## 8.1 Formats de Sortie
 
 **Sortie console par défaut**
 ```bash
@@ -1743,20 +1792,18 @@ k6 run --out json=results.json script.js
 k6 run --out csv=results.csv script.js
 ```
 
-**InfluxDB**
-```bash
-k6 run --out influxdb=http://localhost:8086/k6 script.js
-```
+</div>
 
-**Grafana Cloud K6**
-```bash
-K6_CLOUD_TOKEN=<token> k6 run --out cloud script.js
-```
+---
+<div style="text-align: left;">
+
+## 8.2  K6 Web Dashboards TODO
+
 </div>
 ---
 <div style="text-align: left;">
 
-## 8.2 Pratique : Installation et Configuration Grafana
+## 8.2  Installation et Configuration Grafana TODO
 
 **Installation avec Docker Compose**
 
@@ -1803,7 +1850,7 @@ docker-compose up -d
 ---
 <div style="text-align: left;">
 
-## 8.2 Pratique : Installation et Configuration Grafana
+## 8.2  Installation et Configuration Grafana TODO
 
 **Configuration de la datasource InfluxDB dans Grafana**
 
@@ -1828,10 +1875,24 @@ docker-compose up -d
 k6 run --out influxdb=http://localhost:8086/k6 script.js
 ```
 </div>
+
 ---
 <div style="text-align: left;">
 
-## 8.2 Pratique : Installation et Configuration Grafana
+## 8.2 Grafana - Metrics
+
+k6	Prometheus	Name label
+Counter	Counter	k6_*_total
+Gauge	Gauge	k6_*_<unit-suffix>
+Rate	Gauge	k6_*_rate
+Trend	Counter and Gauges (default) or Native Histogram	k6_*_<unit-suffix>
+
+
+</div>
+---
+<div style="text-align: left;">
+
+## 8.2  Installation et Configuration Grafana
 
 **Exercice pratique**
 
@@ -1845,7 +1906,7 @@ k6 run --out influxdb=http://localhost:8086/k6 script.js
 ---
 <div style="text-align: left;">
 
-## 8.3 Pratique : Génération et Analyse de Rapports
+## 8.3  Génération et Analyse de Rapports
 
 **Rapport HTML avec k6-reporter**
 
@@ -1875,7 +1936,7 @@ export function handleSummary(data) {
 ---
 <div style="text-align: left;">
 
-## 8.3 Pratique : Génération et Analyse de Rapports
+## 8.3  Génération et Analyse de Rapports
 
 **Custom Summary**
 
@@ -1897,7 +1958,7 @@ export function handleSummary(data) {
 ---
 <div style="text-align: left;">
 
-## 8.3 Pratique : Génération et Analyse de Rapports
+## 8.3  Génération et Analyse de Rapports
 
 **Analyse des métriques importantes**
 
@@ -1920,7 +1981,7 @@ export function handleSummary(data) {
 ---
 <div style="text-align: left;">
 
-## 8.3 Pratique : Génération et Analyse de Rapports
+## 8.3  Génération et Analyse de Rapports
 
 **Exercice pratique**
 

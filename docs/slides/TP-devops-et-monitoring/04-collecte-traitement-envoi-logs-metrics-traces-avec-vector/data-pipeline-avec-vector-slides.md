@@ -1,0 +1,192 @@
+## Introduction
+Vector est une solution unifiée pour la collecte, le traitement et l'export de données d'observabilité telles que les logs, les métriques et les traces.  
+Vector se distingue par sa performance, son extensibilité et sa capacité à traiter plusieurs types de données dans un seul pipeline.
+
+</br>
+
+**Objectifs**
+- Comprendre les concepts de base et avancés de Vector
+- Configurer des pipelines pour collecter, traiter et envoyer des logs, métriques et traces
+- Explorer les bonnes pratiques pour une configuration optimale
+
+
+---
+
+
+
+## Concepts fondamentaux
+
+### Pipeline de données Vector
+Le pipeline de données Vector est composé de trois composants principaux :
+
+- **Sources** : Collecte les données (logs, métriques, traces).
+- **Transforms** : Applique des transformations aux données en transit.
+- **Sinks** : Envoie les données vers une destination.
+
+### Fonctionnalités de Vector
+
+- Faible latence et hautes performances
+- VRL (Vector Remap Language) pour transformer les données
+- Support pour de multiples sources et destinations : Systèmes de logs, TSDB (bases de données de séries temporelles), solutions de traces distribuées, etc.
+
+
+
+
+---
+
+
+
+## Collecte des logs avec Vector
+
+Les logs sont des messages textuels générés par les systèmes ou applications. Vector peut collecter des logs à partir de diverses sources.
+
+**Exemples de sources de logs :**
+- Fichiers : Collecte des logs à partir de fichiers locaux ou montés.
+- Journal système (journald) : Collecte les logs système de systemd.
+- Docker/Kubernetes : Collecte les logs des conteneurs.
+
+</br>
+
+Exemple de configuration pour collecter des logs à partir d'un fichier :
+```toml
+[sources.my_logs]
+  type = "file"
+  include = ["/var/log/myapp/*.log"]
+  ignore_older = 86400 # Ignore les fichiers plus anciens que 24h
+```
+
+
+
+---
+
+
+
+## Collecte des métriques avec Vector
+
+Les métriques sont des séries temporelles qui mesurent l'état ou la performance d'une application.  
+Vector supporte des sources comme Prometheus et statsd pour collecter des métriques.  
+
+</br>
+
+Exemple de collecte des métriques depuis un endpoint Prometheus :
+```toml
+[sources.prometheus]
+  type = "prometheus_scrape"
+  endpoints = ["http://localhost:9100/metrics"] # Endpoint exposant des métriques
+```
+
+
+
+---
+
+
+
+## Collecte des traces avec Vector
+
+Les traces représentent un chemin de requêtes à travers des systèmes distribués, permettant de diagnostiquer des problèmes de performance.  
+Vector supporte la collecte des traces via OpenTelemetry.  
+
+Exemple de collecte des traces via OpenTelemetry :
+```toml
+[sources.opentelemetry]
+  type = "opentelemetry"
+  address = "0.0.0.0:4317"  # Endpoint de collecte des traces
+```
+
+
+
+---
+
+
+
+## Transformation des données avec Vector - VRL
+
+VRL est le langage intégré dans Vector qui permet de manipuler les données de manière flexible et puissante. Vous pouvez ajouter, supprimer ou transformer des champs à partir des logs, métriques ou traces.
+
+Exemple de transformation de logs avec VRL :
+```toml
+[transforms.clean_logs]
+  type = "remap"
+  inputs = ["my_logs"]
+  source = '''
+    .message = parse_json!(.message)
+    del(.debug_info)
+    .env = "production"
+  '''
+```
+
+
+
+---
+
+
+
+## Envoi des données via Sinks - Logs
+
+Les logs peuvent être envoyés vers une multitude de destinations comme ElasticSearch, AWS S3, ou des systèmes de gestion de logs spécifiques (Loki, Fluentd, etc.).  
+
+Exemple d'envoi des logs vers ElasticSearch :
+```toml
+[sinks.elasticsearch]
+  type = "elasticsearch"
+  inputs = ["clean_logs"]
+  endpoint = "http://elasticsearch:9200"
+  index = "myapp-logs"
+```
+
+
+
+---
+
+
+
+
+## Envoi des données via Sinks - Métriques
+
+Vector permet l'export de métriques vers des bases de données de séries temporelles (TSDB) telles que Prometheus (remote_write), InfluxDB, ou VictoriaMetrics.  
+
+Exemple d'envoi des métriques vers Prometheus (remote_write) :
+```toml
+[sinks.prometheus]
+  type = "prometheus_remote_write"
+  inputs = ["add_labels"]
+  endpoint = "http://prometheus:9090/api/v1/write"
+```
+
+
+
+---
+
+
+
+## Envoi des données via Sinks - Traces
+
+Les traces peuvent être envoyées vers des systèmes de traces distribuées comme Jaeger, Zipkin, ou tout système compatible OpenTelemetry.  
+
+Exemple d'envoi des traces vers Jaeger :
+```toml
+[sinks.jaeger]
+  type = "jaeger"
+  inputs = ["filter_traces"]
+  address = "jaeger:14250"
+```
+
+
+
+---
+
+
+
+## Récap
+
+Vector.dev est une solution puissante et flexible qui permet de gérer efficacement les logs, métriques et traces dans un seul pipeline unifié.  
+
+</br>
+
+Grâce à ses capacités de transformation via VRL, ses performances optimisées et son large support de sources et de destinations, Vector est idéal pour des architectures cloud-native complexes.  
+
+</br>
+
+Il s'intègre parfaitement dans un environnement DevOps moderne pour offrir une observabilité complète.
+
+

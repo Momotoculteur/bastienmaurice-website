@@ -1,0 +1,201 @@
+## Introduction
+
+Une TSDB est un type de base de données spécialement conçu pour stocker, interroger et gérer des séries temporelles.  
+
+Les séries temporelles sont des données collectées chronologiquement à des intervalles réguliers, par exemple des métriques système, des logs, ou des données IoT.  
+
+L’architecture d’une TSDB permet de gérer de grands volumes de données avec des lectures et écritures efficaces, ce qui est crucial dans des systèmes de surveillance et de monitoring.
+
+Dans ce cours, nous explorerons l’utilisation générale d’une TSDB avec des outils comme **VictoriaMetrics** et **Grafana Mimir**, qui sont des solutions populaires dans le monde de la surveillance d’infrastructures
+
+
+
+
+---
+
+
+
+## Concepts clés d'une TSDB - Séries temporelles
+
+Une série temporelle est une séquence de points de données mesurés à des moments spécifiques.  
+
+Chaque point de données est défini par un timestamp, une valeur, et souvent un ou plusieurs labels (ou tags) qui permettent de catégoriser ou de contextualiser la donnée. Par exemple :
+```
+metric_name{label1="value1", label2="value2"} timestamp value
+```
+
+
+
+---
+
+
+
+## Concepts clés d'une TSDB - Scalabilité et performance
+
+L'une des raisons d'utiliser une TSDB est la possibilité de gérer une énorme quantité de données en temps réel.  
+
+Cela nécessite des algorithmes optimisés pour la compression, l’indexation, et la récupération rapide des données.  
+
+VictoriaMetrics et Grafana Mimir sont tous deux conçus pour gérer ces volumes de données, en offrant des options de scalabilité horizontale (ajouter plus de nœuds) et verticale (améliorer la performance des nœuds existants).
+
+
+
+
+
+
+---
+
+
+
+## Concepts clés d'une TSDB - Architecture multi-tenant
+
+Une autre caractéristique cruciale des TSDB modernes est la capacité de gérer plusieurs "tenants" ou clients dans le même système, tout en garantissant une isolation complète des données.  
+
+Cela permet à plusieurs équipes ou projets d'utiliser la même infrastructure TSDB, avec des données totalement séparées.
+
+
+
+
+
+---
+
+
+
+## Collecte et ingestion des données
+
+Les TSDB comme VictoriaMetrics et Grafana Mimir sont compatibles avec Prometheus, qui est l’un des outils de collecte de métriques les plus populaires.  
+
+Prometheus récupère des métriques à intervalles réguliers à partir de diverses cibles (applications, services, systèmes) et peut les écrire dans une TSDB via le mécanisme remote_write.
+
+```yaml
+remote_write:
+  - url: "http://<adresse-tsdb>:8428/api/v1/write"  # Adapté à VictoriaMetrics ou Mimir
+```
+
+
+---
+
+
+
+## Collecte et ingestion des données
+
+Les TSDB comme VictoriaMetrics ou Grafana Mimir permettent également l’insertion directe de données via une API HTTP.  
+
+Cela est utile pour des systèmes qui ne passent pas par Prometheus.
+
+```yaml
+curl -d 'metric_name{label="value"} 1234' -X POST http://localhost:8428/api/v1/import/prometheus
+```
+
+
+
+---
+
+
+
+## Interrogation des données avec PromQL
+
+Les deux outils supportent PromQL (Prometheus Query Language), qui est un langage puissant pour interroger des séries temporelles.  
+
+Il permet d'extraire des informations spécifiques, d'agréger les données et de calculer des métriques dérivées.
+
+- Récupérer une métrique simple :
+```yaml
+http_requests_total{status="200"}
+```
+
+- Calculer un taux d'augmentation sur une période de 5 minutes :
+```yaml
+rate(http_requests_total[5m])
+```
+
+- Agréger des métriques par label :
+```yaml
+sum(rate(http_requests_total[5m])) by (status)
+```
+
+Les requêtes sont essentielles pour analyser la performance de vos systèmes et comprendre les tendances dans vos métriques.
+
+
+
+---
+
+
+
+## Gestion de la rétention des données - Politique de rétention
+
+Les TSDB permettent de configurer des durées de rétention pour vos données. Vous pouvez conserver les métriques pendant plusieurs jours, semaines ou mois, selon les besoins. La configuration de la rétention est cruciale pour optimiser l’espace de stockage et les coûts.
+
+Exemple avec VictoriaMetrics pour une rétention de 6 mois :
+```
+docker run -d --name victoriametrics -p 8428:8428 victoriametrics/victoria-metrics -retentionPeriod=6
+```
+
+
+
+---
+
+
+
+## Gestion de la rétention des données - Purge des données anciennes
+
+Les TSDB gèrent automatiquement la suppression des données expirées selon la politique de rétention définie.  
+
+Cela permet de garder l’espace disque sous contrôle sans intervention manuelle.
+
+
+
+---
+
+
+
+## Scalabilité et haute disponibilité - Scalabilité horizontale
+
+Pour des environnements nécessitant une haute disponibilité et la gestion d’un grand nombre de séries temporelles, VictoriaMetrics et Grafana Mimir offrent des options de scalabilité horizontale.  
+
+Cela signifie que vous pouvez ajouter plus de nœuds dans le cluster pour distribuer la charge, augmenter la performance et garantir la disponibilité en cas de panne d’un nœud.
+
+
+
+
+
+---
+
+
+
+## Scalabilité et haute disponibilité - Tolérance aux pannes et réplication
+
+Ces TSDB sont conçues pour garantir la continuité des services même en cas de défaillance d’un nœud.  
+
+Les données peuvent être répliquées sur plusieurs nœuds pour éviter la perte d'informations.
+
+
+
+
+
+---
+
+
+
+## Comparaison entre VictoriaMetrics et Grafana Mimir
+
+Les deux solutions présentent des similarités en termes de compatibilité avec Prometheus et de gestion des séries temporelles, mais elles diffèrent légèrement dans leur approche de la scalabilité et des fonctionnalités supplémentaires :  
+
+- **VictoriaMetrics** : Connue pour son efficacité et sa simplicité, elle est idéale pour des environnements de petite à moyenne échelle avec des besoins en ressources réduits. 
+- **Grafana Mimir** : Conçue pour des environnements massifs, elle est mieux adaptée aux grandes infrastructures nécessitant des capacités avancées de scalabilité, de tolérance aux pannes et de multi-tenancy.
+
+
+
+---
+
+
+
+## Récap
+
+Les TSDB comme VictoriaMetrics et Grafana Mimir sont des outils essentiels pour la gestion des métriques et séries temporelles dans des environnements modernes.  
+
+Leur compatibilité avec Prometheus et Grafana en fait des solutions robustes et flexibles pour surveiller les infrastructures, que ce soit pour des petites ou des grandes échelles.  
+
+En comprenant les concepts clés de la collecte, de l'interrogation et de la gestion des données, vous serez en mesure d'optimiser la performance et la fiabilité de vos systèmes.
+
+

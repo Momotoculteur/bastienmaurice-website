@@ -1,0 +1,152 @@
+## Introduction 
+
+Helm est un gestionnaire de packages pour Kubernetes.  
+
+Il facilite le déploiement et la gestion des applications complexes via des charts.
+
+</br>
+
+**Avantages**
+- Simplifie les déploiements multi-environnements.
+- Gère les dépendances entre applications.
+- Permet des mises à jour et rollbacks.
+
+
+
+---
+
+
+## Concepts clés
+
+- **Chart** : Structure définissant une application (manifests YAML, templates).
+- **Release** : Instance d’un chart déployée dans un cluster.
+- **Repository** : Source où les charts sont stockés.
+
+
+
+---
+
+
+
+## Commandes essentielles
+
+Créer un chart :
+```bash
+helm create my-chart
+```
+
+Installer une application :
+```bash
+helm install my-release my-chart
+```
+
+Lister les releases :
+```bash
+helm list
+```
+
+Mettre à jour un release :
+```bash
+helm upgrade my-release my-chart
+```
+
+Supprimer un release :
+```bash
+helm uninstall my-release
+```
+
+
+
+---
+
+
+
+## Structure d’un Chart
+
+```plaintext
+my-chart/
+  Chart.yaml        # Métadonnées du chart
+  values.yaml       # Valeurs par défaut pour les variables
+  ├── templates/    # Fichiers de template YAML
+  │   ├── deployment.yaml
+  │   ├── service.yaml
+  │   └── ....yaml
+```
+
+
+
+---
+
+
+## Fichiers détaillés - Chart.yaml
+
+Fichier contenant les métadonnées du chart.
+
+
+```yaml
+apiVersion: v2
+name: my-nginx-chart
+description: A simple Helm chart for NGINX
+type: application
+version: 0.1.0
+appVersion: "1.21.1"
+```
+
+
+
+---
+
+
+## Fichiers détaillés - Values.yaml
+
+Fichier de configuration contenant les valeurs par défaut.
+
+```yaml
+replicaCount: 2
+
+image:
+  repository: nginx
+  tag: "1.21.1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources: {}
+```
+
+
+
+
+---
+
+
+## Fichiers détaillés - Deployment.yaml
+
+Déploiement d’un pod NGINX avec des réplicas.
+
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: nginx
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 80
+```
+

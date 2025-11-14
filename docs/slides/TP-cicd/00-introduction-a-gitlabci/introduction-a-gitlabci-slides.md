@@ -1,0 +1,573 @@
+## Introduction 
+
+GitLab CI/CD est un outil d'intégration continue et de livraison continue (CI/CD) intégré à GitLab.  
+Il permet d'automatiser les processus de test, de build et de déploiement du code à chaque modification, améliorant ainsi la qualité et la rapidité de livraison des projets logiciels.
+
+
+---
+
+
+
+## Pipeline 
+
+Un pipeline est une série de tâches (ou jobs) exécutées dans un ordre précis lorsque certains événements se produisent, comme un push sur la branche main. Un pipeline peut contenir plusieurs stages (étapes) tels que :
+
+- **build** : compilation du code
+- **test** : exécution des tests
+- **deploy** : déploiement de l'application
+
+---
+
+
+
+## Fichier .gitlab-ci.yml
+
+Pour configurer GitLab CI/CD, tu dois créer un fichier nommé .gitlab-ci.yml à la racine de ton dépôt.  
+Ce fichier contient la configuration des pipelines : les stages, les jobs, et comment chaque job doit s'exécuter. Voici un exemple simple :
+
+```yaml
+stages:
+  - build
+  - test
+  - deploy
+
+build_job:
+  stage: build
+  script:
+    - echo "Building the project..."
+
+test_job:
+  stage: test
+  script:
+    - echo "Running tests..."
+
+deploy_job:
+  stage: deploy
+  script:
+    - echo "Deploying the project..."
+```
+
+
+
+---
+
+
+
+## Jobs
+
+Un job est une tâche spécifique qui s'exécute dans un pipeline. Chaque job appartient à un stage. Par exemple, dans le fichier ci-dessus :
+
+- **build_job** compile le projet
+- **test_job** exécute des tests
+- **deploy_job** déploie l'application
+
+
+---
+
+
+
+## Exécution d'un Pipeline
+
+Le pipeline est déclenché automatiquement quand tu pousses des modifications dans GitLab (ou sur certains événements comme les merges, les tags, etc.).  
+GitLab exécute les jobs dans des conteneurs Docker (ou des runners configurés).
+
+
+---
+
+
+
+## GitLab Runners
+
+Un GitLab Runner est un programme qui exécute les jobs définis dans ton fichier .gitlab-ci.yml.  
+Il peut être hébergé localement ou sur un service externe (Docker, Kubernetes, etc.).  
+GitLab fournit des runners partagés pour démarrer rapidement.
+
+
+
+---
+
+
+
+## Variables CI/CD
+
+GitLab permet de définir des variables CI/CD qui peuvent être utilisées dans les pipelines pour stocker des secrets (clés API, tokens) ou des paramètres spécifiques.
+
+<pre><code data-trim data-noescape>
+deploy_job:
+  stage: deploy
+  script:
+    - echo "Deploying on $ENVIRONMENT"
+  variables:
+    ENVIRONMENT: production
+</code></pre>
+
+
+---
+
+
+
+## Artifacts et Caches
+
+**Artifacts : Stockage temporaire des fichiers produits par un job**  
+
+- **Objectif** : Les artifacts sont utilisés pour conserver les fichiers générés par un job et les rendre disponibles pour les étapes suivantes du pipeline, ou pour les télécharger depuis l'interface GitLab.
+- **Fonctionnement** : Les fichiers spécifiés comme artifacts sont généralement les résultats finaux d'un job (binaries, logs, rapports de test, etc.). Ils sont stockés temporairement dans GitLab jusqu'à ce qu'ils soient récupérés ou supprimés après un certain délai.
+- **Durée de vie** : Vous pouvez configurer un temps d'expiration pour les artifacts afin de les supprimer automatiquement après un certain délai (par exemple, après 7 jours).
+
+<pre><code data-trim data-noescape>
+job:
+  script:
+    - make build
+  artifacts:
+    paths:
+      - build/
+    expire_in: 1 week
+</code></pre>
+
+Dans cet exemple, les fichiers générés dans le dossier build/ seront stockés comme artifacts et disponibles pendant une semaine.  
+
+**Utilisation typique** : Rapports de tests, journaux, fichiers compilés à partager entre jobs ou à télécharger.
+
+
+
+---
+
+
+## Artifacts et Caches
+
+**Cache : Stockage de fichiers pour accélérer les jobs**  
+
+- **Objectif** : Le cache est utilisé pour stocker des fichiers fréquemment réutilisés entre différents pipelines ou jobs, afin d'accélérer le processus d'exécution en évitant de regénérer ou retélécharger des fichiers (comme les dépendances, bibliothèques ou fichiers de build).
+- **Fonctionnement** : Contrairement aux artifacts, le cache est partagé entre plusieurs pipelines et est souvent utilisé pour stocker des fichiers de dépendances (comme des modules npm, des bibliothèques de packages Python, etc.). Il permet de réduire le temps d'exécution des jobs en évitant de retélécharger ou recompiler des fichiers déjà utilisés.
+- **Durée de vie** : Le cache est également temporaire, mais sa durée de vie est plus longue et il peut être réutilisé d’un pipeline à l’autre.
+
+<pre><code data-trim data-noescape>
+job:
+  script:
+    - npm install
+  cache:
+    paths:
+      - node_modules/
+</code></pre>
+
+Dans cet exemple, le dossier node_modules/ sera mis en cache, ce qui permet de réutiliser les dépendances installées dans les jobs futurs, sans avoir à les retélécharger.  
+
+**Utilisation typique** : Dépendances de projet, packages installés, fichiers compilés réutilisables.
+
+
+
+---
+
+
+## Cache VS Artifact
+
+**Artifact**  
+- Contient les fichiers produits par un job, généralement les résultats à court terme.  
+- Accessible pour les jobs ultérieurs ou à télécharger via l'interface GitLab.  
+- Expiration configurable pour effacer les fichiers après une certaine période.  
+
+**Cache**  
+- Contient les fichiers réutilisables (comme les dépendances) pour accélérer l'exécution des jobs.  
+Partagé entre les pipelines et peut être réutilisé dans les jobs futurs.  
+- Utilisé pour les données qui n'ont pas besoin d'être conservées après un pipeline, mais qui peuvent être utilisées par plusieurs exécutions.
+
+
+**En résumé :**
+
+- **Artifacts** : Conserver des résultats spécifiques d'un job pour une utilisation immédiate ou téléchargement.
+- **Cache** : Accélérer les exécutions en réutilisant des fichiers entre jobs ou pipelines.
+
+
+---
+
+
+
+## Conditions et Stratégies
+
+Tu peux conditionner l'exécution des jobs en fonction de branches, de variables ou de règles spécifiques.
+
+<pre><code data-trim data-noescape>
+deploy_job:
+  stage: deploy
+  script:
+    - echo "Deploying to production"
+  only:
+    - main
+</code></pre>
+
+Cela indique que le job de déploiement ne s'exécute que sur la branche main.
+
+
+
+---
+
+
+
+## Interaction & Héritage
+
+**needs** : Gestion des dépendances entre jobs
+
+- **Objectif** : Spécifier les dépendances entre les jobs pour exécuter des jobs en parallèle (même si d'autres jobs ne sont pas terminés), mais en tenant compte des dépendances définies.
+- **Fonctionnement** : Par défaut, les jobs dans GitLab CI s'exécutent séquentiellement selon les étapes (stages). Avec needs, vous pouvez définir explicitement les jobs dont un autre dépend, ce qui permet une exécution plus flexible en parallèle, même dans le même stage ou à travers plusieurs stages.
+
+<pre><code data-trim data-noescape>
+job1:
+  stage: build
+  script:
+    - echo "Build step"
+
+job2:
+  stage: test
+  needs: ["job1"] # job2 a besoin que job1 soit terminé
+  script:
+    - echo "Test step"
+
+</code></pre>
+
+
+
+---
+
+
+
+## Interaction & Héritage
+
+**extends** : Réutilisation de la configuration entre jobs
+
+- **Objectif** : Permettre à plusieurs jobs d'hériter d'une configuration commune, afin d'éviter de répéter la même configuration pour chaque job.  
+- **Fonctionnement** : Vous définissez une configuration de base (souvent dans un template job ou dans des anchors) qui est ensuite réutilisée par plusieurs jobs en utilisant extends. Cela permet une meilleure organisation et maintenance du fichier .gitlab-ci.yml.
+
+<pre><code data-trim data-noescape>
+.base_job:
+  script:
+    - echo "Base job script"
+  tags:
+    - docker
+
+job1:
+  extends: .base_job # Hérite de la configuration du job de base
+  script:
+    - echo "Job1 doing extra work"
+
+job2:
+  extends: .base_job # Hérite aussi de la configuration
+  script:
+    - echo "Job2 doing extra work"
+</code></pre>
+
+Dans cet exemple, job1 et job2 héritent de la configuration définie dans .base_job et peuvent ajouter ou modifier des comportements spécifiques.
+
+
+
+---
+
+
+
+
+## need VS extends
+
+**needs** est utilisé pour gérer les dépendances d'exécution entre les jobs dans le pipeline.  
+**extends** est utilisé pour réutiliser une configuration partagée entre différents jobs sans répétition de code.
+
+
+---
+
+
+## Anchor Jobs avancé (YAML)
+
+Un **Anchor Job** permet de réutiliser des configurations communes dans plusieurs jobs au sein d'un pipeline GitLab CI, en utilisant les ancres YAML (`&anchor` et `*alias`). Cela est une fonctionnalité propre au YAML standard.
+
+<pre><code data-trim data-noescape>
+.default_job: &default_job
+  script:
+    - echo "Tâche par défaut"
+
+job1:
+  <<: *default_job
+  script:
+    - echo "Tâche spécifique au job 1"
+
+job2:
+  <<: *default_job
+  script:
+    - echo "Tâche spécifique au job 2"
+</code></pre>
+
+- `extends` est GitLab-spécifique, conçu pour les jobs : plus lisible, robuste, extensible.
+- `&` et `*` sont purement YAML : réutilisables partout mais moins intelligents côté GitLab CI.
+
+
+
+---
+
+
+
+## Références
+
+Le mot-clé `!reference` permet de réutiliser des parties d'une configuration d'un autre pipeline ou fichier YAML. Cela simplifie la gestion en centralisant certaines parties communes, comme des scripts ou des variables, que l'on peut inclure dans plusieurs pipelines.
+
+<pre><code data-trim data-noescape>
+.default:
+  script:
+    - echo "Commande par défaut"
+
+job1:
+  script:
+    - !reference [.default, script]
+    - echo "Commande spécifique à job1"
+</code></pre>
+
+**Avantages** :
+- **Réutilisation du code** : Permet d'utiliser des fragments de configuration déjà définis.
+- **Simplification** : Facilite la gestion de configurations complexes en évitant la répétition.
+
+
+
+---
+
+
+## Scheduled / Nightly Pipelines
+
+- Pipeline déclenché automatiquement **à intervalle régulier**
+- Utilise une syntaxe de type **cron**
+- Utile pour :
+  - Des vérifications de Pentest (OWASP Zap Proxy)
+  - Des vérifications de sécurité (Trivy)
+  - Des tâches de maintenance (cleanup ancien build, artifacts, image docker...)
+  - Des tests E2E 
+
+
+
+---
+
+
+
+## Scheduled / Nightly Pipelines - Configuration
+
+1. Aller sur le **projet GitLab**
+2. Dans le menu de gauche : `CI/CD` → `Schedules`
+3. Cliquer sur **"New schedule"**
+
+</br></br>
+
+- **Description** : nom lisible (ex : "Build de nuit")
+- **Intervalle** : format `cron` (ex : `0 0 * * *` pour minuit chaque jour)
+- **Fuseau horaire** : important pour les équipes globales
+- **Branch cible** : sur laquelle le pipeline sera lancé
+- **Variables** (optionnel) : ajout de variables spécifiques à ce déclenchement
+
+
+
+---
+
+
+
+## Downstream Pipelines
+
+### Types :
+- **Child Pipelines** : Exécutés automatiquement dans le cadre du pipeline parent.
+- **Triggered Pipelines** : Déclenchés manuellement ou automatiquement à partir du pipeline parent.
+
+
+<pre><code data-trim data-noescape>
+stages:
+  - build
+  - test
+  - deploy
+
+build-job:
+  stage: build
+  script:
+    - echo "Construction"
+
+trigger-deploy:
+  stage: deploy
+  trigger:
+    project: project-group/my-downstream-project
+</code></pre>
+
+**Avantages** :
+- **Modularité** : Permet de diviser les tâches en sous-pipelines plus faciles à gérer.
+- **Parallélisation** : Les pipelines peuvent s'exécuter indépendamment ou en parallèle selon les besoins.
+
+
+
+---
+
+
+## Variables Prédéfinies 
+
+Les **variables prédéfinies** de GitLab CI sont des variables d'environnement automatiquement disponibles lors de l'exécution des pipelines.  
+Elles fournissent des informations sur le projet, le pipeline, le commit, et bien plus, facilitant la configuration et l'automatisation.
+
+**Exemple de variables prédéfinies**
+- **CI_JOB_NAME** : Nom du job en cours d'exécution.
+- **CI_COMMIT_SHA** : SHA du commit actuel.
+- **CI_PROJECT_NAME** : Nom du projet GitLab.
+- **CI_PIPELINE_ID** : ID unique du pipeline en cours.
+
+**Exemple d'utilisation**
+
+<pre><code data-trim data-noescape>
+job1:
+  script:
+    - echo "Job: $CI_JOB_NAME"
+    - echo "Commit: $CI_COMMIT_SHA"
+    - echo "Projet: $CI_PROJECT_NAME"
+</code></pre>
+
+
+
+---
+
+
+
+## Gitlab Template
+
+On a vu les templates locaux, mais on peut en inclure des distants
+
+Depôt `ci-templates`
+```yaml
+# templates/test-template.yml
+.test_template:
+  script:
+    - echo "Run test"
+```
+
+Dépôt `mon-repo`
+```yaml
+include:
+  - project: 'mon-org/ci-templates'
+    ref: 'main'
+    file: '/templates/test-template.yml'
+
+my_test_job:
+  extends: .test_template
+  stage: test
+```
+
+
+
+---
+
+
+
+## Gitlab Component
+
+- Permettent d’utiliser des blocs modulaires avec des inputs/outputs
+- Similaire à des fonctions paramétrables
+- Syntaxe avec inputs, outputs et uses
+
+```yaml
+# .gitlab/components/docker-build.yml
+inputs:
+  image_name:
+    description: "Nom de l'image"
+    required: true
+
+default:
+  script:
+    - docker build -t $[[ inputs.image_name ]] .
+```
+
+```yaml
+build_image:
+  uses: .gitlab/components/docker-build
+  with:
+    image_name: "mon-image"
+```
+
+
+
+---
+
+
+
+## Templates vs Components
+
+| Critère                        | Templates (`include` + `extends`) | Components (`uses`)              |
+|-------------------------------|-----------------------------------|----------------------------------|
+| **Réutilisation**             | Oui                              | Oui                              |
+| **Paramétrisation**           | ❌ Non (sauf via `variables`)    | ✅ Oui (`inputs`)                |
+| **Encapsulation logique**     | Faible                           | Forte                            |
+| **Lisibilité**                | Moyenne                          | Excellente grâce aux `inputs`   |
+| **Composition de blocs**      | Oui (`extends`)                  | Oui (`uses`) avec `inputs`      |
+| **Couplage au projet**        | Moyen                            | Faible (modularité renforcée)   |
+| **Versionnage**               | Via `ref` (`branch`/`tag`)       | Via `ref` également              |
+| **Utilisation de plusieurs blocs** | Oui, mais difficile à combiner | ✅ Oui, avec paramètres          |
+| **Validation dans GitLab**    | Mûr et stable                    | Fonctionnalité récente           |
+| **Complexité d'apprentissage**| Faible                           | Moyenne                          |
+| **Cas d'usage typique**       | Mutualisation de jobs simples    | Pipelines modulaires complexes  |
+
+
+
+
+---
+
+
+## Gitlab Services
+
+Conteneur Docker auxiliaire utilisé pendant l'exécution d’un job   
+Partage le réseau et le système de fichiers avec le job principal     
+ 
+Permet d'ajouter facilement :
+- Une base de données
+- Un moteur de cache
+- Un démon Docker
+
+```yaml
+job_name:
+  image: node:18
+  services:
+    - name: mongo:6
+  script:
+    - npm test
+```
+
+
+
+---
+
+
+## Gitlab Services - Persistance et timing
+
+- Les services sont réinitialisés à chaque job
+- Il peut y avoir un temps de démarrage :
+  - Utiliser healthcheck pour attendre un service prêt
+  - Exemples : sleep, ou script de vérification
+
+```yaml
+script:
+  - until xxxxxxxxxx ; do sleep 1; done
+  - python tests.py
+```
+
+
+
+---
+
+
+
+## Gitlab Services - Syntaxe avancée
+
+```
+job:
+  services:
+    - name: mysql:8
+      alias: db
+      entrypoint: ["/entrypoint.sh"]
+      command: ["mysqld", "--character-set-server=utf8mb4"]
+```
+
+
+---
+
+
+
+## Récap
+
+GitLab CI/CD est très puissant pour automatiser tout le processus de développement, du test au déploiement. 
+
+Le fichier .gitlab-ci.yml te permet de configurer ces automatisations à l'aide de jobs, de stages et de runners, tout en tirant parti des variables, des artifacts et des conditions pour un pipeline flexible.
+
+

@@ -1,0 +1,24 @@
+## Projet CI/CD - Programme
+
+- Créer une application
+- Testing
+- Securité
+- Packaging
+- Deploiement
+
+
+
+---
+
+
+
+## Projet CI/CD - Language & Framework
+
+- Frontend/Backend: NodeJS, React, MaterialUI
+- Testing: Jest
+- Securité: package manager, Trivy, 
+- Package: Docker, Helm
+- Deploiement: ArgoCD
+- Nightly: k6, OWASP Zap Proxy
+
+

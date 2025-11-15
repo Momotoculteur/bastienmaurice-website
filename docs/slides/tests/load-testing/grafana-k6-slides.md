@@ -4,7 +4,6 @@
 
 
 
-
 2 ans Fullstack Engineer - Thales<br>
 2 ans DevOps Engineer - Thales<br>
 2 ans Platform Engineer - Betclic<br>
@@ -1769,20 +1768,25 @@ Définir des thresholds sur ces métriques.
 
 ## 8.1 Formats de Sortie
 
-**Sortie console par défaut**
-```bash
-k6 run script.js
-```
-
 **Export JSON**
 ```bash
 k6 run --out json=results.json script.js
 ```
 
-**Export CSV**
-```bash
-k6 run --out csv=results.csv script.js
-```
+**Liste des outputs disponible**
+- Amazon CloudWatch
+- Cloud
+- CSV
+- Datadog
+- Dynatrace
+- Elasticsearch
+- Grafana Cloud Prometheus
+- InfluxDB
+- Netdata
+- New Relic
+- Prometheus
+- TimescaleDB
+- StatsD
 
 
 
@@ -1795,46 +1799,46 @@ k6 run --out csv=results.csv script.js
 ---
 
 
-## 8.2  Installation et Configuration Grafana TODO
+## 8.2  Installation et Configuration Grafana
+Mettre en place Grafana & Prometheus
 
-**Installation avec Docker Compose**
-
+**Installation avec Docker Compose**  
 Créer `docker-compose.yml` :
 ```yaml
 version: '3.8'
 
 services:
-  influxdb:
-    image: influxdb:1.8
+  prometheus:
+    image: prom/prometheus:latest
     ports:
-      - "8086:8086"
-    environment:
-      - INFLUXDB_DB=k6
-      - INFLUXDB_ADMIN_USER=admin
-      - INFLUXDB_ADMIN_PASSWORD=admin
+      - "9090:9090"
     volumes:
-      - influxdb-data:/var/lib/influxdb
-
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=168h'  # Conserve 7 jours
+      - '--web.enable-remote-write-receiver' # OBLIGER
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_SECURITY_ADMIN_USER=admin
     volumes:
-      - grafana-data:/var/lib/grafana
+      - grafana_data:/var/lib/grafana
+      - ./config/grafana:/etc/grafana/provisioning  
     depends_on:
-      - influxdb
+      - prometheus
 
 volumes:
-  influxdb-data:
-  grafana-data:
+  prometheus_data:
+  grafana_data:
 ```
 
-Lancer :
+**Lancer**  
 ```bash
 docker-compose up -d
 ```
@@ -1842,30 +1846,39 @@ docker-compose up -d
 ---
 
 
-## 8.2  Installation et Configuration Grafana TODO
+## 8.2  Installation et Configuration Grafana
 
-**Configuration de la datasource InfluxDB dans Grafana**
-
-1. Accéder à Grafana : http://localhost:3000
-2. Configuration > Data Sources > Add data source
-3. Sélectionner InfluxDB
-4. Configurer :
-   - URL: http://influxdb:8086
-   - Database: k6
-   - User: admin
-   - Password: admin
+**Configuration de la datasource Prometheus dans Grafana**  
+Faisons le via le docker compose : 
+```yaml
+apiVersion: 1
+datasources:
+  - name: k6
+    type: prometheus
+    url: http://prometheus:9090
+    access: proxy
+    isDefault: true
+    basicAuth: true
+    basicAuthUser: admin
+    secureJsonData:
+      basicAuthPassword: admin
+```
+*Ne pas oubliez de l'importer via la prop `volumes`*
 
 **Import du dashboard K6**
 
 1. Dashboards > Import
-2. ID : 2587 (Dashboard K6 Load Testing Results)
-3. Sélectionner la datasource InfluxDB
+2. Choississez un ID de dash compatible
+3. Sélectionner la datasource Prometheus
 
-**Lancer un test avec export InfluxDB**
-
+**Lancer un test avec export Prometheus**
 ```bash
-k6 run --out influxdb=http://localhost:8086/k6 script.js
+K6_PROMETHEUS_RW_SERVER_URL=http://localhost:9090/api/v1/write \
+K6_PROMETHEUS_RW_USERNAME=admin \
+K6_PROMETHEUS_RW_PASSWORD=admin \
+k6 run --out experimental-prometheus-rw load.js
 ```
+
 
 
 ---

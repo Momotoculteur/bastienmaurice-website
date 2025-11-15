@@ -79,6 +79,7 @@
 ## Kubernetes - Historique & Cas d’usage 
 
 **🕰️ Un peu d’histoire**
+
 - 🧪 Inspiré de l’outil interne de Google : **Borg**
 - 📅 Open source depuis 2014
 - 🤝 Donné à la **CNCF** en 2015
@@ -86,6 +87,7 @@
 </br></br>
 
 **🧰 Cas d’usage courants**
+
 - Déploiement d’applications microservices
 - CI/CD avec gestion automatisée des mises à jour
 - Scalabilité horizontale automatique
@@ -105,6 +107,7 @@
 Le **Control Plane** orchestre l’état global du cluster.
 
 **🔧 Composants principaux**
+
 - 🧭 **kube-apiserver**  
   Point d’entrée (REST API) – communication centralisée.
 - 📘 **etcd**  
@@ -117,6 +120,7 @@ Le **Control Plane** orchestre l’état global du cluster.
   Intégration cloud provider (load balancers, volumes...).
 
 **💡 Fonctionnement :**
+
 - Tu appliques un manifeste → `kube-apiserver` l’enregistre dans `etcd`.
 - `scheduler` choisit un nœud → `controller-manager` s’assure que l’état voulu est atteint.
   
@@ -131,6 +135,7 @@ Le **Control Plane** orchestre l’état global du cluster.
 Chaque **Worker Node** exécute les pods applicatifs.
 
 **🔩 Composants principaux** 
+
 - 🧱 **kubelet**  
   Agent qui communique avec le control plane.  
   → Exécute les pods, assure leur santé.
@@ -185,6 +190,7 @@ Chaque nœud est contrôlé par le scheduler et le control plane.
 ## Docker & container - Rappels
 
 **Qu’est-ce qu’un conteneur ?**  
+
 - Un **environnement isolé** pour exécuter une application  
 - Contient tout ce qu’il faut : code, librairies, dépendances  
 - Léger, rapide à démarrer ⚡  
@@ -193,6 +199,7 @@ Chaque nœud est contrôlé par le scheduler et le control plane.
 </br></br>
 
 **Docker 🔧**  
+
 - Plateforme la plus populaire pour **créer, exécuter et gérer des conteneurs**  
 - Utilise une image comme **modèle** pour lancer des conteneurs  
 - Commandes clés :
@@ -224,6 +231,7 @@ Utilisé pour interagir avec l'API Server de Kube
 </br></br>
 
 **Commandes disponible** 
+
 - annotation  
 - **apply**  
 - auth
@@ -274,6 +282,7 @@ kubectl apply -f mon-fichier.yaml
 - Cycle de vie lié, s'exécutent sur un **Node** du cluster
 
 **Caractéristiques**  
+
 - Partage d’IP et de ports entre les conteneurs du Pod 🌐  
 - Éphémère : les Pods peuvent être recréés, remplacés, mais ne sont pas persistants  
 - Géré par des contrôleurs comme **Deployment**, **ReplicaSet**
@@ -306,6 +315,7 @@ spec:
 - Assure la haute disponibilité des applications
 
 **Fonctionnement**  
+
 - Utilise un **label selector** pour gérer les Pods ciblés  
 - **Déployé généralement via un Deployment** (rarement seul)
 
@@ -344,6 +354,7 @@ spec:
 - Permet le **rolling update** sans interruption de service  
 
 **Fonctionnalités clés**  
+
 - Scaling automatique ou manuel 📈📉  
 - Rollback automatique en cas d’erreur ⏪  
 - Stratégies de mise à jour (RollingUpdate, Recreate)
@@ -379,16 +390,19 @@ spec:
 ## Probes
 
 **Liveness Probe**
+
 - Vérifie si le **conteneur est vivant**  
 - Si KO ➜ le conteneur est **redémarré**  
 - Exemple : boucle infinie ou process bloqué
 
 **Readiness Probe**
+
 - Vérifie si le conteneur est **prêt à recevoir du trafic**  
 - Si KO ➜ **retiré** du Service  
 - Exemple : temps d'initialisation long ⏳
 
 **Startup Probe**
+
 - Vérifie si l'application a **bien démarré**  
 - Utile pour éviter que liveness redémarre trop tôt 🚫  
 - Une fois OK ➜ les deux autres probes prennent le relais
@@ -410,6 +424,7 @@ livenessProbe:
 ## Selecteur, Labels & Annotations
 
 **🏷️ Labels – pour sélectionner & organiser**  
+
 - **Paires clé/valeur** attachées aux objets Kubernetes  
 - Utilisés pour la **sélection** (ex : par un Service, ReplicaSet...)  
 ```yaml
@@ -422,7 +437,8 @@ labels:
 
 </br>
 
-**📝 Annotations – pour ajouter du contexte**  
+**📝 Annotations – pour ajouter du contexte** 
+
 - Aussi des **paires clé/valeur**, mais **non utilisées pour la sélection**  
 - Utiles pour stocker des **métadonnées** : version, checksum, info CI/CD, etc.  
 ```yaml
@@ -444,6 +460,7 @@ Annotations = pour **documenter sans impacter le comportement** 🗒️
 ## Stateless vs Stateful 
 
 **Stateless**  
+
 - Pas de conservation d’état entre les requêtes  
 - Chaque requête est indépendante  
 - Facile à scaler horizontalement  
@@ -452,6 +469,7 @@ Annotations = pour **documenter sans impacter le comportement** 🗒️
 </br>
 
 **Stateful**  
+
 - Conservation d’état entre les requêtes  
 - Nécessite gestion de la session ou des données persistantes  
 - Plus complexe à scaler et à gérer  
@@ -475,6 +493,7 @@ Annotations = pour **documenter sans impacter le comportement** 🗒️
 </br></br>
 
 **Utilités**  
+
 - Séparer dev, test, prod  
 - Appliquer des politiques RBAC différentes   
 - Limiter les ressources consommées par namespace 
@@ -499,6 +518,7 @@ kubectl create namespace mon-projet
 - Fournissent un **load balancing interne** 🔄
 
 **🎯 Types de Services**
+
 - **ClusterIP** (par défaut) : accès interne au cluster  
 - **NodePort** : accès externe via un port sur chaque nœud  
 - **LoadBalancer** : provisionne un load balancer cloud  
@@ -536,11 +556,13 @@ Client ---> [Service] ---> [Pods avec les bons labels]
 - Types variés : `emptyDir`, `hostPath`, `configMap`, `secret`, `persistentVolumeClaim`, etc.
 
 **⚙️ Fonctionnement**
+
 - Déclaré dans le spec du pod  
 - Utilisé par un ou plusieurs conteneurs via un **mountPath**  
 - Garantit la disponibilité des données durant l’exécution du pod
 
 **📝 Exemple simple avec `emptyDir`**  
+
 ```yaml
 volumes:
 - name: cache-volume
@@ -567,6 +589,7 @@ containers:
 - Utilisée via un `PersistentVolumeClaim` (PVC)
 
 **🔄 Cycle de vie**  
+
 - **Available** → Libre  
 - **Bound** → Attaché à un PVC  
 - **Released** → Libéré mais pas encore réutilisable  
@@ -595,11 +618,13 @@ spec:
 ## Persistent Volume Claim
 
 **📌 Qu’est-ce qu’un PVC ?**
+
 - Requête de **stockage persistant** par un utilisateur ou une application  
 - Demande un volume avec une capacité et des caractéristiques spécifiques  
 - Lie un Pod à un **Persistent Volume (PV)** disponible
 
 **🧩 Fonctionnement**  
+
 - Kubernetes cherche un PV compatible (capacity, accessModes, storageClass)  
 - Une fois trouvé, le PV est **bindé** au PVC  
 - Le Pod utilise ensuite le PVC pour accéder au stockage
@@ -626,11 +651,13 @@ spec:
 
 ## Storage Class
 
-**📦 Qu’est-ce qu’une StorageClass ?**  
+**📦 Qu’est-ce qu’une StorageClass ?** 
+
 - Définit **le type de stockage dynamique** utilisable par les volumes  
 - Utilisée pour provisionner automatiquement un `PersistentVolume` (PV) à partir d’un `PersistentVolumeClaim` (PVC)
 
 **🧰 Paramètres possibles**  
+
 - Type de provisioner (ex: `kubernetes.io/aws-ebs`, `csi`)  
 - ReclaimPolicy : `Retain`, `Delete`, `Recycle`  
 - AccessModes : `ReadWriteOnce`, `ReadOnlyMany`, `ReadWriteMany`  
@@ -656,12 +683,14 @@ parameters:
 ## RBAC et sécurité de base
 
 **👤 ServiceAccounts**  
+
 - Identité utilisée par les **pods** pour s’authentifier auprès de l’API Kubernetes  
 - Montée automatiquement dans les pods (`/var/run/secrets/...`)  
 - Par défaut : `default` dans chaque namespace  
 ➡️ Utiliser des comptes dédiés pour les apps sensibles
 
-**🛡️ RBAC (Role-Based Access Control)**  
+**🛡️ RBAC (Role-Based Access Control)** 
+
 - Contrôle **qui peut faire quoi** sur quelles ressources  
 - Principaux objets :
   - `Role` / `ClusterRole` : ensemble de permissions  
@@ -763,17 +792,20 @@ roleRef:
 ## Kubernetes distributions
 
 **☁️ Cloud-managed**  
+
 - **GKE** (Google Kubernetes Engine)  
 - **EKS** (Elastic Kubernetes Service – AWS)  
 - **AKS** (Azure Kubernetes Service)  
 ➡️ Gérés par les fournisseurs cloud, intégrés à leurs services
 
 **🏗️ On-premise & DIY**  
+
 - **kubeadm** : installation manuelle, flexible  
 - **RKE** : Rancher Kubernetes Engine  
 - **MicroK8s**, **Minikube**, **k3s** : légers, idéals pour dev/test
 
 **🧩 Autres distributions populaires**  
+
 - **RedHat OpenShift** : Kubernetes + outils CI/CD, monitoring, sécurité intégrée (SELinux,APPArmor...)
 - **VMware Tanzu**, **Canonical Charmed K8s**, etc.
 
@@ -787,11 +819,8 @@ roleRef:
 ## Questions : Kubernetes Fundamentals
 
 1. Quel composant stocke l'état du cluster ?
-
 2. Quelle est la différence entre un Pod et un Deployment ?
-
 3. Quel type de Service dois-je utiliser pour exposer publiquement un Pod ?
-
 4. Quelle commande permet d'appliquer un fichier YAML ?
 
 
@@ -814,8 +843,9 @@ roleRef:
 - Interface entre Kubernetes (via **kubelet**) et le système d’exploitation
 
 **🔄 Compatibilité avec Kubernetes**  
+
 - Kubernetes utilise le standard **Container Runtime Interface (CRI)**  
-  - Permet d’utiliser différents runtimes conformes :  
+- Permet d’utiliser différents runtimes conformes :  
 
 | Runtime                            | Langage      | Statut        | Particularités                                                                                                 |
 | ---------------------------------- | ------------ | ------------- | -------------------------------------------------------------------------------------------------------------- |
@@ -829,6 +859,7 @@ roleRef:
 
 
 **📦 Rôle du runtime**  
+
 - Télécharger les images  
 - Créer, exécuter, stopper et supprimer les conteneurs  
 - Gérer les volumes et le réseau
@@ -845,6 +876,7 @@ roleRef:
 Permet d’installer, configurer et maintenir des applications via des **charts**
 
 **🧩 Concepts clés**  
+
 - **Chart** : ensemble de fichiers YAML modélisant une app (templates + valeurs)  
 - **Values.yaml** : fichier de configuration personnalisable  
 - **Release** : instance déployée d’un chart
@@ -876,6 +908,7 @@ helm upgrade myapp bitnami/nginx --set service.type=NodePort
 </br></br>
 
 **Fonctionnalités clés** 
+
 - Ajout/modification de labels, annotations  
 - Fusion ou remplacement de champs dans les manifests  
 - Gestion de plusieurs environnements (dev, staging, prod) facilement  
@@ -1005,10 +1038,12 @@ S'adapte selon le traffic users, selon des règles & events
 </br>
 
 **Horizontal Pod Autoscaler (HPA)**  
+
 - Ajuste automatiquement le nombre de pods en fonction de métriques (CPU, mémoire, custom)  
 - Permet de gérer la charge variable sans intervention manuelle  
 
 **Vertical Pod Autoscaler (VPA)**  
+
 - Ajuste automatiquement les ressources (CPU, mémoire) allouées aux pods  
 - Optimise les performances sans changer le nombre de pods  
 - ⚠️ Ne scale pas le nombre de pods, seulement les ressources allouées.
@@ -1024,10 +1059,12 @@ S'adapte selon le traffic users, selon des règles & events
 ## Autoscaling des Nodes
 
 **Cluster Autoscaler (CA)**  
+
 - Ajuste automatiquement le nombre de nœuds du cluster selon la charge  
 - Supprime les nœuds inutilisés pour optimiser les coûts  
 
 **Karpenter**  
+
 - Autoscaler dynamique et intelligent, développé par AWS  
 - Optimise la planification des nœuds, rapide et flexible  
 - Supporte divers fournisseurs cloud et configurations
@@ -1043,15 +1080,18 @@ S'adapte selon le traffic users, selon des règles & events
 ## Serverless & Function as a Service (FaaS)
 
 **Qu’est-ce que le Serverless ?**  
+
 - Exécution de code sans gérer l’infrastructure serveur  
 - Facturation à l’usage (par invocation ou durée d’exécution)  
 - Auto-scalabilité automatique
 
 **Function as a Service (FaaS)**  
+
 - Micro-fonctions légères déclenchées par des événements  
 - Exemple : AWS Lambda, Azure Functions, Google Cloud Functions
 
 **OpenFaaS**  
+
 - Plateforme FaaS open-source pour Kubernetes  
 - Déploiement simple de fonctions en conteneurs  
 - Intégration facile avec Kubernetes, auto-scaling inclus  
@@ -1068,6 +1108,7 @@ S'adapte selon le traffic users, selon des règles & events
 ## Open Standards
 
 **Qu’est-ce qu’un Open Standard ?**  
+
 - Norme **ouverte et publique**, accessible à tous  
 - Développée et maintenue par une communauté ou un organisme indépendant  
 - Favorise l’interopérabilité entre différents systèmes et fournisseurs
@@ -1075,6 +1116,7 @@ S'adapte selon le traffic users, selon des règles & events
 </br></br>
 
 **Pourquoi c’est important ?** 
+
 - Évite la **dépendance propriétaire** (vendor lock-in)  
 - Facilite la collaboration et l’intégration  
 - Assure la pérennité et l’évolution des technologies
@@ -1086,7 +1128,8 @@ S'adapte selon le traffic users, selon des règles & events
 
 ## Open Standards - Exemple
 
-**Exemples dans Kubernetes & Cloud Native**  
+**Exemples dans Kubernetes & Cloud Native** 
+
 - **OpenTelemetry** : standard d’instrumentation et de télémétrie  
 - **OCI** (Open Container Initiative) : Format standard des images et la manière dont les conteneurs doivent être exécutés (docker, podman, buildah)
 - **CNI** (Container Networking Interface) : Standards ppour connecter les pods à un réseau, gère l’allocation d’IP, la configuration réseau, le routage, etc (calico, cilium)
@@ -1105,12 +1148,14 @@ S'adapte selon le traffic users, selon des règles & events
 ## Custom Resource Definitions (CRDs)
 
 **🔧 Extension de l’API Kubernetes**  
+
 - Permettent de **définir de nouveaux types de ressources** personnalisées  
 - Facilite l’ajout de fonctionnalités spécifiques sans modifier le cœur Kubernetes
 
 </br></br>
 
 **🌟 Exemples courants**  
+
 - **cert-manager** : gestion automatisée des certificats SSL/TLS  
 - **Prometheus Operator** : gestion simplifiée des instances Prometheus  
 
@@ -1134,9 +1179,7 @@ metadata:
 ## Questions : Orchestration
 
 1. Qu'est-ce qu'un chart Helm ?
-
 2. Différence entre Job et CronJob ?
-
 3. Pourquoi utiliser un CRD ?
 
 
@@ -1229,9 +1272,11 @@ data:
 ## Service Mesh
 
 **Principaux outils**  
+
 - Istio, Linkerd
 
 **Fonctions clés**  
+
 - 🔀 **Routage** avancé du trafic entre services  
 - 📊 Collecte de **métriques** fines au niveau service  
 - 🔐 Sécurité renforcée via **mTLS** (mutual TLS)  
@@ -1250,9 +1295,7 @@ data:
 ## Questions : Architecture
 
 1. Quelle est la responsabilité d'un Service Mesh ?
-
 2. Quelle différence entre Secret et ConfigMap ?
-
 3. Quel composant rend un conteneur stateless ?
 
 
@@ -1272,11 +1315,13 @@ data:
 ## Prometheus & Grafana
 
 **⬇️ Prometheus**  
+
 - Récupération des métriques par **pull**  
 - Stockage et requêtage des données métriques  
 - Système d’**alerting** intégré  
 
 **📈 Grafana**  
+
 - Création de **dashboards** visuels personnalisés  
 - Visualisation en temps réel des métriques et alertes  
 - Supporte plusieurs sources de données  
@@ -1297,14 +1342,17 @@ data:
 ## Logging et Tracing
 
 **📚 Logging**
+
 - **Fluentd**, **Loki** : collecte, centralisation et recherche des logs  
 - Logs essentiels pour le debug et monitoring
 
 **🕵️‍♂️ Tracing**
+
 - **Jaeger** : suivi des requêtes distribuées  
 - Analyse des performances et goulots d’étranglement
 
 **📏 OpenTelemetry**
+
 - Standard ouvert d’instrumentation  
 - Unifie collecte de métriques, logs, traces
 
@@ -1321,9 +1369,7 @@ data:
 ## Questions : Observabilité
 
 1. Quelle est la différence entre Prometheus et Grafana ?
-
 2. Quel outil permet de centraliser les logs ?
-
 3. Quel protocole est utilisé pour les traces distribuées ?
 
 
@@ -1342,12 +1388,14 @@ data:
 ## CI/CD et GitOps
 
 **🔧 CI/CD (Intégration & Déploiement continus)**
+
 - **Jenkins**, **GitLab CI** : automatisent build, tests, déploiement
 - Pipelines décrits sous forme de fichiers (`Jenkinsfile`, `.gitlab-ci.yml`)
 
 </br></br>
 
 **🌿 GitOps**
+
 - Déploiement **déclaratif** via Git (source de vérité)
 - Ex : **ArgoCD**, **FluxCD**
 - Suivi des changements via Git → synchronisation automatique avec le cluster
@@ -1366,6 +1414,7 @@ data:
 ## Sécurité de livraison 
 
 **🚦 Admission Controllers**  
+
 - Contrôlent et valident les requêtes API avant leur application  
 - Permettent d’imposer des politiques de sécurité, conformité, bonnes pratiques  
   
@@ -1379,10 +1428,12 @@ data:
 **2. Dynamic Admission Controllers (Webhooks)**  
 
 📌 Mutating Admission Webhook
+
 - Peut modifier la requête (ex. injection automatique de sidecar Istio)
 - Exécuté avant validation
 
 📌 Validating Admission Webhook
+
 - Peut refuser ou valider la requête
 - Exécuté après mutation
 
@@ -1401,6 +1452,7 @@ data:
 ## Sécurité de livraison 
 
 **🛡️ OPA & Gatekeeper**  
+
 - **OPA (Open Policy Agent)**
   - C’est un moteur de décision généraliste basé sur un langage de policy : Rego.
   - Tu lui envoies des données, il renvoie une décision (allow, deny, etc.).
@@ -1408,6 +1460,7 @@ data:
   - Intègre OPA en tant que moteur de policy (controller)
   - Gère les règles et contraintes via des CRDs
   - Se comporte comme un Validating Admission Webhook
+
 ```yaml
 apiVersion: constraints.gatekeeper.sh/v1beta1
 kind: K8sRequiredLabels
@@ -1431,6 +1484,7 @@ spec:
 ## Sécurité de livraison 
 
 **🔍 Scan d’images**  
+
 - **Trivy**, **Snyk** : détectent vulnérabilités, failles de sécurité dans les images conteneurs  
 - Intégration possible dans pipelines CI/CD pour blocage précoce  
 
@@ -1447,9 +1501,7 @@ spec:
 ## Questions : Delivery
 
 1. Qu'est-ce que GitOps ?
-
 2. Quelle est la différence entre un pipeline CI et CD ?
-
 3. Quel outil permet de scanner une image de conteneur ?
 
 
@@ -1495,10 +1547,12 @@ Accueille des projets comme Kubernetes, Prometheus...
 ## CNCF – Governing Board
 
 **🎯 Rôle**  
+
 Le Governing Board est l’instance décisionnelle stratégique et financière d’un projet ou d’une fondation.
 
 
 **⚙️ Responsabilités principales**  
+
 - Définir la stratégie globale (vision, expansion, partenariats)
 - Allouer les budgets (marketing, événements, développement, sécurité, etc.)
 - Gérer les relations avec les sponsors, membres fondateurs, et partenaires
@@ -1509,6 +1563,7 @@ Le Governing Board est l’instance décisionnelle stratégique et financière d
   - Les dépenses exceptionnelles
 
 **👥 Composition**  
+
 Généralement constitué de représentants des entreprises membres (ex : Platinum Members dans la CNCF) ou d’élus.
 
 
@@ -1519,9 +1574,11 @@ Généralement constitué de représentants des entreprises membres (ex : Platin
 ## CNCF – Technical Oversight Committee (TOC)
 
 **🎯 Rôle**  
+
 Le TOC est le garant de la cohérence technique du projet ou de l’écosystème soutenu par la fondation.
 
 **⚙️ Responsabilités principales**  
+
 - Définir la feuille de route technique
 - Évaluer les projets candidats à une incubation ou graduation (ex. dans la CNCF : Envoy, Prometheus, OpenTelemetry…)
 - Maintenir la cohérence architecturale entre les projets
@@ -1529,6 +1586,7 @@ Le TOC est le garant de la cohérence technique du projet ou de l’écosystème
 - Évaluer les projets abandonnés ou obsolètes
 
 **👥 Composition**  
+
 Des experts techniques indépendants, souvent élus ou nommés par leurs pairs. Ils ont une vision neutre et long terme.
 
 
@@ -1539,9 +1597,11 @@ Des experts techniques indépendants, souvent élus ou nommés par leurs pairs. 
 ## CNCF – Special Interest Groups (SIGs)
 
 **🎯 Rôle**  
+
 Les SIGs sont des groupes de travail thématiques. Ils opèrent au plus près du code et des usages.
 
 **⚙️ Responsabilités principales**  
+
 - Gérer une sous-partie technique du projet ou un domaine fonctionnel spécifique (ex : SIG Networking, SIG Security, SIG Observability…)
 - Proposer des améliorations, rédiger des Kubernetes Enhancement Proposals (KEP) ou équivalents
 - Revoir du code, proposer des APIs, expérimenter des features
@@ -1549,6 +1609,7 @@ Les SIGs sont des groupes de travail thématiques. Ils opèrent au plus près du
 - Participer à la documentation, tests et intégration continue
 
 **👥 Composition**  
+
 Ouverts à tous les contributeurs  
 Menés par des mainteneurs ou leads, souvent nommés par mérite  
 Fonctionnent via des réunions régulières, Slack, mailing lists, GitHub…  
@@ -1568,6 +1629,7 @@ Fonctionnent via des réunions régulières, Slack, mailing lists, GitHub…
   - 🚫 **Hold**
 
 **Objectif** 
+
 - Aider les équipes à comprendre les tendances réelles
 - Donne une **vue concrète** sur ce qui marche en production
 
@@ -1582,6 +1644,7 @@ Fonctionnent via des réunions régulières, Slack, mailing lists, GitHub…
 ## CNCF Memberships
 
 **Types** 
+
 - 🥇 **Platinum**
   - 1 personne admise au Governing Board
 - 🥈 **Gold**
@@ -1591,6 +1654,7 @@ Fonctionnent via des réunions régulières, Slack, mailing lists, GitHub…
 - 👨‍🏫 **Academic / Nonprofit institution**
 
 **Avantages** 
+
 - Visibilité dans la communauté
 - Droit de vote au Governing Board (selon le niveau)
 - Influence sur la feuille de route CNCF
@@ -1626,23 +1690,28 @@ Fonctionnent via des réunions régulières, Slack, mailing lists, GitHub…
 
 
 **🎓 Concepts fondamentaux**
+
 - Qu’est-ce qu’un cluster Kubernetes ?
 - Architecture : Control Plane vs Workers
 - Principales ressources : Pod, Service, Deployment, ConfigMap, Secret
 
 **⚙️ Outils CLI**
+
 - `kubectl` : commandes de base (`get`, `describe`, `logs`, `apply`, `delete`)
 - Notions de contexte (`kubectl config use-context`)
 
 **📦 Conteneurs & images**
+
 - Docker / containerd / OCI
 - Fichier Dockerfile & `docker build`
 
 **🌐 Réseau & Services**
+
 - ClusterIP, NodePort, LoadBalancer
 - DNS interne, communication entre pods
 
 **☁️ Écosystème CNCF**
+
 - Open source, projets CNCF (Prometheus, Helm, etc.)
 - CNCF Landscape et notions de Cloud Native
 

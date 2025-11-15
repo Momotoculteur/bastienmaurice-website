@@ -2,7 +2,7 @@
 
 
 
-
+![bastien_maurice](../../../ressource/img/profile/photo.jpeg)
 
 2 ans Fullstack Engineer - Thales<br>
 2 ans DevOps Engineer - Thales<br>
@@ -1105,15 +1105,15 @@ Ils déterminent le pattern de charge de votre test :
 
 **Choix de l'Executor**
 
-|Besoin|	Executor Recommandé|
-|---|---|
-|Charge| stable	constant-vus|
-|Montée progressive|	ramping-vus|
-Débit constant de requêtes|	constant-arrival-rate|
-Débit variable de requêtes|	ramping-arrival-rate|
-Nombre total d'itérations|	shared-iterations|
-Itérations par VU|	per-vu-iterations|
-Contrôle externe|	externally-controlled|
+| Besoin                     | Executor Recommandé   |
+| -------------------------- | --------------------- |
+| Charge                     | stable	constant-vus   |
+| Montée progressive         | ramping-vus           |
+| Débit constant de requêtes | constant-arrival-rate |
+| Débit variable de requêtes | ramping-arrival-rate  |
+| Nombre total d'itérations  | shared-iterations     |
+| Itérations par VU          | per-vu-iterations     |
+| Contrôle externe           | externally-controlled |
 
 ---
 
@@ -1799,7 +1799,8 @@ k6 run --out json=results.json script.js
 ---
 
 
-## 8.2  Installation et Configuration Grafana
+## 8.2 Installation de Prometheus & Grafana
+
 Mettre en place Grafana & Prometheus
 
 **Installation avec Docker Compose**  
@@ -1846,7 +1847,7 @@ docker-compose up -d
 ---
 
 
-## 8.2  Installation et Configuration Grafana
+## 8.2 Configuration de Prometheus & Grafana
 
 **Configuration de la datasource Prometheus dans Grafana**  
 Faisons le via le docker compose : 
@@ -1871,6 +1872,14 @@ datasources:
 2. Choississez un ID de dash compatible
 3. Sélectionner la datasource Prometheus
 
+
+
+---
+
+
+## 8.2  Installation et Configuration Grafana
+
+
 **Lancer un test avec export Prometheus**
 ```bash
 K6_PROMETHEUS_RW_SERVER_URL=http://localhost:9090/api/v1/write \
@@ -1885,12 +1894,13 @@ k6 run --out experimental-prometheus-rw load.js
 
 
 ## 8.2 Grafana - Metrics
-
-k6	Prometheus	Name label
-Counter	Counter	k6_*_total
-Gauge	Gauge	k6_*_<unit-suffix>
-Rate	Gauge	k6_*_rate
-Trend	Counter and Gauges (default) or Native Histogram	k6_*_<unit-suffix>
+Metrics built-in
+| k6      | Prometheus                                       | Name label         |
+| ------- | ------------------------------------------------ | ------------------ |
+| Counter | Counter                                          | k6_*_total         |
+| Gauge   | Gauge                                            | k6_*_<unit-suffix> |
+| Rate    | Gauge                                            | k6_*_rate          |
+| Trend   | Counter and Gauges (default) or Native Histogram | k6_*_<unit-suffix> |
 
 
 

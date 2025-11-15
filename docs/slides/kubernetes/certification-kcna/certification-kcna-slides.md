@@ -3,7 +3,7 @@
 
 
 
-<img src="../../../ressource/img/profile/photo.jpeg" style="border-radius: 50%; width: 200px;" alt="Photo de profil" />
+![Photo de profil](../../../ressource/img/profile/photo.jpeg)
 
 2 ans Fullstack Engineer - Thales<br>
 2 ans DevOps Engineer - Thales<br>
@@ -22,7 +22,7 @@
 
 
 
-<img src="./img/kubernetes-certification-path.png" alt="kubernetes-certification-path" width="120%"/>
+![kubernetes-certification-path](./img/kubernetes-certification-path.png)
 
 ---
 
@@ -894,7 +894,7 @@ helm upgrade myapp bitnami/nginx --set service.type=NodePort
 
 ---
 
-<img src="./img/what-is-helm-package-manage.png" alt="what-is-helm-package-manage" width="80%"/>
+![what-is-helm-package-manage](./img/what-is-helm-package-manage.png)
 
 ---
 
@@ -1332,7 +1332,7 @@ data:
 
 
 
-<img src="./img/grafana-dashboard.png" alt="grafana-dashboard" width="40%"/>
+![grafana-dashboard](./img/grafana-dashboard.png)
 
 
 ---

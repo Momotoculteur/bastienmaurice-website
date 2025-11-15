@@ -1,0 +1,250 @@
+# Tests unitaires
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+
+## Introduction aux Tests Unitaires
+
+Le test unitaire vise à tester une **fonction individuelle** ou un composant **isolé** de l’application pour s'assurer que son comportement est conforme aux attentes.
+
+#### Caractéristiques 
+- Couvre une seule unité de code, comme une fonction, une méthode, ou un composant React.
+- Exécuté de manière isolée, sans dépendances extérieures (ex. : bases de données, services externes).
+- Rapide à exécuter car il ne dépend pas de l'infrastructure.
+
+#### Outils 
+- **Jest** : Framework de test JavaScript.
+- **React Testing Library** : Fournit des utilitaires pour tester les composants React en simulant l’interaction utilisateur.
+
+
+
+---
+
+
+
+## Exemple de test unitaire - Partie code 
+
+```js
+// Button.js
+import React from 'react';
+
+export function Button({ onClick, children }) {
+  return <button onClick={onClick}>{children}</button>;
+}
+
+// Button.test.js
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Button } from './Button';
+
+test('Button renders with correct text and handles clicks', () => {
+  const handleClick = jest.fn();
+  render(<Button onClick={handleClick}>Click Me</Button>);
+
+  const button = screen.getByText('Click Me');
+  expect(button).toBeInTheDocument();
+
+  fireEvent.click(button);
+  expect(handleClick).toHaveBeenCalledTimes(1);
+});
+```
+
+
+
+---
+
+
+
+## Exemple de test unitaire - Partie GitlabCI 
+
+```yaml
+stages:
+  - test
+
+unit_tests:
+  stage: test
+  image: node:latest
+  script:
+    - npm ci
+    - npm test -- --coverage
+  artifacts:
+    paths:
+      - coverage/
+```
+
+
+
+---
+
+# Tests d'intégration
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+
+## Introduction aux Tests d'Intégration
+
+Le test d'intégration vérifie la **communication entre plusieurs modules** de l'application pour s’assurer qu'ils fonctionnent correctement ensemble.
+
+#### Caractéristiques 
+- Couvre plusieurs composants travaillant ensemble (ex. : une API et une base de données).
+- Teste les dépendances extérieures (ex. : la base de données, les microservices, l’API externe).
+- Moins rapide que les tests unitaires, car il nécessite des opérations de lecture/écriture en base de données ou de communication réseau.
+
+#### Outils 
+- **Node.js** : API backend 
+- **MongoDB** : Database NoSQL 
+
+
+
+---
+
+
+
+## Exemple de test d'intégration - Partie code 
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_DATABASE: testdb
+```
+
+```js
+// app.js
+const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+app.use(express.json());
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/testdb', { useNewUrlParser: true, useUnifiedTopology: true });
+
+app.get('/items', async (req, res) => {
+  const items = await Item.find();
+  res.json(items);
+});
+
+module.exports = app;
+
+// item.test.js
+const request = require('supertest');
+const mongoose = require('mongoose');
+const app = require('./app');
+
+beforeAll(async () => {
+  await mongoose.connect('mongodb://localhost:27017/testdb', { useNewUrlParser: true, useUnifiedTopology: true });
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
+});
+
+test('GET /items returns items from MongoDB', async () => {
+  const response = await request(app).get('/items');
+  expect(response.statusCode).toBe(200);
+});
+```
+
+
+
+---
+
+
+
+## Exemple de test d'intégration - Partie GitlabCI 
+
+```yaml
+stages:
+  - test
+
+integration_tests:
+  stage: test
+  services:
+    - name: mongo:latest
+      alias: mongo
+  variables:
+    MONGO_URL: 'mongodb://mongo:27017/testdb'
+  image: node:latest
+  script:
+    - npm ci
+    - npm test
+```
+
+
+
+---
+
+
+# Tests end-to-end
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+
+## Introduction aux Tests E2E
+
+Le test end-to-end simule le **comportement d’un utilisateur réel** dans l’application pour valider le bon fonctionnement des parcours critiques de bout en bout.
+
+#### Caractéristiques 
+- Couvre l’intégralité de l'application : de l'interface utilisateur jusqu'à la base de données.
+- Valide les interactions de bout en bout, reproduisant le parcours utilisateur.
+- Lent et souvent fragile, car il dépend de l’interface utilisateur et de tous les composants de l'application.
+
+#### Outils 
+- **Playwright** : Framework de test
+- **Jest** : Orchestrateur de test
+
+
+
+---
+
+
+
+## Exemple de test E2E - Partie code 
+
+```js
+// example.test.js
+const { test, expect } = require('@playwright/test');
+
+test('homepage has title', async ({ page }) => {
+  await page.goto('http://localhost:3000');
+  await expect(page).toHaveTitle(/My App/);
+});
+```
+
+
+
+---
+
+
+
+## Exemple de test E2E - Partie GitlabCI 
+
+```yaml
+stages:
+  - e2e
+
+e2e_tests:
+  stage: e2e
+  image: mcr.microsoft.com/playwright:focal
+  script:
+    - npm ci
+    - npm run test:e2e
+  artifacts:
+    paths:
+      - reports/
+``` 
+

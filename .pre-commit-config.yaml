@@ -1,0 +1,8 @@
+repos:
+  - repo: local
+    hooks:
+      - id: update-slides-to-md-files
+        name: Convert mdtxt to md files
+        entry: python3 ./scripts/update-slides-to-md-files.py
+        language: system
+        always_run: true

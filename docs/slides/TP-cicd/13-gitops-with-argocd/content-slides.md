@@ -1,0 +1,53 @@
+## Introduction à GitOps
+
+GitOps est une approche d'automatisation des déploiements basée sur **Git comme source unique de vérité**.  
+
+Toutes les configurations et états désirés des systèmes sont décrits dans des fichiers versionnés dans **un dépôt Git**.  
+
+Ces fichiers servent de base pour gérer les déploiements et les mises à jour de l'infrastructure ou des applications.
+
+
+
+---
+
+
+## GitOps - Avantages
+
+- **Traçabilité complète** : Chaque modification est historisée dans Git.
+- **Audit et conformité** : L’état actuel peut être comparé avec celui désiré.
+- **Automatisation** : Les outils GitOps appliquent automatiquement les changements déclarés.
+- **Rollback facile** : Revenir à un état antérieur est aussi simple qu’un revert Git.
+
+
+---
+
+
+## GitOps - Principes
+
+- **Définir l’état cible dans Git** : L’état souhaité de l’infrastructure et des applications doit être décrit dans un dépôt Git.
+- **Convergence automatique** : Un agent vérifie en continu que l’état actuel correspond à l’état cible et applique les modifications si nécessaire.
+- **Immutabilité** : Les déploiements sont basés sur des fichiers déclaratifs (YAML, JSON).
+- **Flux CI/CD découplé** : GitOps sépare les responsabilités du développement (CI) et du déploiement (CD).
+
+
+---
+
+
+## GitOps - Architecture
+
+Un pipeline GitOps typique comporte :
+
+- **Git** : Contient les fichiers déclaratifs (manifests Kubernetes, Helm charts, etc.).
+- **Agent GitOps** : ArgoCD, FluxCD, etc., qui applique et surveille les modifications.
+- **Cluster Kubernetes** : Héberge les applications et l’infrastructure.
+
+
+
+---
+
+
+## GitOps - Fonctionnement automatique
+
+Une fois configuré, tout changement dans le dépôt Git (par exemple, une mise à jour du chart Helm ou des fichiers YAML) déclenchera automatiquement une mise à jour dans Kubernetes via ArgoCD.
+
+

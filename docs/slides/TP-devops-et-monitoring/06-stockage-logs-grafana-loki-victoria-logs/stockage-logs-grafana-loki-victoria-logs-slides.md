@@ -1,0 +1,220 @@
+## Introduction
+
+Une TSDB (Time Series Database), initialement conçue pour gérer des séries temporelles de métriques, peut également être utilisée pour traiter des logs.  
+
+Les logs, produits en grande quantité par les systèmes et applications, sont essentiels pour surveiller, déboguer et analyser les comportements.  
+
+Dans ce contexte, des outils comme VictoriaLogs et Grafana Loki se distinguent en offrant une solution optimisée pour l’ingestion, le stockage et la requête des logs en temps réel.
+
+
+
+---
+
+
+
+## Concepts clés du traitement des logs dans une TSDB - Logs et séries temporelles
+
+Contrairement aux métriques qui sont des données numériques collectées à intervalles réguliers, les logs sont des événements enregistrés avec des horodatages spécifiques et souvent des messages textuels non structurés.  
+
+Chaque entrée de log peut contenir divers champs comme des niveaux de gravité (INFO, ERROR, DEBUG), des identifiants de session, des messages d'erreurs, etc.
+
+
+
+---
+
+
+
+## Concepts clés du traitement des logs dans une TSDB - Ingestion de logs
+
+L'ingestion de logs dans une TSDB repose sur l’optimisation de la collecte et du stockage de gros volumes de données non structurées.  
+
+VictoriaLogs et Grafana Loki adoptent une architecture similaire à celle des TSDB traditionnelles, où chaque log est associé à un timestamp et des labels (ou tags) permettant de les catégoriser.
+
+
+
+---
+
+
+
+## Ingestion et gestion des logs - Collecte des logs
+
+Les logs peuvent être ingérés dans une TSDB à partir de diverses sources : serveurs d’applications, systèmes d'exploitation, conteneurs, etc.  
+
+Des agents comme Promtail pour Loki ou Vector pour VictoriaLogs permettent de collecter, transformer, et envoyer ces logs à la TSDB.  
+
+Exemple de configuration de Promtail (pour Loki) pour collecter les logs système :  
+
+```yaml
+server:
+  http_listen_port: 9080
+positions:
+  filename: /tmp/positions.yaml
+scrape_configs:
+  - job_name: system_logs
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: varlogs
+          __path__: /var/log/*.log
+```
+
+
+
+---
+
+
+
+## Ingestion et gestion des logs - Labels et metadata
+
+L’utilisation des labels est cruciale pour organiser et filtrer efficacement les logs.  
+
+Un label est un couple clé-valeur qui apporte du contexte à chaque log (ex. app="nginx", env="production").  
+
+Les labels permettent de regrouper et de requêter les logs plus facilement.
+
+
+
+---
+
+
+
+## Requêtage des logs - Utilisation de LogQL
+
+Pour interroger les logs dans une TSDB comme VictoriaLogs ou Grafana Loki, on utilise LogQL, un langage similaire à PromQL mais adapté aux logs.  
+
+LogQL permet de filtrer, de sélectionner, et d’agréger les logs en fonction des labels et du contenu textuel des logs.
+
+Exemples de requêtes LogQL :
+
+Rechercher tous les logs d'une application spécifique :
+````
+{app="nginx"}
+````
+
+Rechercher des logs contenant une chaîne spécifique (ex: "error") :
+```
+{app="nginx"} |= "error"
+```
+
+Compter le nombre de logs par niveau de gravité :
+```
+count_over_time({app="nginx"}[5m])
+```
+
+
+
+
+
+---
+
+
+
+## Requêtage des logs - Agrégation et exploration des logs
+
+LogQL offre également des fonctionnalités d'agrégation pour résumer les données de logs sur des périodes spécifiques. Cela permet de générer des insights comme les taux d'erreurs par période ou les comportements anormaux dans un système.
+
+Exemple d'agrégation :
+```
+sum by (level) (rate({job="varlogs"}[1m]))
+```
+
+Cette requête agrège les logs par niveau (INFO, ERROR, etc.) sur une période d'une minute.
+
+
+
+
+---
+
+
+
+## Optimisation du stockage des logs - Compression et indexation
+
+Pour optimiser le stockage de volumes massifs de logs, VictoriaLogs et Grafana Loki utilisent des techniques avancées de compression et d'indexation.  
+
+Cela permet de réduire l’espace disque utilisé tout en garantissant des performances élevées pour les requêtes.
+
+
+
+---
+
+
+
+## Optimisation du stockage des logs - Politique de rétention des logs
+
+Il est crucial de configurer une politique de rétention pour gérer la durée pendant laquelle les logs sont conservés. Par exemple, vous pourriez vouloir conserver les logs d’erreurs pendant un an, mais purger les logs de débogage après une semaine.  
+
+Exemple de configuration pour Grafana Loki pour une rétention de 30 jours :  
+```yaml
+storage_config:
+  boltdb_shipper:
+    active_index_directory: /var/loki/index
+    shared_store: s3
+    cache_location: /var/loki/cache
+compactor:
+  retention_enabled: true
+  retention_period: 720h  # 30 jours
+```
+
+
+
+---
+
+
+
+## Scalabilité et haute disponibilité - Scalabilité horizontale
+
+Les solutions comme VictoriaLogs et Grafana Loki sont conçues pour évoluer horizontalement.  
+
+Cela signifie que vous pouvez ajouter plusieurs nœuds pour traiter un plus grand volume de logs ou pour garantir la disponibilité en cas de panne.  
+
+Chaque nœud est responsable d’une portion des logs, et les données peuvent être réparties de manière à équilibrer la charge.
+
+
+
+---
+
+
+
+## Scalabilité et haute disponibilité - Tolérance aux pannes
+
+La réplication des données permet de garantir que même si un nœud tombe en panne, les logs seront toujours accessibles à partir d'autres nœuds.  
+
+Cette tolérance aux pannes est essentielle pour les environnements critiques.
+
+
+
+---
+
+
+
+## Bonnes pratiques pour la gestion des logs - Utilisation efficace des labels
+
+Les labels permettent de structurer les logs et d'améliorer les performances des requêtes.  
+
+Il est essentiel de choisir des labels pertinents (comme l’environnement, l’application ou la gravité) et d’éviter de surcharger chaque log avec trop de labels, ce qui pourrait entraîner une augmentation de la taille de l’index et affecter les performances.
+
+
+---
+
+
+
+## Bonnes pratiques pour la gestion des logs - Surveillance et alerting
+
+Une bonne stratégie de gestion des logs consiste à surveiller en temps réel les logs critiques et à configurer des alertes automatiques.  
+
+Cela vous permet de réagir rapidement à toute anomalie ou problème dans votre infrastructure.
+
+
+---
+
+
+
+## Récap 
+
+L’utilisation d’une TSDB pour le traitement des logs offre une solution scalable, performante et flexible pour gérer les logs générés par vos systèmes et applications.  
+
+Que ce soit avec VictoriaLogs ou Grafana Loki, les concepts d’ingestion, de requêtage avec LogQL, de rétention et d'optimisation des logs vous permettront de centraliser et d'analyser efficacement vos données.  
+
+Couplée à des outils de visualisation comme Grafana, une TSDB dédiée aux logs devient un outil incontournable pour assurer la surveillance et la stabilité de vos infrastructures en production.
+

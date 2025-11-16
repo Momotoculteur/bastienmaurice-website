@@ -54,13 +54,12 @@ for dirpath, dirnames, filenames in os.walk(root_dir):
             # Supprimer le bloc uniquement si trouvé
             content, count = re.subn(header_pattern, '', content, count=1)
 
+            # gere <img ... alt="bastien_maurice"/> ballek de ma face :)
+            img_pattern = r'<img[^>]*alt="bastien_maurice"[^>]*>'
+            content = re.sub(img_pattern, '', content)
 
             # Conversion des <img ...> en ![alt](src)
             content = convert_img_to_md(content)
-
-            # gere <img ... alt="bastien_maurice"/>
-            #img_pattern = r'<img[^>]*alt="bastien_maurice"[^>]*>'
-            #content = re.sub(img_pattern, '', content)
 
             # Écrire le nouveau fichier
             with open(new_path, "w", encoding="utf-8") as f:

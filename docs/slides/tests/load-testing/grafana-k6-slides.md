@@ -2,7 +2,7 @@
 
 
 
-![bastien_maurice](../../../ressource/img/profile/photo.jpeg)
+
 
 2 ans Fullstack Engineer - Thales<br>
 2 ans DevOps Engineer - Thales<br>
@@ -29,7 +29,8 @@
 
 ## Programme
 
-**JOUR 1 - Fondamentaux et Scripting (7 heures)**
+**JOUR 1 - Fondamentaux et Scripting (7 heures)** 
+
 - 9h00 - 10h30 | Module 1 : Introduction aux Tests de Charge (1h30)
 - 10h30 - 10h45 | Pause (15 min)
 - 10h45 - 12h30 | Module 2 : Scripting Fondamental (1h45)
@@ -39,6 +40,7 @@
 
 
 **JOUR 2 - Modélisation et Résultats (7 heures)**
+
 - 9h00 - 10h30 | Module 5 : Modélisation de Scénarios (1h30)- 
 - 10h30 - 10h45 | Pause (15 min)
 - 10h45 - 12h30 | Module 6 : Types de Tests (1h45)
@@ -184,6 +186,7 @@ k6 run test-simple.js
 **Exercice pratique**
 
 **Objectif :** Créer et exécuter votre premier test K6
+
 - Créer un script qui teste une API publique (ex: https://jsonplaceholder.typicode.com)
 - Lancer le test avec 10 utilisateurs virtuels pendant 30 secondes
 - Observer les résultats dans la console
@@ -375,6 +378,7 @@ export default function () {
 **Exercice pratique**
 
 **Objectif :** Créer un script avec différentes requêtes HTTP
+
 - Créer un test qui utilise l'API JSONPlaceholder
 - Implémenter GET /posts, POST /posts, PUT /posts/1, DELETE /posts/1
 - Mesurer le temps de réponse de chaque type de requête
@@ -549,6 +553,7 @@ for (let i = 0; i < 3; i++) {
 **Exercice pratique**
 
 **Objectif :** Implémenter des checks robustes
+
 - Ajouter des checks sur status, temps de réponse, et contenu
 - Tester avec des endpoints qui retournent différents codes HTTP
 - Observer le taux de succès des checks
@@ -686,6 +691,7 @@ export default function () {
 **Exercice pratique**
 
 **Objectif :** Créer un scénario d'authentification
+
 - Implémenter une connexion qui retourne un token/cookie
 - Utiliser ce token pour des requêtes authentifiées
 - Grouper les actions par fonctionnalité
@@ -890,6 +896,7 @@ k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
 **Exercice pratique**
 
 **Objectif :** Créer un test avec données dynamiques
+
 - Créer un fichier CSV avec des utilisateurs de test
 - Implémenter un script qui utilise ces données
 - Extraire un token de la réponse de login
@@ -908,6 +915,7 @@ C’est une évolution majeure par rapport au **k6 "classique"**, qui ne teste q
 </br></br>
 
 **Cas d'usage**
+
 - Basé sur Playwright/Chromium
 - Tester des flux utilisateurs complets
 - Applications Single Page (React, Vue, Angular)
@@ -1034,6 +1042,7 @@ export default function () {
 #### Modèles fermés vs ouverts
 
 **Modèle fermé**
+
 - Nombre fixe d'utilisateurs
 - Chaque VU attend la fin de la requête avant la suivante
 - Simule des utilisateurs réels avec think time
@@ -1058,6 +1067,7 @@ export const options = {
 #### Modèles fermés vs ouverts
 
 **Modèle ouvert**
+
 - Taux d'arrivée fixe (RPS)
 - Nouveaux utilisateurs arrivent indépendamment
 - Simule un flux constant de requêtes
@@ -1097,6 +1107,7 @@ export const options = {
 Les Executors dans k6 sont des moteurs d'exécution qui définissent comment et quand les VUs (Virtual Users) exécutent les itérations de test.
 
 Ils déterminent le pattern de charge de votre test :  
+
 - Combien de VUs sont actives
 - Quand elles démarrent/arrêtent
 - Comment la charge évolue dans le temps
@@ -1134,7 +1145,7 @@ Cas d'usage : tester un nombre défini de requêtes sans durée limite.
 
 </br></br>
 
-**Per-VU Iterations** `(per-vu-iterations)`
+**Per-VU Iterations** `(per-vu-iterations)`  
 Chaque VU exécute exactement le même nombre d'itérations indépendamment  
 ```js
 executor: 'per-vu-iterations',
@@ -1164,7 +1175,7 @@ Cas d'usage : charge stable, test de performance baseline.
 
 </br></br>
 
-**Ramping VUs** `(ramping-vus)`
+**Ramping VUs** `(ramping-vus)`  
 Augmente/diminue progressivement le nombre de VUs  
 Simule l'arrivée progressive d'utilisateurs
 ```js
@@ -1188,6 +1199,7 @@ Cas d'usage : simuler une journée réelle avec montée progressive, puis descen
 **Constant Arrival Rate** `(constant-arrival-rate)`  
 Maintient un taux d'arrivée constant (X requêtes par seconde)  
 Les VUs s'ajustent automatiquement pour maintenir le débit  
+
 ```js
 executor: 'constant-arrival-rate',
 options: {
@@ -1270,6 +1282,7 @@ export function writeScenario() {
 
 #### Exercice pratique
 **Objectif :** Créer un scénario e-commerce réaliste
+
 - Navigation (70% des utilisateurs) : parcourir produits, rechercher
 - Achat (20% des utilisateurs) : ajouter au panier, payer
 - Administration (10% des utilisateurs) : gérer inventaire
@@ -1342,11 +1355,12 @@ Durée totale du test : 9m
 ---
 
 
-## 5.3  Options intéréssantes - Preallocated VU
+## 5.3  Options intéréssantes - Preallocated VU  
 Pré-allouer les VUs au démarrage pour éviter la création progressive  
 Réduit les "cold start" et lisse les résultats  
 
-**Sans Preallocated VUs (comportement par défaut)**
+**Sans Preallocated VUs (comportement par défaut)**  
+
 - Les VUs sont créées progressivement pendant la montée en charge
 - Démarrage lent au début du test
 
@@ -1409,6 +1423,7 @@ export const options = {
 ```
 
 **Ce qu'on cherche :**
+
 - Validation initiale d'un nouveau test
 - Vérifier le fonctionnement des scripts existant après une mise à jour
 - Permet d'itérer plus rapidement sur d'autres types de tests plus long
@@ -1461,6 +1476,7 @@ export const options = {
 ```
 
 **Ce qu'on cherche :**
+
 - Stabilité des métriques dans le temps
 - Pas de dégradation progressive
 - Pas de fuites de ressources
@@ -1544,14 +1560,18 @@ export const options = {
 ### 6.2  Implémentation des Types de Tests
 
 #### Exercice 1 : Test de Charge Nominal
+
 **Objectif :** Créer un test de charge nominale
+
 - Définir la charge attendue (ex: 100 req/s)
 - Durée de 10 minutes
 - Définir des thresholds appropriés
 - Analyser si le système tient la charge
 
 #### Exercice 2 : Test de Stress
+
 **Objectif :** Pousser le système à ses limites
+
 - Implémenter une rampe progressive
 - Identifier le point où les erreurs commencent
 - Observer la dégradation des performances
@@ -1564,14 +1584,18 @@ export const options = {
 ### 6.2  Implémentation des Types de Tests
 
 #### Exercice 3 : Test de Pic
+
 **Objectif :** Simuler un événement promotionnel
+
 - Charge de fond : 50 req/s
 - Pic soudain : 500 req/s pendant 2 minutes
 - Retour à la normale
 - Vérifier la récupération
 
 #### Exercice 4 : Comparaison
+
 **Objectif :** Analyser les résultats des différents tests
+
 - Comparer les métriques (P95, taux d'erreur)
 - Identifier les différences de comportement
 - Déterminer quel test a révélé le plus de problèmes
@@ -1716,6 +1740,7 @@ export const options = {
 **Objectif :** Définir des thresholds basés sur un SLA réel
 
 Contraintes SLA :
+
 - 95% des pages doivent charger en < 2s
 - 99% des pages doivent charger en < 5s
 - Disponibilité de 99,9% (0,1% d'erreurs max)
@@ -1728,6 +1753,7 @@ Implémenter les thresholds correspondants et tester.
 **Objectif :** Créer et surveiller des métriques métier
 
 Créer des métriques pour :
+
 - Temps de connexion utilisateur
 - Temps de checkout (panier → paiement)
 - Nombre de produits consultés
@@ -1774,6 +1800,7 @@ k6 run --out json=results.json script.js
 ```
 
 **Liste des outputs disponible**
+
 - Amazon CloudWatch
 - Cloud
 - CSV
@@ -1788,12 +1815,6 @@ k6 run --out json=results.json script.js
 - TimescaleDB
 - StatsD
 
-
-
----
-
-
-## 8.2  K6 Web Dashboards TODO
 
 
 ---
@@ -1883,9 +1904,9 @@ datasources:
 **Lancer un test avec export Prometheus**
 ```bash
 K6_PROMETHEUS_RW_SERVER_URL=http://localhost:9090/api/v1/write \
-K6_PROMETHEUS_RW_USERNAME=admin \
-K6_PROMETHEUS_RW_PASSWORD=admin \
-k6 run --out experimental-prometheus-rw load.js
+  K6_PROMETHEUS_RW_USERNAME=admin \
+  K6_PROMETHEUS_RW_PASSWORD=admin \
+  k6 run --out experimental-prometheus-rw load.js
 ```
 
 
@@ -1894,7 +1915,9 @@ k6 run --out experimental-prometheus-rw load.js
 
 
 ## 8.2 Grafana - Metrics
-Metrics built-in
+
+**Metrics built-in**
+
 | k6      | Prometheus                                       | Name label         |
 | ------- | ------------------------------------------------ | ------------------ |
 | Counter | Counter                                          | k6_*_total         |
@@ -1912,6 +1935,7 @@ Metrics built-in
 **Exercice pratique**
 
 **Objectif :** Visualiser un test en temps réel
+
 - Lancer un test de 5 minutes avec rampe
 - Observer en temps réel dans Grafana
 - Identifier les métriques clés
@@ -1978,17 +2002,20 @@ export function handleSummary(data) {
 **Analyse des métriques importantes**
 
 **Latence :**
+
 - P50 (médiane) : Expérience typique
 - P95 : 95% des utilisateurs
 - P99 : Cas extrêmes
 - Max : Pire cas
 
 **Throughput :**
+
 - http_reqs rate : Requêtes par seconde
 - data_received : Données reçues
 - data_sent : Données envoyées
 
 **Erreurs :**
+
 - http_req_failed rate : Taux d'échec
 - Checks passed rate : Validations réussies
 
@@ -1996,11 +2023,12 @@ export function handleSummary(data) {
 ---
 
 
-## 8.3  Génération et Analyse de Rapports
+## 8.3 Génération et Analyse de Rapports
 
 **Exercice pratique**
 
 **Objectif :** Analyser un rapport de test
+
 - Exécuter un test de stress complet
 - Générer un rapport HTML
 - Identifier dans le rapport :
@@ -2009,6 +2037,57 @@ export function handleSummary(data) {
   - Le comportement des erreurs
   - Les recommandations d'optimisation
 
+
+
+---
+
+
+## 8.4 Utilisation d'extension - xk6
+
+**k6** est écrit en Go, mais il ne charge pas dynamiquement des plugins  
+**xk6** est un outil qui permet de compiler k6 avec des extensions personnalisées  
+
+</br></br>
+
+**Pourquoi ?**  
+Donc pour ajouter une fonctionnalité (ex. Kafka, Redis, gRPC avancé, WebSocket custom…), il faut :
+
+1. écrire l’extension en Go
+2. créer un binaire k6 custom
+3. utiliser xk6 pour assembler tout ça
+4. exécuter ensuite vos scripts k6 avec le nouveau binaire généré
+
+
+---
+
+
+## 8.4 Utilisation d'extension - Ex. xk6-dashboard
+
+**xk6-dashboard** est une extension k6 qui affiche un dashboard HTML en direct pendant le test, sans avoir besoin de Prometheus/Grafana
+
+```bash
+# Installer xk6
+go install go.k6.io/xk6/cmd/xk6@latest
+
+# Compiler k6 avec xk6-dashboard
+xk6 build --with github.com/grafana/xk6-dashboard@latest
+
+# Lancer
+K6_WEB_DASHBOARD=true ./k6 run script.js 
+
+# Ouvrir sur http://localhost:5665 par default
+```
+
+
+
+---
+
+
+## 8.4 Utilisation d'extension - Ex. xk6-dashboard
+
+
+
+![xk6-web-dashboard-plugin](./img/xk6-web-dashboard-plugin.png)
 
 ---
 
@@ -2028,7 +2107,9 @@ export function handleSummary(data) {
 
 **Contexte**
 
-Vous devez tester une application e-commerce avant un événement Black Friday prévu dans 2 semaines. L'entreprise attend :
+Vous devez tester une application e-commerce avant un événement Black Friday prévu dans 2 semaines 
+L'entreprise attend :  
+
 - 10 000 utilisateurs simultanés au pic
 - 500 commandes par minute
 - Temps de réponse < 2s pour 95% des utilisateurs
@@ -2052,6 +2133,7 @@ Vous devez tester une application e-commerce avant un événement Black Friday p
 #### Scénarios à implémenter
 
 **Scénario 1 : Navigation (60% des utilisateurs)**
+
 - Accéder à la page d'accueil
 - Rechercher des produits
 - Consulter 3-5 pages produits
@@ -2064,6 +2146,7 @@ Vous devez tester une application e-commerce avant un événement Black Friday p
 ## Projet : Test Complet d'une Application E-commerce
 #### Scénarios à implémenter
 **Scénario 2 : Achat (30% des utilisateurs)**
+
 - Parcourir des produits
 - Ajouter au panier
 - Aller au checkout
@@ -2077,18 +2160,20 @@ Vous devez tester une application e-commerce avant un événement Black Friday p
 
 ## Projet : Test Complet d'une Application E-commerce
 #### Scénarios à implémenter
-**Scénario 3 : Compte utilisateur (10% des utilisateurs)**
+**Scénario 3 : Compte utilisateur (10% des utilisateurs)**  
+
 - Se connecter
 - Consulter l'historique
 - Modifier le profil
 - Se déconnecter
 
 
+
 ---
 
 
 ## Projet : Test Complet d'une Application E-commerce
-#### Types de tests à effectuer
+#### Types de tests à effectuer  
 1. **Test nominal :** Charge quotidienne moyenne (1000 VUs)
 2. **Test de stress :** Monter progressivement jusqu'à 10 000 VUs
 3. **Test de pic :** Simuler le début des soldes (pic instantané)
@@ -2096,6 +2181,7 @@ Vous devez tester une application e-commerce avant un événement Black Friday p
 </br></br>
 
 #### Livrables attendus
+
 - Scripts K6 organisés et commentés
 - Fichiers de données (CSV/JSON)
 - Configuration Grafana
@@ -2132,6 +2218,7 @@ project/
 ```
 
 #### Critères d'évaluation
+
 - ✅ Complétude des scénarios
 - ✅ Pertinence des thresholds
 - ✅ Qualité du code (lisibilité, réutilisabilité)
@@ -2146,15 +2233,18 @@ project/
 
 ## Ressources Complémentaires
 **Documentation officielle :**
+
 - https://k6.io/docs/
 - https://grafana.com/docs/k6/latest/
 
 **Community :**
+
 - Forum K6 : https://community.grafana.com/c/grafana-k6/
 - GitHub : https://github.com/grafana/k6
 - Slack : https://k6.io/slack
 
 **Extensions K6 :**
+
 - https://k6.io/docs/extensions/
 - k6-operator (Kubernetes)
 - xk6-browser
@@ -2162,6 +2252,7 @@ project/
 - xk6-kafka
 
 **Exemples de scripts :**
+
 - https://github.com/grafana/k6-learn
 - https://k6.io/docs/examples/
 
@@ -2173,12 +2264,14 @@ project/
 
 ## Ressources Complémentaires
 **Certification et Suite**
+
 - K6 n'a pas de certification officielle
 - Pratiquer avec des projets réels
 - Contribuer à la communauté
 - Explorer les extensions
 
 **Questions / Réponses**
+
 - Session ouverte pour questions
 - Échange d'expériences
 - Conseils pour démarrer dans votre contexte
@@ -2225,6 +2318,7 @@ k6 run --paused script.js
 #### B. Checklist de Test
 
 **Avant le test :**
+
 - [ ] Environnement de test isolé
 - [ ] Données de test préparées
 - [ ] Monitoring en place (Grafana, logs)
@@ -2240,6 +2334,7 @@ k6 run --paused script.js
 #### B. Checklist de Test
 
 **Pendant le test :**
+
 - [ ] Surveillance en temps réel
 - [ ] Vérification des métriques système
 - [ ] Logs d'erreurs
@@ -2253,6 +2348,7 @@ k6 run --paused script.js
 #### B. Checklist de Test
 
 **Après le test :**
+
 - [ ] Génération des rapports
 - [ ] Analyse des résultats
 - [ ] Identification des goulots
@@ -2267,19 +2363,19 @@ k6 run --paused script.js
 ## Annexes
 #### C. Troubleshooting Commun
 
-**Problème : "context deadline exceeded"**
+**Problème : "context deadline exceeded"**  
 - Solution : Augmenter les timeouts dans options
 
-**Problème : Trop de VUs, pas assez de ressources**
+**Problème : Trop de VUs, pas assez de ressources**  
 - Solution : Distribuer la charge (k6 cloud ou plusieurs machines)
 
-**Problème : Résultats incohérents**
+**Problème : Résultats incohérents**  
 - Solution : Vérifier la stabilité de l'environnement de test, refaire plusieurs runs
 
-**Problème : Connexions refusées**
+**Problème : Connexions refusées**  
 - Solution : Augmenter les limites système (ulimit), vérifier les connexions max du serveur
 
-**Problème : Métriques manquantes dans Grafana**
+**Problème : Métriques manquantes dans Grafana**  
 - Solution : Vérifier la connexion InfluxDB, le nom de la database, les timestamps
 
 
@@ -2290,12 +2386,14 @@ k6 run --paused script.js
 #### D. Bonnes Pratiques
 
 **Organisation du code :**
+
 - Séparer la configuration du code
 - Utiliser des modules réutilisables
 - Commenter le code complexe
 - Versionner les scripts (Git)
 
 **Performance des scripts :**
+
 - Limiter les logs en production
 - Utiliser SharedArray pour données partagées
 - Éviter les opérations lourdes dans VU context
@@ -2310,12 +2408,14 @@ k6 run --paused script.js
 #### D. Bonnes Pratiques
 
 **Sécurité :**
+
 - Ne jamais commiter de credentials
 - Utiliser des variables d'environnement
 - Masquer les données sensibles dans les logs
 - Respecter les politiques de test
 
 **Interprétation des résultats :**
+
 - Toujours comparer avec une baseline
 - Tester plusieurs fois pour confirmer
 - Considérer les conditions réseau

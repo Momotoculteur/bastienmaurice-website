@@ -218,14 +218,8 @@ nav:
         - Tests de charge avec Grafana K6: slides/tests/load-testing/grafana-k6.md
       - Continuous Integration/Continuous Delivery:
         - Pipeline complète avec GitlabCI : slides/continuous-integration-continuous-delivery/gitlabci-pipeline/gitlabci-pipeline.md
-      - DevOps & Monitoring - TP:
-          - 01 - Introduction à Kubernetes: slides/TP-devops-et-monitoring/01-introduction-a-kubernetes/introduction-a-kubernetes.md
-          - 02 - Helm - Gestionnaire de package kubernetes: slides/TP-devops-et-monitoring/02-helm-gestionnaire-de-packages-kubernetes/helm.md
-          - 03 - ArgoCD, Continuous Delivery & GitOps: slides/TP-devops-et-monitoring/03-argocd-continuous-delivery-et-gitops/argocd-continuous-delivery-et-gitops.md
-          - 04 - Collecte, Traitement et Envoi de Logs, Métriques et Traces avec Vector: slides/TP-devops-et-monitoring/04-collecte-traitement-envoi-logs-metrics-traces-avec-vector/data-pipeline-avec-vector.md
-          - 05 - Stockage des métriques avec Grafana Mimir et VictoriaMetrics: slides/TP-devops-et-monitoring/05-stockage-metrics-grafana-mimir-victoria-metrics/stockage-metrics-grafana-mimir-victoria-metrics.md
-          - 06 - Stockage des logs avec Grafana Loki et VictoriaLogs: slides/TP-devops-et-monitoring/06-stockage-logs-grafana-loki-victoria-logs/stockage-logs-grafana-loki-victoria-logs.md
-          - 07 - Stockage des traces avec Grafana Tempo, Jaeger et Zipkin: slides/TP-devops-et-monitoring/07-stockage-traces-grafana-tempo-jaeger-zipkin/stockage-traces-grafana-tempo-jaeger-zipkin.md
+      - Monitoring & Alerting - TP:
+        - Créer une stack d'observabilité : slides/monitoring-alerting/full-stack-observability/full-stack-observability.md
   - Blog:
       - blog/index.md
 

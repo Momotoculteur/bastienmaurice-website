@@ -1,0 +1,53 @@
+.center-text {
+  text-align: center;
+  display: block;
+}
+
+/* Le conteneur qui remplace l'iframe */
+.reveal-wrapper {
+  position: relative;
+  background-color: #f5f7fa;
+  /* Gris très clair */
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5em;
+  /* Ombre légère pour donner du volume */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* L'iframe est cachée au début */
+.reveal-wrapper iframe {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: opacity 0.6s ease-in-out;
+}
+
+/* Une fois active, l'iframe s'affiche par dessus le bouton */
+.reveal-wrapper.active iframe {
+  opacity: 1;
+  z-index: 10;
+}
+
+/* Le contenu du placeholder (Bouton + Texte) */
+.reveal-placeholder-content {
+  text-align: center;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.reveal-placeholder-content p {
+  margin: 0;
+  font-weight: bold;
+  color: #555;
+}

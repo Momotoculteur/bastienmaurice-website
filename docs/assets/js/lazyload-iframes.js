@@ -1,50 +1,57 @@
 document$.subscribe(function() {
-  // On cible uniquement les iframes qui ont un data-src (donc pas encore chargées)
   var lazyIframes = document.querySelectorAll("iframe[data-src]");
 
   lazyIframes.forEach(function(iframe) {
-    // Sécurité : si on a déjà traité cet iframe, on ignore (pour la navigation instantanée)
     if (iframe.parentNode.classList.contains('reveal-wrapper')) return;
 
-    // 1. Récupérer les dimensions définies dans votre Markdown (960x500)
+    // --- CORRECTION MOBILE START ---
+    // Si l'iframe est dans un <p>, on l'en sort pour éviter le bug de rendu
+    if (iframe.parentNode.tagName === 'P') {
+        var p = iframe.parentNode;
+        // On insère l'iframe juste avant le P
+        p.parentNode.insertBefore(iframe, p);
+        // Si le P est vide après ça, on le supprime pour nettoyer
+        if (p.innerHTML.trim() === "") {
+            p.remove();
+        }
+    }
+    // --- CORRECTION MOBILE END ---
+
     var width = iframe.getAttribute('width') || 960;
     var height = iframe.getAttribute('height') || 500;
+    // Calcul du ratio pour le CSS (ex: 52.08%)
+    var ratioPercent = (height / width) * 100; 
 
-    // 2. Créer le conteneur (façade)
     var wrapper = document.createElement('div');
     wrapper.className = 'reveal-wrapper';
+    wrapper.style.width = '100%';
     wrapper.style.maxWidth = '100%';
-    // On force le ratio pour éviter que la page ne "saute" au chargement
-    wrapper.style.aspectRatio = width + " / " + height; 
+    // On utilise padding-bottom au lieu d'aspect-ratio pour une compatibilité maximale mobile
+    wrapper.style.height = 'auto'; 
+    wrapper.style.aspectRatio = width + " / " + height;
     
-    // 3. Insérer le wrapper dans le DOM
     iframe.parentNode.insertBefore(wrapper, iframe);
     wrapper.appendChild(iframe);
 
-    // 4. Créer le bouton et le message
     var content = document.createElement('div');
     content.className = 'reveal-placeholder-content';
     content.innerHTML = `
         <p>Présentation</p>
-        <button class="md-button md-button--primary">Charger les slides</button>
+        <button class="md-button md-button--primary" style="z-index:20;">Charger les slides</button>
     `;
     
     wrapper.appendChild(content);
 
-    // 5. Gérer le clic
     var button = content.querySelector('button');
-    button.onclick = function() {
-      // Feedback visuel immédiat
+    button.onclick = function(e) {
+      e.preventDefault(); // Empêche le scroll ou comportements bizarres sur mobile
       button.innerText = "Chargement...";
       button.disabled = true;
       
-      // On injecte la vraie source
       iframe.src = iframe.dataset.src;
       
-      // Une fois l'iframe chargée (environ), on affiche
       iframe.onload = function() {
           wrapper.classList.add('active');
-          // On supprime le bouton pour libérer la mémoire
           setTimeout(function(){ content.remove(); }, 500);
       };
     };

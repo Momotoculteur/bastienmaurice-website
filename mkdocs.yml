@@ -220,6 +220,8 @@ nav:
         - Pipeline complète avec GitlabCI : slides/continuous-integration-continuous-delivery/gitlabci-pipeline/gitlabci-pipeline.md
       - Monitoring & Alerting - TP:
         - Créer une stack d'observabilité : slides/monitoring-alerting/full-stack-observability/full-stack-observability.md
+      - DevSecOps:
+        - From DevOps to DevSecOps: slides/devsecops/from-devops-to-devsecops/devsecops.md
   - Blog:
       - blog/index.md
 

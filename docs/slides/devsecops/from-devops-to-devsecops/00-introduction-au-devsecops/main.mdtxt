@@ -1,0 +1,78 @@
+# Introduction au DevSecOps
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+<div style="text-align: left;">
+
+## Introduction
+
+Le DevSecOps, c’est juste la suite logique du DevOps.  
+
+L’objectif : arrêter de faire la sécurité à la fin  
+On l’intègre **au fil du dev et des ops, dès le départ**
+
+Dans ce cours, on va voir :  
+- pourquoi cette approche est devenue indispensable
+- comment elle s’aligne naturellement avec la culture DevOps
+- et comment on peut automatiser la détection des risques dans un pipeline CI/CD
+
+---
+
+## Objectif du cours
+
+Le but, c’est d’avoir une vision simple de **comment on met la sécurité dans un cycle de dev moderne**
+
+On va voir :
+- d’où vient le DevSecOps
+- comment il prolonge le DevOps
+- quels types de risques il aide à couvrir
+- et comment les outils actuels rendent tout ça beaucoup plus facile
+
+L’idée n’est pas juste de connaître les concepts :  
+on va aussi apprendre à **anticiper les risques, automatiser leur détection**, et **poser une vraie stratégie de sécurité** adaptée au projet.
+
+---
+
+## Objectifs pédagogiques
+
+À la fin du cours, vous serez capables de :
+- expliquer clairement ce qu’est le **DevSecOps**
+- reconnaître **les risques classiques** dans un projet logiciel
+- et voir **comment les intégrer dans un pipeline CI/CD**
+
+Vous saurez aussi :
+- quels outils utiliser pour analyser le code, les dépendances, les conteneurs et l’infra,
+- et comment les brancher dans **un processus automatisé** pour gagner du temps et sécuriser le projet
+  
+---
+
+# Partie 1 — Le DevOps : fondations essentielles
+
+---
+
+## Le DevOps : une culture avant tout
+
+Le DevOps, ce n’est pas un outil : c’est **une façon de travailler**
+
+L’idée, c’est de mieux collaborer, d’automatiser un maximum, et de livrer plus souvent, avec plus de fiabilité
+
+En gros, on casse les barrières entre devs et ops pour rendre tout le flux plus fluide
+
+Et c’est justement cette fluidité qui permet d’intégrer la **sécurité** dans un modèle **DevSecOps**
+
+---
+
+## Les pratiques clés du DevOps
+
+Dans un environnement DevOps, on retrouve quelques pratiques clés :
+- intégration continue
+- déploiement continu
+- automatisation poussée
+- et surveillance constante des applis en prod
+
+Le DevSecOps ne remplace pas tout ça : il **renforce ces pratiques** en y ajoutant la **sécurité à chaque étape**
+
+---
+

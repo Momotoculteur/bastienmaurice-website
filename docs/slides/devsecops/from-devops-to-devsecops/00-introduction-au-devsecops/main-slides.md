@@ -1,11 +1,3 @@
-# Introduction au DevSecOps
-
-Bastien MAURICE
-<!-- .slide: data-background="#009485" -->
-<!-- .slide: class="center" -->
----
-<div style="text-align: left;">
-
 ## Objectif du cours
 
 Le but, c’est d’avoir une vision simple de **comment on met la sécurité dans un cycle de dev moderne**
@@ -22,9 +14,9 @@ On va voir :
 L’idée n’est pas juste de connaître les concepts :  
 on va aussi apprendre à **anticiper les risques, automatiser leur détection**, et **poser une vraie stratégie de sécurité** adaptée au projet
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Objectifs pédagogiques
 
@@ -41,7 +33,7 @@ Vous saurez aussi :
 - quels outils utiliser pour analyser le code, les dépendances, les conteneurs et l’infra,
 - et comment les brancher dans **un processus automatisé** pour gagner du temps et sécuriser le projet
   
-</div>
+
 ---
 
 # Partie 1
@@ -51,7 +43,7 @@ Vous saurez aussi :
 
 ---
 
-<div style="text-align: left;">
+
 
 ## Le DevOps : une culture avant tout
 
@@ -63,9 +55,9 @@ En gros, on casse les barrières entre devs et ops pour rendre tout le flux plus
 
 Et c’est justement cette fluidité qui permet d’intégrer la **sécurité** dans un modèle **DevSecOps**
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Les pratiques clés du DevOps
 
@@ -78,9 +70,9 @@ Dans un environnement DevOps, on retrouve quelques pratiques clés :
 
 Le DevSecOps ne remplace pas tout ça : il **renforce ces pratiques** en y ajoutant la **sécurité à chaque étape**
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Le cycle DevOps en un regard
 
@@ -92,7 +84,7 @@ Plan → Code → Build → Test → Release → Deploy → Operate → Monitor
 
 Le DevSecOps vient simplement s’intégrer dans cette boucle en ajoutant une couche de sécurité à chaque étape
 
-</div>
+
 ---
 
 # Partie 2
@@ -100,7 +92,7 @@ Le DevSecOps vient simplement s’intégrer dans cette boucle en ajoutant une co
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
-<div style="text-align: left;">
+
 
 ## Le contexte actuel
 
@@ -119,9 +111,9 @@ Le DevSecOps vient simplement s’intégrer dans cette boucle en ajoutant une co
 
 - C'est là que le **DevSecOps devient indispensable**
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Le principe du Shift Left
 
@@ -138,9 +130,9 @@ L’idée centrale du DevSecOps, c’est d’intégrer la sécurité le plus tô
 - Vers les premières étapes du processus
 - Là où c'est plus efficace et plus facile à automatiser
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## DevSecOps : une extension naturelle
 
@@ -158,7 +150,7 @@ Plan → Code → Build → Test → Release → Deploy → Operate → Monitor
 - Sans intervention lourde des équipes Sécurité
 - Le minimum requis pour avancer vite et en toute sécurité
 
-</div>
+
 ---
 
 # Partie 3
@@ -166,7 +158,7 @@ Plan → Code → Build → Test → Release → Deploy → Operate → Monitor
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
-<div style="text-align: left;">
+
 
 ## Les risques auxquels on fait face
 
@@ -184,9 +176,9 @@ Un pipeline de développement, c’est plein de points sensibles
 4. Le Pipeline CI/CD :
    - Une cible potentielle s'il manipule des secrets ou exécute du code non contrôlé
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Exemples réels
 
@@ -196,7 +188,7 @@ Un pipeline de développement, c’est plein de points sensibles
 
 Aujourd'hui, **la chaîne d'approvisionnement logicielle** (nos dépendances, nos configs) est souvent **plus vulnérable que notre propre code**
 
-</div>
+
 ---
 
 # Partie 4
@@ -204,7 +196,7 @@ Aujourd'hui, **la chaîne d'approvisionnement logicielle** (nos dépendances, no
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
-<div style="text-align: left;">
+
 
 ## Pourquoi automatiser ?
 
@@ -220,9 +212,9 @@ Nos environnements sont trop rapides et trop complexes pour la sécurité manuel
 
 Ces contrôles deviennent **une barrière automatique** qui évite d’introduire des failles dans le pipeline
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Sécurité du code : l’analyse statique (SAST)
 
@@ -239,9 +231,9 @@ Ces contrôles deviennent **une barrière automatique** qui évite d’introduir
 
 **L’avantage** : on peut corriger les problèmes avant même le build, ce qui réduit énormément les risques et les coûts
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Sécurité des dépendances : l’analyse de composition (SCA)
 
@@ -255,9 +247,9 @@ Les **dépendances** représentent aujourd’hui une énorme partie de la **surf
 
 **Résultat** : on garde une vision claire de tout le code tiers qu’on intègre dans le projet
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Sécurité des conteneurs
 
@@ -273,9 +265,9 @@ Les **dépendances** représentent aujourd’hui une énorme partie de la **surf
 
 Avec le temps, ce contrôle devient **indispensable** pour construire des images fiables
 
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Sécurité de l’infrastructure (IaC)
 
@@ -293,7 +285,7 @@ Elle doit être vérifiée avec la même rigueur que le code applicatif
 
 **Objectif** : éviter que ces erreurs de config arrivent jusqu’en production
 
-</div>
+
 ---
 
 # Partie 5
@@ -301,7 +293,7 @@ Elle doit être vérifiée avec la même rigueur que le code applicatif
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
-<div style="text-align: left;">
+
 
 ## L’intérêt d’une politique de sécurité
 
@@ -318,9 +310,9 @@ Pour garder un niveau de sécurité cohérent dans toute l’équipe, il faut d�
 - Bloquer un déploiement si une CVE Critique est trouvée
 - Empêcher un conteneur de tourner en mode root
   
-</div>
+
 ---
-<div style="text-align: left;">
+
 
 ## Policy as Code
 
@@ -337,7 +329,7 @@ Pour garder un niveau de sécurité cohérent dans toute l’équipe, il faut d�
 
 **Résultat** : tous les projets respectent une même base de sécurité, sans effort supplémentaire
 
-</div>
+
 ---
 
 # Partie 6
@@ -345,7 +337,7 @@ Pour garder un niveau de sécurité cohérent dans toute l’équipe, il faut d�
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
-<div style="text-align: left;">
+
 
 ## Synthèse
 
@@ -355,4 +347,4 @@ Il ajoute la sécurité **à chaque étape** du cycle DevOps grâce à l’autom
 
 **Objectif** : garder des projets sécurisés, tout en conservant la vitesse et la flexibilité des workflows modernes
 
-</div>
+

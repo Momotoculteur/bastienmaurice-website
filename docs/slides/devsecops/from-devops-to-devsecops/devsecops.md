@@ -4,4 +4,6 @@
 [SLIDES EN VERSION TEXTE](./00-introduction-au-devsecops/main-slides.md){ .md-button }
 { .center-text }
 
-## 01 - tt
+## 01 - Sécurité du code, des dépendances et du pipeline
+
+## 02 - Sécurité des conteneurs et de l’infrastructure

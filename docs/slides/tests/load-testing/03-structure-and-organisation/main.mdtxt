@@ -10,8 +10,6 @@
 ## 3.1 Groupes et Organisation 
 **Avantages des groupes**
 
-**Rôle Principal**   
-
 - Structurer le Test : Organise le script de charge en étapes logiques ou scénarios utilisateur (ex: Connexion, Ajouter au panier).
 - Lisibilité : Rend les scripts longs faciles à lire et à maintenir.
 - Utile pour : Connaître la performance de l'expérience utilisateur complète (plus pertinent qu'une seule requête HTTP).

@@ -47,54 +47,44 @@ export default function () {
 
 ## 5.1 Utilisateurs Virtuels et Modèles de Charge
 
-#### Modèles fermés vs ouverts
-
 **Modèle fermé**
 
-- Nombre fixe d'utilisateurs
-- Chaque VU attend la fin de la requête avant la suivante
-- Simule des utilisateurs réels avec think time
-- Executor : `constant-vus`, `ramping-vus`
+Le modèle fermé maintient **un nombre fixe d'utilisateurs virtuels** actifs  
+Un nouveau scénario ne commence que lorsque le VU précédent **a terminé son scénario**
 
-```javascript
-export const options = {
-  scenarios: {
-    closed_model: {
-      executor: 'constant-vus',
-      vus: 50,
-      duration: '5m',
-    },
-  },
-};
-```
+**Fonctionnement**
+
+- Le nombre de VU est plafonné. Si le système ralentit, le temps entre les itérations augmente, ce qui réduit automatiquement le taux de requêtes envoyées
+- Le système est protégé de la surcharge, car il n'y a jamais plus de N utilisateurs en même temps
+- Le débit (nombre de requêtes par seconde) est directement corrélé au temps de réponse de votre application.
+
+**Cas d'Usage**
+
+- Test de capacité : Déterminer le nombre maximum de VU que le système peut gérer tout en conservant un temps de réponse acceptable
+- Systèmes à ressources limitées : Simuler des systèmes où les utilisateurs doivent attendre qu'une ressource (comme un thread ou une connexion) se libère
+
+*Executor : `constant-vus`, `ramping-vus`*
+
 
 ---
 
 
 ## 5.1 Utilisateurs Virtuels et Modèles de Charge
-#### Modèles fermés vs ouverts
 
 **Modèle ouvert**
+Le modèle ouvert se concentre sur le **taux d'arrivée des requêtes (ou sessions)**, sans se soucier du statut du système (surcharge ou disponibilité des VU)
 
-- Taux d'arrivée fixe (RPS)
-- Nouveaux utilisateurs arrivent indépendamment
-- Simule un flux constant de requêtes
-- Executor : `constant-arrival-rate`, `ramping-arrival-rate`
+**Fonctionnement**
 
-```javascript
-export const options = {
-  scenarios: {
-    open_model: {
-      executor: 'constant-arrival-rate',
-      rate: 100, // 100 itérations par seconde
-      timeUnit: '1s',
-      duration: '5m',
-      preAllocatedVUs: 50,
-      maxVUs: 100,
-    },
-  },
-};
-```
+- k6 injecte de **nouveaux utilisateurs virtuels (VU)** à **un taux prédéfini** (par exemple, 10 VU par seconde), que les VU précédents aient terminé ou non leur scénario
+- C'est la méthode idéale pour simuler le trafic dans **le monde réel**, où le taux d'arrivée des utilisateurs est constant et ne dépend pas du temps de réponse de votre application
+
+**Cas d'Usage**
+- Test de trafic réel : Simuler des accès utilisateurs constants à un site web ou une API publique
+- Identification du goulot d'étranglement : Tester comment le système se comporte lorsque le temps de réponse augmente (ce qui signifie que la file d'attente des requêtes s'allonge)
+
+*Executor : `constant-arrival-rate`, `ramping-arrival-rate`*
+
 
 
 ---
@@ -102,6 +92,13 @@ export const options = {
 
 ## 5.1 Utilisateurs Virtuels et Modèles de Charge
 #### Modèles fermés vs ouverts
+
+| Caractéristique       | Modèle Ouvert (Arrival Rate)                                    | Modèle Fermé (Constant VUs)                                      |
+|-----------------------|-----------------------------------------------------------------|------------------------------------------------------------------|
+| Variable Contrôlée    | Taux d'arrivée de nouveaux utilisateurs/sessions.              | Nombre d'utilisateurs virtuels (VU) actifs simultanément.       |
+| Impact du Ralentissement | La file d'attente s'allonge.                                 | Le taux de requêtes diminue.                                     |
+| Objectif Principal    | Simuler le trafic réel et identifier les goulots d'étranglement causés par la queue. | Tester la capacité maximale de la plateforme sous une charge fixe. |
+| Executors k6          | `constant-arrival-rate`, `ramping-arrival-rate`               | `constant-vus`, `ramping-vus`                                   |
 
 
 
@@ -124,15 +121,16 @@ Ils déterminent le pattern de charge de votre test :
 
 **Choix de l'Executor**
 
-| Besoin                     | Executor Recommandé   |
-| -------------------------- | --------------------- |
-| Charge                     | stable	constant-vus   |
-| Montée progressive         | ramping-vus           |
-| Débit constant de requêtes | constant-arrival-rate |
-| Débit variable de requêtes | ramping-arrival-rate  |
-| Nombre total d'itérations  | shared-iterations     |
-| Itérations par VU          | per-vu-iterations     |
-| Contrôle externe           | externally-controlled |
+| Besoin                     | Executor recommandé    | Modèle ouvert / fermé |
+| -------------------------- | ---------------------- | ----------------------|
+| Charge stable              | constant-vus           | Fermé                 |
+| Montée progressive         | ramping-vus            | Fermé                 |
+| Débit constant de requêtes | constant-arrival-rate  | Ouvert                |
+| Débit variable de requêtes | ramping-arrival-rate   | Ouvert                |
+| Nombre total d'itérations  | shared-iterations      | Fermé                 |
+| Itérations par VU          | per-vu-iterations      | Fermé                 |
+| Contrôle externe           | externally-controlled  | Fermé (piloté)        |
+
 
 ---
 

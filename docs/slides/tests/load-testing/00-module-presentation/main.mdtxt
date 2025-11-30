@@ -1,0 +1,58 @@
+# Présentation du module
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+---
+<div style="text-align: left;">
+
+## Hello ! 
+
+</div>
+
+<img src="../../../../ressource/img/profile/photo.jpeg" style="border-radius: 50%; width: 200px;" alt="bastien_maurice" />
+
+2 ans Fullstack Engineer - Thales<br>
+2 ans DevOps Engineer - Thales<br>
+2 ans Platform Engineer - Betclic<br>
+
+</br></br>
+
+**Et vous ?**
+
+</div>
+---
+<div style="text-align: left;">
+
+## Informations Générales
+
+**Durée totale :** 2 journées de 7 heures (14 heures)  
+**Répartition :** 40% théorie / 60% pratique  
+**Public :** Développeurs, testeurs, DevOps  
+**Prérequis :** Connaissances de base en JavaScript, notions HTTP/API  
+</div>
+
+---
+<div style="text-align: left;">
+
+## Programme
+
+**JOUR 1 - Fondamentaux et Scripting (7 heures)** 
+
+- 9h00 - 10h30 | Module 1 : Introduction aux Tests de Charge (1h30)
+- 10h30 - 10h45 | Pause (15 min)
+- 10h45 - 12h30 | Module 2 : Scripting Fondamental (1h45)
+- 12h30 - 13h30 | Pause Déjeuner (1h)
+- 13h30 - 15h00 | Module 3 : Structuration et Organisation (1h30)
+- 15h15 - 17h00 | Module 4 : Paramètres et Dynamisme (1h45)
+
+
+**JOUR 2 - Modélisation et Résultats (7 heures)**
+
+- 9h00 - 10h30 | Module 5 : Modélisation de Scénarios (1h30)
+- 10h30 - 10h45 | Pause (15 min)
+- 10h45 - 12h30 | Module 6 : Types de Tests (1h45)
+- 12h30 - 13h30 | Pause Déjeuner (1h)
+- 13h30 - 15h00 | Module 7 : Thresholds, Objectifs & CICD (1h30)
+- 15h00 - 15h15 | Pause (15 min)
+- 15h15 - 16h45 | Module 8 : Résultats et Grafana (1h30)
+- 17h00 - 18h00 | Module 9 : Projet Final Pratique (1h)
+</div>

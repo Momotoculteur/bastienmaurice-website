@@ -1,0 +1,409 @@
+# Fondamentaux et Scripting
+## Module 2 : Scripting Fondamental
+
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+## 2.1 Cycle de Vie d'un Script K6
+
+**Structure d'un script K6**
+
+```javascript
+// 1. Code d'initialisation (exécuté une fois)
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+// 2. Options de configuration
+export const options = {
+  vus: 10,
+  duration: '30s',
+};
+
+// 3. Fonction setup (optionnelle, exécutée une fois avant les VUs)
+export function setup() {
+  // Préparation des données
+  return { token: 'abc123' };
+}
+
+// 4. Fonction default (code de test, exécuté par chaque VU)
+export default function (data) {
+  // Logique de test
+  http.get('https://api.example.com', {
+    headers: { Authorization: `Bearer ${data.token}` }
+  });
+  sleep(1);
+}
+
+// 5. Fonction teardown (optionnelle, exécutée une fois après les VUs)
+export function teardown(data) {
+  // Nettoyage
+}
+```
+
+**Les 4 phases du cycle de vie**
+
+1. **Init context :** Chargement des modules, définition des variables globales
+2. **Setup :** Préparation unique (création de données de test, authentification)
+3. **VU context :** Exécution répétée du code de test
+4. **Teardown :** Nettoyage final
+
+
+---
+
+
+
+## 2.1 Cycle de Vie d'un Script K6 - Built in Metrics
+
+| Catégorie               | Nom de la métrique        | Type    | Description courte |
+|-------------------------|---------------------------|---------|---------------------|
+| **Standard**            | `iterations`              | Counter | Nombre d’itérations exécutées. |
+|                         | `iteration_duration`      | Trend   | Temps total d’une itération. |
+|                         | `vu`                      | Gauge   | Nombre d’utilisateurs virtuels actifs. |
+|                         | `dropped_iterations`      | Counter | Itérations non lancées (saturation). |
+|                         | `checks`                  | Rate    | Taux de checks réussis. |
+| **HTTP**                | `http_reqs`               | Counter | Nombre total de requêtes HTTP. |
+|                         | `http_req_failed`         | Rate    | Taux de requêtes HTTP en erreur. |
+|                         | `http_req_duration`       | Trend   | Durée totale d’une requête. |
+|                         | `http_req_waiting`        | Trend   | Temps d'attente (TTFB). |
+|                         | `http_req_connecting`     | Trend   | Temps d’établissement de connexion TCP. |
+| **WebSocket**           | `ws_sessions`             | Counter | Nombre de connexions WS. |
+|                         | `ws_messages_sent`        | Counter | Messages envoyés. |
+|                         | `ws_messages_received`    | Counter | Messages reçus. |
+|                         | `ws_session_duration`     | Trend   | Durée de vie d'une session WS. |
+| **gRPC**                | `grpc_req_duration`       | Trend   | Durée d’une requête gRPC. |
+|                         | `grpc_streams`            | Gauge   | Nombre de streams actifs. |
+|                         | `grpc_messages_sent`      | Counter | Messages envoyés via gRPC. |
+|                         | `grpc_messages_received`  | Counter | Messages reçus via gRPC. |
+| **Browser / Web Vitals**| `browser_web_vital_lcp`   | Trend   | Largest Contentful Paint. |
+|                         | `browser_web_vital_fcp`   | Trend   | First Contentful Paint. |
+|                         | `browser_web_vital_cls`   | Gauge   | Cumulative Layout Shift. |
+|                         | `browser_web_vital_inp`   | Trend   | Interaction to Next Paint. |
+| **Custom**              | (exemple) `my_counter`    | Counter | Compter un événement custom. |
+|                         | (exemple) `my_rate`       | Rate    | Pourcentage de réussite custom. |
+|                         | (exemple) `my_trend`      | Trend   | Suivre un temps custom. |
+|                         | (exemple) `my_gauge`      | Gauge   | Valeur instantanée custom. |
+
+
+---
+
+
+## 2.1 Cycle de Vie d'un Script K6
+**Métriques custom**
+
+- Counter (Compteur) : compte le nombre total d'événements
+  - Exemple : nombre total de requêtes POST
+- Gauge (Jauge) : valeur instantanée qui peut monter/descendre
+  - Exemple : nombre d'utilisateurs actifs en temps réel
+- Rate (Taux) : pourcentage entre 0 et 1
+  - Exemple : taux d'erreur, taux de succès
+- Trend (Tendance) : collecte des statistiques (min, max, moyenne, percentiles)
+  - Exemple : temps de réponse personnalisé
+
+```js
+import { Counter, Gauge, Rate, Trend } from 'k6/metrics';
+
+// Métriques personnalisées
+const postRequests = new Counter('posts_requests_total'); // Compteur : nombre total de requêtes
+const activeUsers = new Gauge('active_users'); // Jauge : valeur instantanée
+const errorRate = new Rate('error_rate'); // Taux : pourcentage (0-1)
+const responseTime = new Trend('custom_response_time'); // Tendance : stats (min, max, avg, percentiles)
+
+export default function () {
+  // Simuler un utilisateur actif
+  activeUsers.add(1);
+  ...
+}
+```
+
+
+---
+
+
+## 2.2 Création de Requêtes HTTP
+
+**Types de requêtes HTTP**
+
+```javascript
+import http from 'k6/http';
+
+export default function () {
+  // GET
+  const getRes = http.get('https://httpbin.org/get');
+  
+  // POST avec JSON
+  const payload = JSON.stringify({
+    name: 'Bastien MAURICE',
+    email: 'bastien@maurice.com'
+  });
+  const params = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  const postRes = http.post('https://httpbin.org/post', payload, params);
+  
+  // PUT
+  http.put('https://httpbin.org/put', payload, params);
+  
+  // DELETE
+  http.del('https://httpbin.org/delete');
+  
+  // PATCH
+  http.patch('https://httpbin.org/patch', payload, params);
+}
+```
+
+
+---
+
+
+
+## 2.2 Création de Requêtes HTTP
+
+**Requêtes batch (parallèles)**
+
+- `http.batch()` : méthode k6 qui exécute plusieurs requêtes HTTP simultanément (concurrence interne dans un même Virtual User)
+- Plus efficace que de les faire séquentiellement (réduire la durée d’une itération)
+- Retourne un tableau de réponses
+
+```javascript
+import http from 'k6/http';
+
+export default function () {
+  const responses = http.batch([
+    ['GET', 'https://httpbin.org/get'],
+    ['POST', 'https://httpbin.org/post', JSON.stringify({ test: 'data' })],
+    ['GET', 'https://httpbin.org/delay/1'],
+  ]);
+  
+  // Accéder aux réponses
+  console.log(responses[0].status); // 200
+}
+```
+
+**Toutes les requêtes du batch sont lancées en même temps**, et le VU attend que **toutes** soient terminées avant de passer à l’instruction suivante.
+
+
+---
+
+
+## 2.2 Création de Requêtes HTTP
+
+**Exercice pratique**
+
+**Objectif :** Créer un script avec différentes requêtes HTTP
+
+- Créer un test qui utilise l'API JSONPlaceholder
+- Implémenter GET /posts, POST /posts, PUT /posts/1, DELETE /posts/1
+- Mesurer le temps de réponse de chaque type de requête
+
+
+---
+
+
+## 2.3 Checks, Thresholds & Gestion d'Erreurs
+**Checks : assertion souple pendant le test**
+
+- Validations qui n'arrêtent pas le test (mesurent le taux de succès)
+- Utile pour compter les erreurs fonctionnelles (données correctes, format JSON, etc.)
+- Génère la métrique checks (taux de succès).
+
+
+```javascript
+import http from 'k6/http';
+import { check } from 'k6';
+
+export default function () {
+  const res = http.get('https://httpbin.org/get');
+  
+  check(res, {
+    'status est 200': (r) => r.status === 200,
+    'temps de réponse < 500ms': (r) => r.timings.duration < 500,
+    'body contient origin': (r) => r.body.includes('origin'),
+    'header content-type est JSON': (r) => 
+      r.headers['Content-Type'].includes('application/json'),
+  });
+}
+```
+
+
+---
+
+
+## 2.3 Checks, Thresholds & Gestion d'Erreurs
+
+**Thresholds : objectifs globaux à respecter**
+
+- Critères qui déterminent si le test passe ou échoue (évalué à la fin du test, ne stoppe jamais le test en cours)
+- Pour définir des SLA de performance (temps max, taux d'erreur acceptable, etc.)
+- Définit les limites acceptables de performance
+- Permet l'intégration CI/CD (exit code 1 si échec)
+
+```javascript
+import http from 'k6/http';
+import { check } from 'k6';
+
+export const options = {
+    ... 
+    thresholds: {
+        // Le test ÉCHOUE si ces conditions ne sont pas remplies :
+        'http_req_duration': ['p(95)<500'],      // 95% des requêtes < 500ms
+        'http_req_duration': ['avg<300'],        // Temps moyen < 300ms
+        'http_req_failed': ['rate<0.05'],        // Moins de 5% d'erreurs
+        'http_reqs': ['rate>10'],                // Au moins 10 requêtes/seconde
+    },
+};
+
+export default function () {
+  const res = http.get('https://httpbin.org/get');
+}
+```
+
+
+
+
+---
+
+
+## 2.3 Checks, Thresholds & Gestion d'Erreurs
+**fail() : arrêt immédiat en cas de problème critique**
+
+- Interrompt immédiatement l’exécution du VU
+- Très utile pour des erreurs fatales qui rendent le test incohérent (Impossible de récupérer un token d’auth, API non dispo...)
+
+```javascript
+if (res.status !== 200) {
+  fail("API critical failure");
+}
+```
+
+
+
+---
+
+
+
+## 2.3 Checks et Gestion d'Erreurs - Divers
+
+**1. Gérer les timeouts**
+
+En cas de timeout:  
+- la requête retourne un HTTP status = 0
+- `error.code` devient `ESOCKETTIMEDOUT` (visible via res.error)
+
+```javascript
+import http from "k6/http";
+
+export default function () {
+  // Définition d'un timeout strict
+  const params = {
+    timeout: "3s",  // timeout total de la requête
+  };
+
+  const res = http.get("https://httpbin.org/delay/5", params);
+
+  console.log(`Status : ${res.status}`);  // sera 0 en cas de timeout
+}
+
+```
+
+
+---
+
+
+
+## 2.3 Checks et Gestion d'Erreurs - Divers
+
+**2. Parser le JSON avec try-catch**
+
+```javascript
+try {
+  const data = JSON.parse(response.body);
+} catch (error) {
+  console.error('Erreur parsing JSON');
+}
+```
+
+
+
+---
+
+
+
+## 2.3 Checks et Gestion d'Erreurs - Divers
+
+**3. Catégoriser les erreurs**
+
+Par famille : 
+
+```javascript
+function categorizeStatus(res) {
+  const s = res.status;
+
+  if (s >= 100 && s < 200) return "informational";
+  if (s >= 200 && s < 300) return "success";
+  if (s >= 300 && s < 400) return "redirect";
+  ...
+  return "unknown";
+}
+
+export default function () {
+  const res = http.get("https://api.test.com/data");
+  console.log("Category:", categorizeStatus(res));
+}
+```
+
+Par erreur précise :
+
+```js
+function categorizeStatus(res) {
+  switch (res.status) {
+    case 400:
+      return "bad_request";
+    case 403:
+      return "auth_error";
+    default:
+      return "unknown";
+  ...
+  }
+}
+```
+
+
+
+---
+
+
+## 2.3 Checks et Gestion d'Erreurs - Divers
+
+**4. Retry automatique**
+
+Utile quand : 
+
+- Simple et lisible
+- Fonction de retry réutilisable
+- Ajustable : maxRetries + delay
+
+```javascript
+for (let maxRetries = 0; maxRetries < 3; maxRetries++) {
+  response = http.get(url);
+  if (response.status === 200) break;
+  sleep(delay);
+}
+```
+
+
+---
+
+
+**Exercice pratique**
+
+**Objectif :** Implémenter des checks robustes
+
+- Ajouter des checks sur status, temps de réponse, et contenu
+- Tester avec des endpoints qui retournent différents codes HTTP
+- Observer le taux de succès des checks
+

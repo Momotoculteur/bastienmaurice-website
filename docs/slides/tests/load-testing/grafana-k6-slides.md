@@ -41,7 +41,7 @@
 
 **JOUR 2 - Modélisation et Résultats (7 heures)**
 
-- 9h00 - 10h30 | Module 5 : Modélisation de Scénarios (1h30)- 
+- 9h00 - 10h30 | Module 5 : Modélisation de Scénarios (1h30)
 - 10h30 - 10h45 | Pause (15 min)
 - 10h45 - 12h30 | Module 6 : Types de Tests (1h45)
 - 12h30 - 13h30 | Pause Déjeuner (1h)
@@ -109,7 +109,7 @@
 **Introduction à K6**
 
 - **Historique :** Créé par Load Impact, maintenu par Grafana Labs
-- **Philosophie :** Developer-centric, CLI-based, scriptable
+- **Philosophie :** CLI-based, scriptable
 - **Avantages :**
   - Scripts en JavaScript (ES6+)
   - Open source et gratuit
@@ -118,8 +118,19 @@
   - Cloud ou local
 - **Écosystème :** K6 OSS, K6 Cloud, K6 Extensions
 
+</br></br>
+
+| Caractéristique       | Apache JMeter                                                   | Gatling                                                | k6                                                                    |
+|-----------------------|-----------------------------------------------------------------|--------------------------------------------------------|------------------------------------------------------------------------|
+| Langage du Cœur       | Java                                                            | Scala                                                  | Go (Golang)                                                           |
+| Langage de Script     | Principalement via GUI (.jmx), ou Groovy, BeanShell            | Scala (via un DSL), ou Java, Kotlin                   | JavaScript (ES6+)                                                     |
+| Plateforme            | JVM (Java Virtual Machine)                                      | JVM (Java Virtual Machine)                             | Natif (compilé en Go)                                                 |
+| Approche Typique      | Orienté GUI (Interface Graphique)                               | Orienté Code (Infrastructure as Code)                  | Orienté Code (Infrastructure as Code)                                 |
+
+
 
 ---
+
 
 
 ## 1.2 Installation et Premier Test 
@@ -257,19 +268,37 @@ export function teardown(data) {
 ---
 
 
-## 2.1 Cycle de Vie d'un Script K6
 
-**Métriques natives de K6**
+## 2.1 Built-in Metrics
 
-- `http_reqs` : Nombre total de requêtes HTTP
-- `http_req_duration` : Temps total de requête
-- `http_req_blocked` : Temps bloqué avant la connexion
-- `http_req_connecting` : Temps d'établissement de connexion
-- `http_req_sending` : Temps d'envoi des données
-- `http_req_waiting` : Temps d'attente (TTFB)
-- `http_req_receiving` : Temps de réception des données
-- `iterations` : Nombre d'itérations complétées
-- `vus` : Nombre d'utilisateurs virtuels actifs
+| Catégorie               | Nom de la métrique        | Type    | Description courte |
+|-------------------------|---------------------------|---------|---------------------|
+| **Standard**            | `iterations`              | Counter | Nombre d’itérations exécutées. |
+|                         | `iteration_duration`      | Trend   | Temps total d’une itération. |
+|                         | `vu`                      | Gauge   | Nombre d’utilisateurs virtuels actifs. |
+|                         | `dropped_iterations`      | Counter | Itérations non lancées (saturation). |
+|                         | `checks`                  | Rate    | Taux de checks réussis. |
+| **HTTP**                | `http_reqs`               | Counter | Nombre total de requêtes HTTP. |
+|                         | `http_req_failed`         | Rate    | Taux de requêtes HTTP en erreur. |
+|                         | `http_req_duration`       | Trend   | Durée totale d’une requête. |
+|                         | `http_req_waiting`        | Trend   | Temps d'attente (TTFB). |
+|                         | `http_req_connecting`     | Trend   | Temps d’établissement de connexion TCP. |
+| **WebSocket**           | `ws_sessions`             | Counter | Nombre de connexions WS. |
+|                         | `ws_messages_sent`        | Counter | Messages envoyés. |
+|                         | `ws_messages_received`    | Counter | Messages reçus. |
+|                         | `ws_session_duration`     | Trend   | Durée de vie d'une session WS. |
+| **gRPC**                | `grpc_req_duration`       | Trend   | Durée d’une requête gRPC. |
+|                         | `grpc_streams`            | Gauge   | Nombre de streams actifs. |
+|                         | `grpc_messages_sent`      | Counter | Messages envoyés via gRPC. |
+|                         | `grpc_messages_received`  | Counter | Messages reçus via gRPC. |
+| **Browser / Web Vitals**| `browser_web_vital_lcp`   | Trend   | Largest Contentful Paint. |
+|                         | `browser_web_vital_fcp`   | Trend   | First Contentful Paint. |
+|                         | `browser_web_vital_cls`   | Gauge   | Cumulative Layout Shift. |
+|                         | `browser_web_vital_inp`   | Trend   | Interaction to Next Paint. |
+| **Custom**              | (exemple) `my_counter`    | Counter | Compter un événement custom. |
+|                         | (exemple) `my_rate`       | Rate    | Pourcentage de réussite custom. |
+|                         | (exemple) `my_trend`      | Trend   | Suivre un temps custom. |
+|                         | (exemple) `my_gauge`      | Gauge   | Valeur instantanée custom. |
 
 
 ---

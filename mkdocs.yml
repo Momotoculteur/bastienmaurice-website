@@ -215,7 +215,7 @@ nav:
       - Kubernetes: 
         - Certification KCNA: slides/kubernetes/certification-kcna/certification-kcna.md
       - Testing: 
-        - Tests de charge avec Grafana K6: slides/tests/load-testing/grafana-k6.md
+        - Load testing avec Grafana K6: slides/tests/load-testing/grafana-k6.md
       - Continuous Integration/Continuous Delivery:
         - Pipeline complète avec GitlabCI : slides/continuous-integration-continuous-delivery/gitlabci-pipeline/gitlabci-pipeline.md
       - Monitoring & Alerting - TP:

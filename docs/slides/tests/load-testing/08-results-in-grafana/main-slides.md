@@ -1,0 +1,304 @@
+# Fondamentaux et Scripting
+## Module 8 : Résultats et Grafana
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+## 8.1 Formats de Sortie
+
+**Export JSON**
+```bash
+k6 run --out json=results.json script.js
+```
+
+**Liste des outputs disponible**
+
+- Amazon CloudWatch
+- Cloud
+- CSV
+- Datadog
+- Dynatrace
+- Elasticsearch
+- Grafana Cloud Prometheus
+- InfluxDB
+- Netdata
+- New Relic
+- Prometheus
+- TimescaleDB
+- StatsD
+
+
+
+---
+
+
+## 8.2 Installation de Prometheus & Grafana
+
+Mettre en place Grafana & Prometheus
+
+**Installation avec Docker Compose**  
+Créer `docker-compose.yml` :
+```yaml
+version: '3.8'
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=168h'  # Conserve 7 jours
+      - '--web.enable-remote-write-receiver' # OBLIGER
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./config/grafana:/etc/grafana/provisioning  
+    depends_on:
+      - prometheus
+
+volumes:
+  prometheus_data:
+  grafana_data:
+```
+
+**Lancer**  
+```bash
+docker-compose up -d
+```
+
+---
+
+
+## 8.2 Configuration de Prometheus & Grafana
+
+**Configuration de la datasource Prometheus dans Grafana**  
+Faisons le via le docker compose : 
+```yaml
+apiVersion: 1
+datasources:
+  - name: k6
+    type: prometheus
+    url: http://prometheus:9090
+    access: proxy
+    isDefault: true
+    basicAuth: true
+    basicAuthUser: admin
+    secureJsonData:
+      basicAuthPassword: admin
+```
+*Ne pas oubliez de l'importer via la prop `volumes`*
+
+**Import du dashboard K6**
+
+1. Dashboards > Import
+2. Choississez un ID de dash compatible
+3. Sélectionner la datasource Prometheus
+
+
+
+---
+
+
+## 8.2  Installation et Configuration Grafana
+
+
+**Lancer un test avec export Prometheus**
+```bash
+K6_PROMETHEUS_RW_SERVER_URL=http://localhost:9090/api/v1/write \
+  K6_PROMETHEUS_RW_USERNAME=admin \
+  K6_PROMETHEUS_RW_PASSWORD=admin \
+  k6 run --out experimental-prometheus-rw load.js
+```
+
+
+
+---
+
+
+## 8.2 Grafana - Metrics
+
+**Metrics built-in**
+
+| k6      | Prometheus                                       | Name label         |
+| ------- | ------------------------------------------------ | ------------------ |
+| Counter | Counter                                          | k6_*_total         |
+| Gauge   | Gauge                                            | k6_*_<unit-suffix> |
+| Rate    | Gauge                                            | k6_*_rate          |
+| Trend   | Counter and Gauges (default) or Native Histogram | k6_*_<unit-suffix> |
+
+
+
+---
+
+
+## 8.2  Installation et Configuration Grafana
+
+**Exercice pratique**
+
+**Objectif :** Visualiser un test en temps réel
+
+- Lancer un test de 5 minutes avec rampe
+- Observer en temps réel dans Grafana
+- Identifier les métriques clés
+- Créer des annotations pour marquer des événements
+
+
+---
+
+
+## 8.3  Génération et Analyse de Rapports
+
+**Rapport HTML avec k6-reporter**
+
+Installation :
+```bash
+npm install -g k6-html-reporter
+```
+
+Script avec summary :
+```javascript
+import http from 'k6/http';
+import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
+
+export default function () {
+  http.get('https://test.k6.io');
+}
+
+export function handleSummary(data) {
+  return {
+    "summary.html": htmlReport(data),
+    "summary.json": JSON.stringify(data),
+  };
+}
+```
+
+
+---
+
+
+## 8.3  Génération et Analyse de Rapports
+
+**Custom Summary**
+
+```javascript
+export function handleSummary(data) {
+  // Summary personnalisé en console
+  console.log('Test terminé !');
+  console.log(`Requêtes totales: ${data.metrics.http_reqs.values.count}`);
+  console.log(`Durée P95: ${data.metrics.http_req_duration.values['p(95)']} ms`);
+  console.log(`Taux d'erreur: ${data.metrics.http_req_failed.values.rate * 100}%`);
+  
+  return {
+    'stdout': textSummary(data, { indent: ' ', enableColors: true }),
+    'summary.json': JSON.stringify(data, null, 2),
+  };
+}
+```
+
+---
+
+
+## 8.3  Génération et Analyse de Rapports
+
+**Analyse des métriques importantes**
+
+**Latence :**
+
+- P50 (médiane) : Expérience typique
+- P95 : 95% des utilisateurs
+- P99 : Cas extrêmes
+- Max : Pire cas
+
+**Throughput :**
+
+- http_reqs rate : Requêtes par seconde
+- data_received : Données reçues
+- data_sent : Données envoyées
+
+**Erreurs :**
+
+- http_req_failed rate : Taux d'échec
+- Checks passed rate : Validations réussies
+
+
+---
+
+
+## 8.3 Génération et Analyse de Rapports
+
+**Exercice pratique**
+
+**Objectif :** Analyser un rapport de test
+
+- Exécuter un test de stress complet
+- Générer un rapport HTML
+- Identifier dans le rapport :
+  - Le point de rupture
+  - Les métriques qui se dégradent en premier
+  - Le comportement des erreurs
+  - Les recommandations d'optimisation
+
+
+
+---
+
+
+## 8.4 Utilisation d'extension - xk6
+
+**k6** est écrit en Go, mais il ne charge pas dynamiquement des plugins  
+**xk6** est un outil qui permet de compiler k6 avec des extensions personnalisées  
+
+</br></br>
+
+**Pourquoi ?**  
+Donc pour ajouter une fonctionnalité (ex. Kafka, Redis, gRPC avancé, WebSocket custom…), il faut :
+
+1. écrire l’extension en Go
+2. créer un binaire k6 custom
+3. utiliser xk6 pour assembler tout ça
+4. exécuter ensuite vos scripts k6 avec le nouveau binaire généré
+
+
+---
+
+
+## 8.4 Utilisation d'extension - Ex. xk6-dashboard
+
+**xk6-dashboard** est une extension k6 qui affiche un dashboard HTML en direct pendant le test, sans avoir besoin de Prometheus/Grafana
+
+```bash
+# Installer xk6
+go install go.k6.io/xk6/cmd/xk6@latest
+
+# Compiler k6 avec xk6-dashboard
+xk6 build --with github.com/grafana/xk6-dashboard@latest
+
+# Lancer
+K6_WEB_DASHBOARD=true ./k6 run script.js 
+
+# Ouvrir sur http://localhost:5665 par default
+```
+
+
+
+---
+
+
+## 8.4 Utilisation d'extension - Ex. xk6-dashboard
+
+
+
+![xk6-web-dashboard-plugin](../img/xk6-web-dashboard-plugin.png)

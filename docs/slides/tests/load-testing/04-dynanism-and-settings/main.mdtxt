@@ -1,0 +1,287 @@
+# Fondamentaux et Scripting
+## Module 4 : Paramètres et Dynamisme
+
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## 4.1 Outils Divers
+
+**Récupérer des informations contenue dans une requête**
+
+```javascript
+import http from 'k6/http';
+import { check } from 'k6';
+
+export default function () {
+  // Extraction depuis JSON
+  const res = http.get('https://httpbin.org/json');
+  const data = res.json();
+  const slideshow = data.slideshow.author;
+  console.log(`Auteur: ${slideshow}`);
+  
+  // Extraction depuis headers
+  const locationHeader = res.headers['Location'];
+  
+  // Extraction avec regex
+  const body = res.body;
+  const tokenMatch = body.match(/token":"([^"]+)"/);
+  if (tokenMatch) {
+    const token = tokenMatch[1];
+    console.log(`Token extrait: ${token}`);
+  }
+}
+```
+</div>
+---
+<div style="text-align: left;">
+
+## 4.1 Outils Divers
+
+**Chaînage de requêtes**
+
+```javascript
+export default function () {
+  // 1. Créer une ressource
+  const createRes = http.post('https://httpbin.org/post', 
+    JSON.stringify({ name: 'Test' })
+  );
+  const createdId = createRes.json().id;
+  
+  // 2. Récupérer la ressource créée
+  const getRes = http.get(`https://httpbin.org/get?id=${createdId}`);
+  
+  // 3. Mettre à jour
+  http.put(`https://httpbin.org/put?id=${createdId}`, 
+    JSON.stringify({ name: 'Updated' })
+  );
+}
+```
+</div>
+
+---
+<div style="text-align: left;">
+
+## 4.2 Données Externes
+
+**Utilisation de fichiers CSV**
+
+```javascript
+import http from 'k6/http';
+import { SharedArray } from 'k6/data';
+import papaparse from 'papaparse';
+
+const csvData = new SharedArray('users', function () {
+  return papaparse.parse(open('./users.csv'), { header: true }).data;
+});
+
+export default function () {
+  const user = csvData[Math.floor(Math.random() * csvData.length)];
+  
+  const payload = JSON.stringify({
+    username: user.username,
+    email: user.email,
+  });
+  
+  http.post('https://httpbin.org/post', payload);
+}
+```
+
+Fichier `users.csv` :
+```csv
+username,email
+user1,user1@example.com
+user2,user2@example.com
+user3,user3@example.com
+```
+</div>
+
+---
+<div style="text-align: left;">
+
+## 4.2 Données Externes
+
+**Utilisation de fichiers JSON**
+
+```javascript
+import { SharedArray } from 'k6/data';
+import http from 'k6/http';
+
+const data = new SharedArray('products', function () {
+  return JSON.parse(open('./products.json'));
+});
+
+export default function () {
+  const product = data[__VU % data.length];
+  http.get(`https://api.example.com/products/${product.id}`);
+}
+```
+
+Fichier `products.json` :
+```json
+[
+  {
+    "id": 1,
+    "name": "Laptop"
+  },
+  {
+    "id": 2,
+    "name": "Smartphone"
+  },...
+]
+```
+</div>
+
+---
+<div style="text-align: left;">
+
+## 4.2 Données Externes
+
+Le **SharedArray** dans k6 est une structure de données spéciale qui permet de partager des données en lecture seule entre tous les VUs (Virtual Users) de manière mémoire-efficiente.
+
+- Le fichier JSON n'est lu et parsé qu'une seule fois au début du test (read-only)
+- Les données sont stockées dans une zone mémoire partagée (évite la duplication des données en mémoire)
+- Tous les VUs accèdent aux mêmes données sans duplication
+
+```js
+const data = new SharedArray('products', function () {
+  return JSON.parse(open('./products.json'));
+});
+```
+
+</br></br>
+
+**Exemple concret**  
+Avec 100 VUs et un fichier de 1 000 produits :
+
+- Sans SharedArray : 100 copies × 1 000 produits = 100 000 objets en mémoire
+- Avec SharedArray : 1 copie × 1 000 produits = 1 000 objets en mémoire
+
+</div>
+---
+<div style="text-align: left;">
+
+## 4.2 Données Externes
+
+**Variables d'environnement**
+
+```javascript
+import http from 'k6/http';
+
+const BASE_URL = __ENV.BASE_URL || 'https://test.k6.io';
+const API_KEY = __ENV.API_KEY || 'default-key';
+
+export default function () {
+  http.get(`${BASE_URL}/api`, {
+    headers: { 'X-API-Key': API_KEY },
+  });
+}
+```
+
+Exécution :
+```bash
+k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
+```
+</div>
+
+---
+<div style="text-align: left;">
+
+## 4.2  Données Externes
+
+**Exercice pratique**
+
+**Objectif :** Créer un test avec données dynamiques
+
+- Créer un fichier CSV avec des utilisateurs de test
+- Implémenter un script qui utilise ces données
+- Extraire un token de la réponse de login
+- Utiliser ce token pour des requêtes suivantes
+
+</div>
+
+---
+<div style="text-align: left;">
+
+## 4.3 Théorie et Introduction : K6 Browser
+**K6 browser** est une extension de Grafana k6 qui permet de réaliser des tests de charge basés sur un navigateur réel, en simulant le comportement d’un utilisateur humain dans un vrai navigateur Chromium embarqué.
+
+C’est une évolution majeure par rapport au **k6 "classique"**, qui ne teste que la charge HTTP au niveau protocolaire (sans navigateur, donc sans rendu DOM, JS, CSS, etc.).
+
+</br></br>
+
+**Cas d'usage**
+
+- Basé sur Playwright/Chromium
+- Tester des flux utilisateurs complets
+- Applications Single Page (React, Vue, Angular)
+- Tests de bout en bout avec charge
+- Complément aux tests API
+</div>
+
+---
+<div style="text-align: left;">
+
+## 4.3 Théorie et Introduction : K6 Browser 
+
+| Caractéristique     | k6 “classique”                      | k6 browser                                           |
+| ------------------- | ----------------------------------- | ---------------------------------------------------- |
+| Type de test        | Backend / API                       | Frontend (navigateur)                                |
+| Niveau de test      | Protocolaire HTTP                   | Réel (navigateur complet)                            |
+| Rendu graphique     | ❌ Non                               | ✅ Oui (Chromium embarqué)                            |
+| Scénarios possibles | Appels API, endpoints REST, GraphQL | Navigation web, clics, formulaires, interactions DOM |
+| Mesures collectées  | Latence, taux d’erreur, throughput  | TTFB, LCP, FCP, DOMContentLoaded, layout shifts...   |
+
+
+</div>
+---
+<div style="text-align: left;">
+
+## 4.3 Théorie et Introduction : K6 Browser
+
+**Script de base K6 Browser**
+
+```javascript
+import { browser } from 'k6/browser';
+import { check } from 'k6';
+
+export const options = {
+  scenarios: {
+    browser: {
+      executor: 'constant-vus',
+      vus: 1,
+      duration: '30s',
+      options: {
+        browser: {
+          type: 'chromium',
+        },
+      },
+    },
+  },
+};
+
+export default async function () {
+  const page = browser.newPage();
+  
+  try {
+    await page.goto('https://test.k6.io');
+    
+    await page.locator('input[name="login"]').type('admin');
+    await page.locator('input[name="password"]').type('123');
+    
+    await Promise.all([
+      page.waitForNavigation(),
+      page.locator('button[type="submit"]').click(),
+    ]);
+    
+    check(page, {
+      'header': page.locator('h2').textContent() == 'Welcome, admin!',
+    });
+  } finally {
+    page.close();
+  }
+}
+```
+</div>

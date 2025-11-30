@@ -7,15 +7,18 @@
 .reveal-wrapper {
   position: relative;
   background-color: #f5f7fa;
-  /* Gris très clair */
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5em;
-  /* Ombre légère pour donner du volume */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  
+  /* --- AJOUTS IMPORTANTS POUR MOBILE --- */
+  width: 100%; 
+  min-height: 200px; /* Force une hauteur minimale visible quoi qu'il arrive */
+  z-index: 1; /* S'assure qu'il n'est pas caché derrière un calque */
 }
 
 /* L'iframe est cachée au début */

@@ -1,0 +1,148 @@
+# Fondamentaux et Scripting
+## Module 1 : Introduction aux Tests de Charge
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+## 1.1 Fondamentaux du Test de Charge
+
+**Qu'est-ce qu'un test de charge ?**
+
+- **Définition :** Processus de simulation de charges réalistes sur un système pour évaluer son comportement
+- **Objectifs principaux :**
+  - Identifier les limites de performance
+  - Détecter les goulots d'étranglement
+  - Valider les SLA (Service Level Agreements)
+  - Prévenir les incidents en production
+
+
+---
+
+
+## 1.1 Fondamentaux du Test de Charge
+
+**Pourquoi tester les performances ?**
+
+- **Coût des pannes :** Temps d'arrêt = perte financière
+- **Expérience utilisateur :** Performance = satisfaction client
+- **Scalabilité :** Planifier la croissance
+- **Conformité :** Respecter les engagements contractuels
+
+
+
+---
+
+
+## 1.1 Fondamentaux du Test de Charge
+
+**Métriques clés à surveiller**
+
+- **Temps de réponse :** Latence moyenne, médiane, P95, P99
+- **Throughput :** Nombre de requêtes/seconde
+- **Taux d'erreur :** Pourcentage de requêtes échouées
+- **Utilisation des ressources :** CPU, mémoire, I/O, bande passante
+
+
+---
+
+
+## 1.1 Fondamentaux du Test de Charge
+
+**Introduction à K6**
+
+- **Historique :** Créé par Load Impact, maintenu par Grafana Labs
+- **Philosophie :** CLI-based, scriptable
+- **Avantages :**
+  - Scripts en JavaScript (ES6+)
+  - Open source et gratuit
+  - Performance élevée (Go sous le capot)
+  - Intégration CI/CD facile
+  - Cloud ou local
+- **Écosystème :** K6 OSS, K6 Cloud, K6 Extensions
+
+</br></br>
+
+| Caractéristique       | Apache JMeter                                                   | Gatling                                                | k6                                                                    |
+|-----------------------|-----------------------------------------------------------------|--------------------------------------------------------|------------------------------------------------------------------------|
+| Langage du Cœur       | Java                                                            | Scala                                                  | Go (Golang)                                                           |
+| Langage de Script     | Principalement via GUI (.jmx), ou Groovy, BeanShell            | Scala (via un DSL), ou Java, Kotlin                   | JavaScript (ES6+)                                                     |
+| Plateforme            | JVM (Java Virtual Machine)                                      | JVM (Java Virtual Machine)                             | Natif (compilé en Go)                                                 |
+| Approche Typique      | Orienté GUI (Interface Graphique)                               | Orienté Code (Infrastructure as Code)                  | Orienté Code (Infrastructure as Code)                                 |
+
+
+
+---
+
+
+
+## 1.2 Installation et Premier Test 
+
+**Installation de K6**
+
+**macOS (Homebrew)**
+```bash
+brew install k6
+```
+
+**Linux (Debian/Ubuntu)**
+```bash
+sudo gpg -k
+sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+sudo apt-get update
+sudo apt-get install k6
+```
+
+**Windows (Chocolatey)**
+```bash
+choco install k6
+```
+
+
+---
+
+
+## 1.2 Installation et Premier Test
+
+**Vérification de l'installation**
+
+```bash
+k6 version
+```
+
+**Premier script de test**
+
+```javascript
+// test-simple.js
+import http from 'k6/http';
+import { sleep } from 'k6';
+
+export default function () {
+  http.get('https://test.k6.io');
+  sleep(1);
+}
+```
+
+**Exécution du test**
+
+```bash
+k6 run test-simple.js
+```
+
+
+---
+
+
+
+## 1.2 Installation et Premier Test
+
+**Exercice pratique**
+
+**Objectif :** Créer et exécuter votre premier test K6
+
+- Créer un script qui teste une API publique (ex: https://jsonplaceholder.typicode.com)
+- Lancer le test avec 10 utilisateurs virtuels pendant 30 secondes
+- Observer les résultats dans la console
+

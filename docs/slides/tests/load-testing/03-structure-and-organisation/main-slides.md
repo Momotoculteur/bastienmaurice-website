@@ -29,12 +29,87 @@ export default function () {
     group('02_Processus d\'Achat', function () {
         // Un groupe peut contenir d'autres groupes (imbrication)
         group('02a_Ajouter au Panier', function () {
-            // Requêtes et vérifications liées à l'ajout
+        // Requêtes et vérifications liées à l'ajout
         });
         group('02b_Procéder au Paiement', function () {
-            // Requêtes et vérifications liées au paiement
+        // Requêtes et vérifications liéess au paiement
         });
     });
+}
+```
+
+
+
+---
+
+
+## 3.1 Groupes et Organisation 
+**Groupe & Threshold**
+
+```js
+import http from 'k6/http';
+import { group, sleep } from 'k6';
+
+export const options = {
+  thresholds: {
+    'group_duration{group:::Group1}': ['avg < 400'],
+    'group_duration{group:::Group2}': ['avg < 200'],
+  },
+  vus: 1,
+  duration: '10s',
+};
+
+export default function () {
+  group('Group1', function () {
+    http.get('http://example.com');
+  });
+
+  group('Group2', function () {
+    ...
+  });
+
+  sleep(1);
+}
+```
+
+
+---
+
+
+## 3.1 Groupes et Organisation 
+**Groupe, Threshold & tags**
+
+```js
+import http from 'k6/http';
+import { sleep } from 'k6';
+import { Rate } from 'k6/metrics';
+
+export const options = {
+  thresholds: {
+    'http_req_duration{type:GET}': ['p(95)<500'], // threshold on GET seulement
+    'http_req_duration{type:GET_BATCH}': ['p(95)<200'], // threshold on GET_BATCH seulement
+  },
+};
+
+export default function () {
+  const res1 = http.get('http://example.com', {
+    tags: { type: 'GET' },
+  });
+  const res2 = http.get('http://example.com', {
+    tags: { type: 'GET' },
+  });
+
+  const responses = http.batch([
+    [
+      'GET',
+      'http://example.com',
+      null,
+      { tags: { type: 'GET_BATCH' } },
+    ],
+    ['GET', 'http://example.com', null, { tags: { type: 'GET_BATCH' } }],
+  ]);
+
+  sleep(1);
 }
 ```
 

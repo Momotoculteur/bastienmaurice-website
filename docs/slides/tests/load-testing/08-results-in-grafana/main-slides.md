@@ -186,12 +186,14 @@ export function handleSummary(data) {
 ```
 
 
+![k6-html-reporter](./img/k6-html-reporter.png)
+
 ---
 
 
 ## 8.3  Génération et Analyse de Rapports
 
-**Custom Summary**
+**Custom Summary - STDOUT**
 
 ```javascript
 export function handleSummary(data) {
@@ -203,35 +205,9 @@ export function handleSummary(data) {
   
   return {
     'stdout': textSummary(data, { indent: ' ', enableColors: true }),
-    'summary.json': JSON.stringify(data, null, 2),
   };
 }
 ```
-
----
-
-
-## 8.3  Génération et Analyse de Rapports
-
-**Analyse des métriques importantes**
-
-**Latence :**
-
-- P50 (médiane) : Expérience typique
-- P95 : 95% des utilisateurs
-- P99 : Cas extrêmes
-- Max : Pire cas
-
-**Throughput :**
-
-- http_reqs rate : Requêtes par seconde
-- data_received : Données reçues
-- data_sent : Données envoyées
-
-**Erreurs :**
-
-- http_req_failed rate : Taux d'échec
-- Checks passed rate : Validations réussies
 
 
 ---

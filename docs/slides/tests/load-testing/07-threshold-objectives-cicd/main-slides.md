@@ -64,7 +64,7 @@ export const options = {
 
 export default function () {
   const start = Date.now();
-  const res = http.post('https://test.k6.io/login', {
+  const res = http.post('https://example.com/login', {
     username: 'test',
     password: 'test',
   });
@@ -95,21 +95,34 @@ export const options = {
 };
 
 export default function () {
-  http.get('https://test.k6.io/api', { tags: { type: 'api' } });
-  http.get('https://test.k6.io/style.css', { tags: { type: 'static' } });
+  http.get('https://example.com/api', { tags: { type: 'api' } });
+  http.get('https://example.com/style.css', { tags: { type: 'static' } });
   
   group('API Login', function () {
-    http.post('https://test.k6.io/login');
+    http.post('https://example.com/login');
   });
 }
 ```
 
+
 ---
+
 
 
 ## 7.1 Définir des Seuils de Performance
 
 **Abort on Fail**
+
+1. Threshold défini :
+  - http_req_failed correspond au taux de requêtes échouées.
+  - rate<0.1 signifie : moins de 10 % d’erreurs autorisées.
+2. abortOnFail: true :
+  - Si le threshold est violé (ex : plus de 10 % de requêtes échouent) :
+     - Toutes les VUs s’arrêtent immédiatement
+     - Le test complet est marqué comme FAIL
+     - Pas besoin d’attendre la fin de la durée du test ou des autres VUs
+
+
 
 ```javascript
 export const options = {
@@ -120,6 +133,8 @@ export const options = {
   },
 };
 ```
+
+*`fail()` =/ `abortOnFail`*
 
 ---
 

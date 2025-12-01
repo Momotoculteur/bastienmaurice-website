@@ -23,10 +23,10 @@ import http from 'k6/http';
 import { sleep } from 'k6';
 
 export default function () {
-  http.get('https://test.k6.io');
+  http.get('https://example.com');
   sleep(1); // Pause de 1 seconde (think time)
   
-  http.get('https://test.k6.io/contacts.php');
+  http.get('https://example.com/contacts.php');
   sleep(Math.random() * 5); // Think time aléatoire (0-5s)
 }
 ```
@@ -271,12 +271,12 @@ export const options = {
 };
 
 export function readScenario() {
-  http.get('https://test.k6.io');
+  http.get('https://example.com');
   sleep(1);
 }
 
 export function writeScenario() {
-  http.post('https://test.k6.io/posts', JSON.stringify({ test: 'data' }));
+  http.post('https://example.com/posts', JSON.stringify({ test: 'data' }));
   sleep(0.5);
 }
 ```

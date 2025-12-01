@@ -64,28 +64,63 @@ export default function () {
 ---
 
 
+## 4.2 Données Externes 
+**xk6 Faker**
+
+- Générer facilement des **données réalistes** : noms, emails, adresses, numéros, UUID, etc.
+- Éviter les données statiques ou répétitives dans les tests de charge
+- Simuler des comportements utilisateurs variés et crédibles
+
+```js
+import faker from "k6/x/faker";
+import http from "k6/http";
+
+export default function () {
+  
+  const user = {
+    name: faker.person.firstName(),
+  };
+
+  // Encodage du JSON pour l’URL (request data ici)
+  const requestData = encodeURIComponent(JSON.stringify(user));
+
+  const url = `http://localhost/anything/${requestData}`;
+
+  const res = http.post(url, JSON.stringify(user), {
+    headers: { "Content-Type": "application/json" },
+  });
+}
+```
+
+---
+
+
 ## 4.2 Données Externes
 
 **Utilisation de fichiers CSV**
 
 ```javascript
 import http from 'k6/http';
+import * as CSV from "k6/x/csv";
 import { SharedArray } from 'k6/data';
-import papaparse from 'papaparse';
 
-const csvData = new SharedArray('users', function () {
-  return papaparse.parse(open('./users.csv'), { header: true }).data;
+// Lecture et parsing du fichier CSV
+const csvData = new SharedArray('users', () => {
+    return CSV.parse(open('./resources/users.csv'));  // Retourne un tableau d'objets
 });
 
 export default function () {
-  const user = csvData[Math.floor(Math.random() * csvData.length)];
-  
-  const payload = JSON.stringify({
-    username: user.username,
-    email: user.email,
-  });
-  
-  http.post('https://httpbin.org/post', payload);
+    const user = csvData[Math.floor(Math.random() * csvData.length)];
+
+    //{"username":"user1","email":"user1@example.com"}
+    const payload = JSON.stringify({
+        username: user.username,
+        email: user.email,
+    });
+
+    const resp = http.post('http://localhost/anything', payload, {
+        headers: { 'Content-Type': 'application/json' },
+    });
 }
 ```
 
@@ -106,16 +141,21 @@ user3,user3@example.com
 **Utilisation de fichiers JSON**
 
 ```javascript
-import { SharedArray } from 'k6/data';
-import http from 'k6/http';
+import http from "k6/http";
+import { SharedArray } from "k6/data";
 
-const data = new SharedArray('products', function () {
-  return JSON.parse(open('./products.json'));
+// Chargement du fichier JSON une seule fois
+const jsonData = new SharedArray("users", () => {
+    return JSON.parse(open("./resources/products.json"));
 });
 
 export default function () {
-  const product = data[__VU % data.length];
-  http.get(`https://api.example.com/products/${product.id}`);
+    const user = jsonData[Math.floor(Math.random() * jsonData.length)];
+    
+    // {"id":"1","name":"Laptop"}
+    http.post("http://localhost/anything", JSON.stringify(user), {
+        headers: { "Content-Type": "application/json" },
+    });
 }
 ```
 
@@ -170,7 +210,7 @@ Avec 100 VUs et un fichier de 1 000 produits :
 ```javascript
 import http from 'k6/http';
 
-const BASE_URL = __ENV.BASE_URL || 'https://test.k6.io';
+const BASE_URL = __ENV.BASE_URL || 'https://example.com';
 const API_KEY = __ENV.API_KEY || 'default-key';
 
 export default function () {
@@ -189,7 +229,7 @@ k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
 ---
 
 
-## 4.2  Données Externes
+## 4.2 Données Externes
 
 **Exercice pratique**
 
@@ -266,7 +306,7 @@ export default async function () {
   const page = browser.newPage();
   
   try {
-    await page.goto('https://test.k6.io');
+    await page.goto('https://example.com');
     
     await page.locator('input[name="login"]').type('admin');
     await page.locator('input[name="password"]').type('123');

@@ -199,6 +199,8 @@ export default function () {
 - Créer un test qui utilise l'API JSONPlaceholder
 - Implémenter GET /posts, POST /posts, PUT /posts/1, DELETE /posts/1
 - Mesurer le temps de réponse de chaque type de requête
+- Ajouter une métriques custom 
+  - Counter par exemple, incrementer chaque requête faîte dans le test
 </div>
 
 ---

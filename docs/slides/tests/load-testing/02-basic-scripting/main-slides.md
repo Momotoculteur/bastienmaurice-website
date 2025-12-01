@@ -199,6 +199,8 @@ export default function () {
 - Créer un test qui utilise l'API JSONPlaceholder
 - Implémenter GET /posts, POST /posts, PUT /posts/1, DELETE /posts/1
 - Mesurer le temps de réponse de chaque type de requête
+- Ajouter une métriques custom 
+  - Counter par exemple, incrementer chaque requête faîte dans le test
 
 
 ---
@@ -263,20 +265,132 @@ export default function () {
 ```
 
 
+---
+
+
+## 2.3 Checks, Thresholds & Gestion d'Erreurs
+
+**Multiple thresholds sur même metrics**
+
+```js
+import http from 'k6/http';
+import { sleep } from 'k6';
+
+export const options = {
+  thresholds: {
+    // 90 % des requêtes doivent se terminer en moins de 400 ms, 95 % en moins de 800 ms, et 99,9 % en moins de 2 secondes
+    http_req_duration: ['p(90) < 400', 'p(95) < 800', 'p(99.9) < 2000'],
+  },
+};
+
+export default function () {
+  const res = http.get('http://example.com');
+}
+```
+
+---
+
+
+
+## 2.3 Checks, Thresholds & Gestion d'Erreurs
+**`fail()` — Arrêt du scénario courant, test marqué en échec**
+
+- Arrête **immédiatement** la VU (Virtual User) qui exécute le code
+- Le test **continue** pour les autres VUs et pour la durée prévue
+- Le test final est marqué comme **FAILED**
+- Idéal pour stopper une exécution lorsqu’une condition critique échoue, mais sans interrompre toute la campagne
+
+```js
+import http from "k6/http";
+import { check, fail } from "k6";
+
+export default function () {
+  const res = http.get("https://api.example.com/login");
+
+  const ok = check(res, {
+    "status is 200": (r) => r.status === 200,
+  });
+
+  if (!ok) {
+    fail("Arrêt immédiat du test");
+  }
+}
+```
 
 
 ---
 
 
 ## 2.3 Checks, Thresholds & Gestion d'Erreurs
-**fail() : arrêt immédiat en cas de problème critique**
+**`abort()` — Arrêt du test complet immédiatement**
 
-- Interrompt immédiatement l’exécution du VU
-- Très utile pour des erreurs fatales qui rendent le test incohérent (Impossible de récupérer un token d’auth, API non dispo...)
+- Stoppe **toute l’exécution**, toutes les VUs, tous les scénarios
+- Le test se termine **instantanément**, sans attendre les durées prévues
+- Le test final est marqué comme **FAILED**
+- Utilisé uniquement lorsqu’il est inutile ou dangereux de continuer le test
 
-```javascript
-if (res.status !== 200) {
-  fail("API critical failure");
+```js
+import http from "k6/http";
+import { check, abort } from "k6";
+
+export default function () {
+  const res = http.get("https://api.example.com/login");
+
+  const ok = check(res, {
+    "status is 200": (r) => r.status === 200,
+  });
+
+  if (!ok) {
+    if (criticalConditionNotMet) {
+      abort("Erreur critique : arrêt total du test");
+    }
+  }
+}
+```
+
+
+
+---
+
+## 2.3 Checks, Thresholds & Gestion d'Erreurs
+
+
+
+| Fonction      | Arrête quoi ?                  | Test continue ?                   | Usage                                                                                     |
+| ------------- | ------------------------------ | --------------------------------- | ----------------------------------------------------------------------------------------- |
+| **`fail()`**  | La VU (Virtual User) en cours  | ✔️ Oui, les autres VUs continuent | Erreur fonctionnelle critique mais non bloquante pour tout le test                        |
+| **`abort()`** | **Tout le test immédiatement** | ❌ Non                             | Situation catastrophique : service down, credentials invalides, préconditions impossibles |
+
+
+
+---
+
+
+## 2.3 Checks, Thresholds & Gestion d'Erreurs
+
+**combiner *checks* et *thresholds***
+
+- Détecte les erreurs fonctionnelles dans un test de charge
+- Permet d’échouer la pipeline CI/CD si un check critique tombe
+- Rend les tests plus fiables et complets
+
+```js
+import http from "k6/http";
+import { check } from "k6";
+
+export const options = {
+  thresholds: {
+    checks: ["rate>0.98"],  // 98% des checks doivent réussir
+  },
+};
+
+export default function () {
+  const res = http.get("https://api.example.com/data");
+
+  check(res, {
+    "status is 200": (r) => r.status === 200,
+    "response has data": (r) => r.json("data") !== null,
+  });
 }
 ```
 
@@ -406,4 +520,5 @@ for (let maxRetries = 0; maxRetries < 3; maxRetries++) {
 - Ajouter des checks sur status, temps de réponse, et contenu
 - Tester avec des endpoints qui retournent différents codes HTTP
 - Observer le taux de succès des checks
-
+- Ajouter des thresholds avec plusieurs vérifications
+- Ajouter un check dans les thresholds

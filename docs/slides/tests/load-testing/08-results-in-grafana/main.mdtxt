@@ -174,7 +174,7 @@ import http from 'k6/http';
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 
 export default function () {
-  http.get('https://test.k6.io');
+  http.get('https://example.com');
 }
 
 export function handleSummary(data) {
@@ -186,12 +186,14 @@ export function handleSummary(data) {
 ```
 </div>
 
+![k6-html-reporter](./img/k6-html-reporter.png)
+
 ---
 <div style="text-align: left;">
 
 ## 8.3  Génération et Analyse de Rapports
 
-**Custom Summary**
+**Custom Summary - STDOUT**
 
 ```javascript
 export function handleSummary(data) {
@@ -203,37 +205,11 @@ export function handleSummary(data) {
   
   return {
     'stdout': textSummary(data, { indent: ' ', enableColors: true }),
-    'summary.json': JSON.stringify(data, null, 2),
   };
 }
 ```
 </div>
----
-<div style="text-align: left;">
 
-## 8.3  Génération et Analyse de Rapports
-
-**Analyse des métriques importantes**
-
-**Latence :**
-
-- P50 (médiane) : Expérience typique
-- P95 : 95% des utilisateurs
-- P99 : Cas extrêmes
-- Max : Pire cas
-
-**Throughput :**
-
-- http_reqs rate : Requêtes par seconde
-- data_received : Données reçues
-- data_sent : Données envoyées
-
-**Erreurs :**
-
-- http_req_failed rate : Taux d'échec
-- Checks passed rate : Validations réussies
-
-</div>
 ---
 <div style="text-align: left;">
 

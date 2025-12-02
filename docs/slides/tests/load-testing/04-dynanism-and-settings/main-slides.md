@@ -246,9 +246,9 @@ k6 run -e BASE_URL=https://staging.example.com -e API_KEY=secret123 script.js
 
 
 ## 4.3 Théorie et Introduction : K6 Browser
-**K6 browser** est une extension de Grafana k6 qui permet de réaliser des tests de charge basés sur un navigateur réel, en simulant le comportement d’un utilisateur humain dans un vrai navigateur Chromium embarqué.
+**K6 browser** est une extension de Grafana k6 qui permet de réaliser des tests de charge basés sur un navigateur réel, en simulant le comportement d’un utilisateur humain dans un vrai navigateur Chromium embarqué
 
-C’est une évolution majeure par rapport au **k6 "classique"**, qui ne teste que la charge HTTP au niveau protocolaire (sans navigateur, donc sans rendu DOM, JS, CSS, etc.).
+C’est une évolution majeure par rapport au **k6 "classique"**, qui ne teste que la charge HTTP au niveau protocolaire (sans navigateur, donc sans rendu DOM, JS, CSS, etc.)
 
 </br></br>
 
@@ -272,7 +272,7 @@ C’est une évolution majeure par rapport au **k6 "classique"**, qui ne teste q
 | Niveau de test      | Protocolaire HTTP                   | Réel (navigateur complet)                            |
 | Rendu graphique     | ❌ Non                               | ✅ Oui (Chromium embarqué)                            |
 | Scénarios possibles | Appels API, endpoints REST, GraphQL | Navigation web, clics, formulaires, interactions DOM |
-| Mesures collectées  | Latence, taux d’erreur, throughput  | TTFB, LCP, FCP, DOMContentLoaded, layout shifts...   |
+| Mesures collectées  | Latence, taux d’erreur, throughput  | Browser metrics   |
 
 
 

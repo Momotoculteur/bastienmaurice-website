@@ -137,8 +137,9 @@ Ils déterminent le pattern de charge de votre test :
 
 ## 5.1 Utilisateurs Virtuels et Modèles de Charge
 **Shared Iterations** `(shared-iterations)`  
-Distribue un nombre fixe d'itérations entre tous les VUs en parallèle  
-Chaque VU exécute jusqu'à ce que le quota soit épuisé  
+
+- Distribue un nombre fixe d'itérations entre tous les VUs en parallèle  
+- Chaque VU exécute jusqu'à ce que le quota soit épuisé  
 
 ```js
 executor: 'shared-iterations',
@@ -149,10 +150,19 @@ options: {
 ``` 
 Cas d'usage : tester un nombre défini de requêtes sans durée limite.
 
-</br></br>
+
+
+![grafana-k6-executor-shared-iterations](./img/grafana-k6-executor-shared-iterations.png)
+
+---
+
+
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
 
 **Per-VU Iterations** `(per-vu-iterations)`  
-Chaque VU exécute exactement le même nombre d'itérations indépendamment  
+
+- Chaque VU exécute exactement le même nombre d'itérations indépendamment  
+
 ```js
 executor: 'per-vu-iterations',
 options: {
@@ -163,13 +173,18 @@ options: {
 Cas d'usage : chaque utilisateur simulé fait un parcours identique.
 
 
+
+![grafana-k6-executor-per-vu-iterations](./img/grafana-k6-executor-per-vu-iterations.png)
+
 ---
 
 
 ## 5.1 Utilisateurs Virtuels et Modèles de Charge
 **Constant VUs** `(constant-vus)`  
-Maintient un nombre constant de VUs pendant une durée définie  
-Le plus simple et classique  
+
+- Maintient un nombre constant de VUs pendant une durée définie  
+- Le plus simple et classique  
+
 ```js
 executor: 'constant-vus',
 options: {
@@ -179,11 +194,19 @@ options: {
 ```
 Cas d'usage : charge stable, test de performance baseline.
 
-</br></br>
 
+
+![grafana-k6-executor-constant-vus](./img/grafana-k6-executor-constant-vus.png)
+
+---
+
+
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
 **Ramping VUs** `(ramping-vus)`  
-Augmente/diminue progressivement le nombre de VUs  
-Simule l'arrivée progressive d'utilisateurs
+
+- Augmente/diminue progressivement le nombre de VUs  
+- Simule l'arrivée progressive d'utilisateurs
+
 ```js
 executor: 'ramping-vus',
 options: {
@@ -197,14 +220,18 @@ options: {
 Cas d'usage : simuler une journée réelle avec montée progressive, puis descente.
 
 
+
+![grafana-k6-executor-ramping-vus](./img/grafana-k6-executor-ramping-vus.png)
+
 ---
 
 
 ## 5.1 Utilisateurs Virtuels et Modèles de Charge
 
 **Constant Arrival Rate** `(constant-arrival-rate)`  
-Maintient un taux d'arrivée constant (X requêtes par seconde)  
-Les VUs s'ajustent automatiquement pour maintenir le débit  
+
+- Maintient un taux d'arrivée constant (X requêtes par seconde)  
+- Les VUs s'ajustent automatiquement pour maintenir le débit  
 
 ```js
 executor: 'constant-arrival-rate',
@@ -218,10 +245,19 @@ options: {
 ```
 Cas d'usage : charge réaliste orientée débit (SLA par requête/sec)
 
-</br></br>
 
+
+![grafana-k6-executor-constant-arrival-rate](./img/grafana-k6-executor-constant-arrival-rate.png)
+
+
+---
+
+
+## 5.1 Utilisateurs Virtuels et Modèles de Charge
 **Ramping Arrival Rate** `(ramping-arrival-rate)`
-Le taux d'arrivée augmente/diminue progressivement  
+
+- Le taux d'arrivée augmente/diminue progressivement  
+
 ```js
 executor: 'ramping-arrival-rate',
 options: {
@@ -238,6 +274,7 @@ Cas d'usage : stress progressif avec débit contrôlé
 
 
 
+![grafana-k6-executor-ramping-arrival-rate](./img/grafana-k6-executor-ramping-arrival-rate.png)
 
 ---
 

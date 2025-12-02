@@ -113,14 +113,15 @@ export default function () {
 
 **Abort on Fail**
 
-1. Threshold défini :
-  - http_req_failed correspond au taux de requêtes échouées.
-  - rate<0.1 signifie : moins de 10 % d’erreurs autorisées.
-2. abortOnFail: true :
-  - Si le threshold est violé (ex : plus de 10 % de requêtes échouent) :
-     - Toutes les VUs s’arrêtent immédiatement
-     - Le test complet est marqué comme FAIL
-     - Pas besoin d’attendre la fin de la durée du test ou des autres VUs
+**Threshold défini :**
+- http_req_failed correspond au taux de requêtes échouée.
+- rate<0.1 signifie : moins de 10 % d’erreurs autorisées
+
+**abortOnFail: true :**
+- Si le threshold est violé (ex : plus de 10 % de requêtes échouent) :
+- Toutes les VUs s’arrêtent immédiatement
+- Le test complet est marqué comme FAIL
+- Pas besoin d’attendre la fin de la durée du test ou des autres VUs
 
 
 

@@ -163,11 +163,6 @@ K6_PROMETHEUS_RW_SERVER_URL=http://localhost:9090/api/v1/write \
 
 **Rapport HTML avec k6-reporter**
 
-Installation :
-```bash
-npm install -g k6-html-reporter
-```
-
 Script avec summary :
 ```javascript
 import http from 'k6/http';
@@ -196,13 +191,11 @@ export function handleSummary(data) {
 **Custom Summary - STDOUT**
 
 ```javascript
+import { htmlReport } from 'https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js'
+import { textSummary } from 'https://jslib.k6.io/k6-summary/0.1.0/index.js'
+
 export function handleSummary(data) {
-  // Summary personnalisé en console
-  console.log('Test terminé !');
-  console.log(`Requêtes totales: ${data.metrics.http_reqs.values.count}`);
-  console.log(`Durée P95: ${data.metrics.http_req_duration.values['p(95)']} ms`);
-  console.log(`Taux d'erreur: ${data.metrics.http_req_failed.values.rate * 100}%`);
-  
+
   return {
     'stdout': textSummary(data, { indent: ' ', enableColors: true }),
   };

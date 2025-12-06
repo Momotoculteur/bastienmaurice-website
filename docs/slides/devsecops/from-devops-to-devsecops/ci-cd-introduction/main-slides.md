@@ -1,0 +1,182 @@
+## Objectifs pédagogiques
+
+- Comprendre les concepts fondamentaux de la CI/CD
+- Configurer des pipelines avec GitLab CI et GitHub Actions
+- Comparer les forces et faiblesses de chaque outil
+- Mettre en place des workflows complexes (build, test, déploiement)
+- Implémenter des bonnes pratiques DevOps
+
+
+
+---
+
+
+## Continuous Integration (CI)
+
+L'intégration continue consiste à fusionner régulièrement (plusieurs fois par jour) les modifications de code des développeurs dans une branche principale. 
+
+Chaque intégration déclenche automatiquement :
+
+- La compilation du code
+- L'exécution des tests unitaires et d'intégration
+- L'analyse de la qualité du code
+- La vérification de sécurité
+
+**Objectifs** : Détecter rapidement les bugs, réduire les conflits de merge, améliorer la qualité du code.
+
+
+
+---
+
+
+## Continuous Delivery (CD)
+
+La livraison continue étend la CI en automatisant le déploiement du code dans des environnements de test et de staging. Le code est toujours dans un état déployable.
+
+Différence avec Continuous Deployment :
+
+- **Delivery** : Déploiement manuel en production après validation
+- **Deployment** : Déploiement automatique en production
+
+
+---
+
+
+## Architecture d'un pipeline CI/CD
+
+Composants clés :
+
+- **Triggers** : Événements qui déclenchent le pipeline (push, PR, tag, schedule)
+- **Stages** : Phases du pipeline (build, test, deploy)
+- **Jobs** : Tâches individuelles au sein d'un stage
+- **Runners/Agents** : Machines qui exécutent les jobs
+- **Artifacts** : Fichiers produits (binaires, images Docker, rapports)
+- **Environnements** : Cibles de déploiement (dev, staging, prod)
+
+
+---
+
+
+## Avantages de la CI/CD
+
+**Pour les développeurs :**
+
+- Feedback rapide sur la qualité du code
+- Moins de conflits de merge
+- Réduction du temps de debugging
+- Confiance dans les déploiements
+
+**Pour l'entreprise :**
+
+- Time-to-market réduit
+- Qualité logicielle améliorée
+- Coûts de maintenance réduits
+- Déploiements plus fréquents et moins risqués
+
+
+---
+
+
+## Présentation des outils - Gitlab CI/CD
+
+**Caractéristiques :**
+
+- Intégré nativement dans GitLab
+- Configuration via fichier .gitlab-ci.yml
+- Runners auto-hébergés ou cloud
+- Registry Docker intégré
+- Interface web complète
+
+```yaml
+# IMAGE : L'environnement Docker de base pour tous les jobs
+# Ici, on prend une image qui contient DÉJÀ Python et Linux
+image: python:3.9-slim
+
+# STAGES : L'ordre des étapes
+stages:
+  - build
+  - test
+
+# JOB 1 : Préparation
+installation:
+  stage: build
+  script:
+    - echo "Installation des dépendances..."
+    - pip install --upgrade pip
+    # - pip install -r requirements.txt
+  
+  # ARTIFACTS : Pour passer le résultat au job suivant
+  # (Car GitLab détruit le conteneur à la fin de chaque job !)
+  artifacts:
+    paths:
+      - venv/
+      - .cache/pip
+
+# JOB 2 : Vérification
+validation:
+  stage: test
+  script:
+    - echo "Lancement des tests..."
+    - python --version
+    # - python -m unittest discover tests/
+  
+  # On précise qu'on a besoin de ce qui a été fait au stage précédent
+  dependencies:
+    - installation
+```
+
+
+---
+
+
+## Présentation des outils - GitHub Actions
+
+**Caractéristiques :**
+
+- Intégré dans GitHub
+- Configuration via fichiers YAML dans .github/workflows/
+- Runners hébergés par GitHub ou auto-hébergés
+- Marketplace d'actions réutilisables (10 000+)
+- Intégration profonde avec l'écosystème GitHub
+
+```yaml
+name: Mon Premier Pipeline CI
+
+# DÉCLENCHEUR : Quand lancer ce pipeline ?
+# Ici : à chaque "push" sur la branche "main"
+on:
+  push:
+    branches: [ "main" ]
+
+# JOBS : Les tâches à effectuer
+jobs:
+  test-app:
+    # L'environnement : On demande une machine Ubuntu récente
+    runs-on: ubuntu-latest
+
+    steps:
+      # ÉTAPE 1 : Récupérer le code du dépôt (indispensable)
+      # "uses" appelle une action officielle du Marketplace
+      - name: Récupération du code (Checkout)
+        uses: actions/checkout@v3
+
+      # ÉTAPE 2 : Installer Python sur la machine virtuelle
+      - name: Installation de Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # ÉTAPE 3 : Installer les librairies (simulé ici)
+      - name: Installation des dépendances
+        run: |
+          python -m pip install --upgrade pip
+          # pip install -r requirements.txt (si le fichier existe)
+
+      # ÉTAPE 4 : Lancer les tests
+      - name: Exécution des tests unitaires
+        run: |
+          # Exemple simple : on vérifie juste la version pour l'instant
+          python --version
+          echo "Lancement des tests..."
+          # python -m unittest discover tests/
+```

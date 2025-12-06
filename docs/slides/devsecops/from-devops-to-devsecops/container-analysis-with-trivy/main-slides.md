@@ -1,0 +1,265 @@
+## Vulnérabilités & Définitions
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+
+## Objectifs pédagogiques
+
+- Comprendre les vulnérabilités dans les images Docker et leur impact
+- Installer et utiliser Trivy pour scanner des images localement
+- Interpréter les rapports de vulnérabilités (CVE, scores CVSS)
+- Intégrer Trivy dans des pipelines CI/CD (GitLab CI et GitHub Actions)
+- Mettre en place des politiques de sécurité pour bloquer les images vulnérables
+- Appliquer des bonnes pratiques pour sécuriser les images Docker
+
+
+
+---
+
+
+
+## Qu'est-ce qu'une vulnérabilité ? 
+
+Une vulnérabilité est une faiblesse dans un logiciel qui peut être exploitée par un attaquant pour :
+
+- Exécuter du code arbitraire
+- Accéder à des données sensibles
+- Provoquer un déni de service (DoS)
+- Élever ses privilèges
+- Compromettre le système hôte
+
+**Exemple concret** : La vulnérabilité Log4Shell (CVE-2021-44228) a permis l'exécution de code à distance dans des millions d'applications Java
+
+
+
+---
+
+
+
+## Problèmes courants
+
+- Images obsolètes : Utilisation d'images non maintenues
+- Packages inutiles : Surface d'attaque élargie
+- Secrets embarqués : Clés API, tokens dans l'image
+- Privilèges excessifs : Conteneurs exécutés en root
+- Images non fiables : Provenance inconnue
+
+
+
+---
+
+
+## CVE et CVSS - Comprendre les scores de vulnérabilités
+
+**CVE (Common Vulnerabilities and Exposures)**
+
+Identifiant unique pour chaque vulnérabilité connue  
+Format : CVE-ANNÉE-NUMÉRO   
+
+- Exemple : CVE-2023-12345
+
+
+---
+
+
+## CVE et CVSS - Comprendre les scores de vulnérabilités
+
+**CVSS (Common Vulnerability Scoring System)**
+
+Système de notation de la gravité d'une vulnérabilité (0.0 à 10.0)
+
+| Score CVSS     | Gravité   | Couleur        | Action recommandée          |
+|----------------|-----------|----------------|------------------------------|
+| 0.0            | None      | 🟢 Vert        | Aucune action                |
+| 0.1 - 3.9      | Low       | 🟡 Jaune       | Surveiller                   |
+| 4.0 - 6.9      | Medium    | 🟠 Orange      | Corriger sous 30 jours       |
+| 7.0 - 8.9      | High      | 🔴 Rouge       | Corriger sous 7 jours        |
+| 9.0 - 10.0     | Critical  | 🔴 Critique    | Corriger immédiatement       |
+
+**Facteurs d'évaluation CVSS**
+
+- Vecteur d'attaque : Réseau, adjacent, local, physique
+- Complexité : Facilité d'exploitation
+- Privilèges requis : Aucun, faible, élevé
+- Impact : Confidentialité, intégrité, disponibilité
+
+
+
+---
+
+## Trivy & Présentation 
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+## Présentation de Trivy
+
+Trivy (prononcé "tri-vee") est un scanner de vulnérabilités open-source développé par Aqua Security
+
+**Caractéristiques principales :**
+
+- Complet : Scanne les images Docker, filesystems, Git repositories, Kubernetes
+- Rapide : Base de données locale, résultats en secondes
+- Précis : Faible taux de faux positifs
+- Facile à utiliser : Une seule commande pour scanner
+- Intégrable : CI/CD, IDE, Kubernetes admission controllers
+- Gratuit : 100% open-source
+
+**Ce que Trivy détecte :**
+
+- Vulnérabilités OS (Alpine, Ubuntu, Debian, RHEL, etc.)
+- Vulnérabilités dans les packages applicatifs (npm, pip, gem, etc.)
+- Mauvaises configurations (Dockerfile, Kubernetes)
+- Secrets exposés (clés API, tokens)
+- Licences logicielles
+
+
+
+---
+
+## Trivy & Utilisations 
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+## Premier scan - Les commandes de base
+
+**Scanner une image Docker**
+
+```bash
+# Scan basique
+trivy image nginx:latest
+
+# Scan avec sortie détaillée
+trivy image --severity HIGH,CRITICAL nginx:latest
+
+# Scan avec format de sortie JSON
+trivy image --format json --output results.json nginx:latest
+
+# Scan avec format tabulaire (plus lisible)
+trivy image --format table nginx:latest
+```
+
+
+---
+
+
+## Premier scan - Les commandes de base
+
+Scanner un Dockerfile
+
+```bash
+# Avant de builder l'image
+trivy config Dockerfile
+
+# Scanner pour les mauvaises configurations
+trivy config --severity HIGH,CRITICAL Dockerfile
+```
+
+
+---
+
+
+## Premier scan - Les commandes de base
+
+Scanner un système de fichiers
+
+```bash
+# Scanner le répertoire courant
+trivy fs .
+
+# Scanner un projet Node.js
+trivy fs --scanners vuln,secret ./mon-projet-node
+
+# Scanner uniquement les vulnérabilités
+trivy fs --scanners vuln ./
+```
+
+
+---
+
+
+## Premier scan - Les commandes de base
+
+**Scanner un repository Git**
+
+```bash
+# Scanner un dépôt distant
+trivy repo https://github.com/username/repository
+
+# Scanner un dépôt local
+trivy repo .
+```
+
+
+
+---
+
+
+## Options avancées de Trivy
+
+**Multiples examples**
+
+```bash
+# Ignorer les vulnérabilités non corrigées
+trivy image --ignore-unfixed nginx:latest
+
+# Scanner uniquement certains types
+trivy image --vuln-type os,library nginx:latest
+
+# Filtrer par sévérité
+trivy image --severity CRITICAL,HIGH nginx:latest
+
+# Définir un code de sortie si vulnérabilités trouvées
+trivy image --exit-code 1 nginx:latest
+
+# Nettoyer le cache
+trivy image --clear-cache
+
+# Mode offline (utiliser cache uniquement)
+trivy image --offline-scan nginx:latest
+
+# Scanner avec une base de données personnalisée
+trivy image --skip-db-update --cache-dir ./my-cache nginx:latest
+```
+
+
+
+---
+
+
+## Fichier .trivyignore - Ignorer des vulnérabilités
+
+Créez un fichier .trivyignore pour ignorer certaines CVE :
+
+```bash
+# .trivyignore
+# Ignorer CVE spécifiques (avec justification)
+
+# CVE-2024-67890 - Fix not available yet, mitigation in place
+CVE-2024-67890
+```
+
+
+
+---
+
+
+## Exercice
+
+- Créer une app simple
+- Introduire plusieurs vulnérabilités intentionnel
+- Scan cette image en local mais aussi via CI/CD
+- Être capable de jouer avec certains params
+  - return code
+  - ignore-unfixed
+  - trivy-ignore
+  - ne pas scan les low/medium
+

@@ -10,7 +10,7 @@
 
 ---
 
-## Leaks & Théorie 
+# Leaks & Théorie 
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 
@@ -67,7 +67,7 @@ Supprimer un commit récent ne suffit pas car :
 
 ---
 
-## Gitleaks & Pratique
+# Gitleaks & Pratique
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 

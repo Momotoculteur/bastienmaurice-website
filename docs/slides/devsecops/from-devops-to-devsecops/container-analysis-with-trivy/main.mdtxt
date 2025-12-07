@@ -6,12 +6,6 @@ Bastien MAURICE
 
 ---
 
-## Vulnérabilités & Définitions
-<!-- .slide: data-background="#009485" -->
-<!-- .slide: class="center" -->
-
----
-
 <div style="text-align: left;">
 
 ## Objectifs pédagogiques
@@ -24,6 +18,12 @@ Bastien MAURICE
 - Appliquer des bonnes pratiques pour sécuriser les images Docker
 
 </div>
+
+---
+
+# Vulnérabilités & Définitions
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
 
 ---
 
@@ -98,7 +98,7 @@ Système de notation de la gravité d'une vulnérabilité (0.0 à 10.0)
 
 ---
 
-## Trivy & Présentation 
+# Trivy & Présentation 
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 
@@ -130,7 +130,7 @@ Trivy (prononcé "tri-vee") est un scanner de vulnérabilités open-source déve
 
 ---
 
-## Trivy & Utilisations 
+# Trivy & Utilisations 
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 

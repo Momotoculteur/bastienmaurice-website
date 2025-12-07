@@ -9,7 +9,7 @@
 
 ---
 
-## Sonarqube & Théorie 
+# Sonarqube & Théorie 
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 
@@ -79,7 +79,7 @@ Cela garantit que le code ne contenant pas de vulnérabilités critiques soit d�
 
 ---
 
-## Sonarqube & Pratique 
+# Sonarqube & Pratique 
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 

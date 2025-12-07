@@ -1,11 +1,3 @@
-## Vulnérabilités & Définitions
-<!-- .slide: data-background="#009485" -->
-<!-- .slide: class="center" -->
-
----
-
-
-
 ## Objectifs pédagogiques
 
 - Comprendre les vulnérabilités dans les images Docker et leur impact
@@ -16,6 +8,12 @@
 - Appliquer des bonnes pratiques pour sécuriser les images Docker
 
 
+
+---
+
+# Vulnérabilités & Définitions
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
 
 ---
 
@@ -90,7 +88,7 @@ Système de notation de la gravité d'une vulnérabilité (0.0 à 10.0)
 
 ---
 
-## Trivy & Présentation 
+# Trivy & Présentation 
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 
@@ -122,7 +120,7 @@ Trivy (prononcé "tri-vee") est un scanner de vulnérabilités open-source déve
 
 ---
 
-## Trivy & Utilisations 
+# Trivy & Utilisations 
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 

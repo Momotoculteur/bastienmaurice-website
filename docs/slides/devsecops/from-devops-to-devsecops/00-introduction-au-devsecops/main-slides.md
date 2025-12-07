@@ -36,7 +36,7 @@ Vous saurez aussi :
 
 ---
 
-## Le DevOps : fondations essentielles
+# Le DevOps : fondations essentielles
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 
@@ -86,7 +86,7 @@ Le DevSecOps vient simplement s’intégrer dans cette boucle en ajoutant une co
 
 ---
 
-## Pourquoi intégrer la sécurité dès le départ ?
+# Pourquoi intégrer la sécurité dès le départ ?
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
@@ -151,7 +151,7 @@ Plan → Code → Build → Test → Release → Deploy → Operate → Monitor
 
 ---
 
-## Les risques dans un pipeline moderne
+# Les risques dans un pipeline moderne
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
@@ -188,7 +188,7 @@ Aujourd'hui, **la chaîne d'approvisionnement logicielle** (nos dépendances, no
 
 ---
 
-## Automatiser la sécurité
+# Automatiser la sécurité
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
@@ -284,7 +284,7 @@ Elle doit être vérifiée avec la même rigueur que le code applicatif
 
 ---
 
-## Politiques de sécurité automatiques
+# Politiques de sécurité automatiques
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
@@ -327,7 +327,7 @@ Pour garder un niveau de sécurité cohérent dans toute l’équipe, il faut d�
 
 ---
 
-## Conclusion
+# Conclusion
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---

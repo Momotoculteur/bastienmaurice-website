@@ -25,6 +25,12 @@
 
 ## Sécurité des dépendances
 
+### Software Composition Analysis (SCA) - Grype, npm audit...
+<iframe data-src="../software-composition-analysis-grype-npm-audit/index.html" frameborder=0 width=960 height=500></iframe>
+
+[SLIDES EN VERSION TEXTE](./software-composition-analysis-grype-npm-audit/main-slides.md){ .md-button }
+{ .center-text }
+
 ## Sécurité du pipeline
 
 ## Sécurité des conteneurs

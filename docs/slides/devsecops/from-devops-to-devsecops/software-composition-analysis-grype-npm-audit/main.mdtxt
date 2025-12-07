@@ -1,0 +1,671 @@
+#  Software Composition Analysis (SCA) - Grype, npm audit...
+
+Bastien MAURICE
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## Objectifs pédagogiques
+
+- Comprendre les risques liés aux dépendances vulnérables
+- Utiliser npm audit pour analyser les dépendances JavaScript/Node.js
+- Utiliser Grype pour scanner les vulnérabilités dans différents environnements
+- Interpréter les rapports de vulnérabilités
+- Mettre en place des stratégies de remédiation
+- Intégrer les scans de dépendances dans une pipeline CI/CD
+</div>
+
+---
+
+# SCA & Théorie 
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## Les vulnérabilités dans les dépendances
+
+**Pourquoi les dépendances sont-elles un risque ?**
+
+Les applications modernes dépendent massivement de bibliothèques tierces. 
+
+Un projet Node.js moyen peut avoir des centaines, voire des milliers de dépendances (directes et transitives).
+
+**Statistiques clés :**
+
+- Plus de 80% des bases de code contiennent au moins une vulnérabilité dans leurs dépendances
+- En moyenne, une application contient 10-20 vulnérabilités connues dans ses dépendances
+- Les attaques sur la supply chain (chaîne d'approvisionnement) sont en augmentation de 650% depuis 2021
+
+</div>
+---
+<div style="text-align: left;">
+
+## Software Composition Analysis (SCA)
+
+Le SCA (Software Composition Analysis) est le processus d'identification et d'analyse des composants open source utilisés dans une application.
+
+**Objectifs du SCA :**
+
+- Inventorier toutes les dépendances (directes et transitives)
+- Identifier les vulnérabilités connues (CVE)
+- Vérifier les licences des dépendances
+- Détecter les composants obsolètes ou non maintenus
+- Assurer la conformité réglementaire
+
+**Sources de données de vulnérabilités :**
+
+- CVE (Common Vulnerabilities and Exposures)
+- Bases NVD (National Vulnerability Database)
+- Conseils de sécurité éditeurs (Security Advisories)
+- Bases internes (pour Sonatype, Snyk, etc.)
+
+</div>
+---
+<div style="text-align: left;">
+
+## Présentation des outils - NPM
+
+npm audit est l'outil intégré à npm pour analyser les vulnérabilités dans les dépendances Node.js
+
+**Caractéristiques :**
+
+- Intégré nativement à npm (pas d'installation nécessaire)
+- Analyse le fichier package-lock.json
+- S'appuie sur la base de données GitHub Advisory Database
+- Propose des corrections automatiques
+
+**Limites :**
+
+- Spécifique à l'écosystème Node.js/JavaScript
+- Ne détecte pas les malwares référencés dans d'autres bases de données
+
+</div>
+---
+<div style="text-align: left;">
+
+## Présentation des outils - Grype
+
+Grype est un scanner de vulnérabilités open-source développé par Anchore
+
+**Caractéristiques :**
+
+- Multi-langage et multi-écosystème (npm, pip, Maven, Go, Ruby, etc.)
+- Scan d'images Docker
+- Scan de systèmes de fichiers
+- Scan de SBOM (Software Bill of Materials)
+- Base de données de vulnérabilités exhaustive et régulièrement mise à jour
+- Rapports en plusieurs formats (JSON, table, SARIF, etc.)
+
+**Avantages par rapport à npm audit :**
+
+- Support multi-langage
+- Scan d'images conteneur complètes
+- Plus de sources de données de vulnérabilités
+- Meilleure détection des dépendances du système d'exploitation
+
+</div>
+---
+<div style="text-align: left;">
+
+## Comparaison des outils - NPM Audit vs Grype
+
+| Critère               | npm audit                               | Grype                                             |
+|-----------------------|-------------------------------------------|---------------------------------------------------|
+| **Écosystèmes**       | Node.js uniquement                        | Multi-langage (npm, pip, Maven, Go, etc.)         |
+| **Installation**      | Natif avec npm                            | Installation séparée                               |
+| **Images Docker**     | Non                                       | Oui                                               |
+| **SBOM**              | Non                                       | Oui (via Syft)                                    |
+| **Corrections auto**  | Oui (`npm audit fix`)                     | Non                                               |
+| **Sources de données**| GitHub Advisory                           | NVD, GitHub, OSV, etc.                            |
+| **Performance**       | Rapide                                    | Légèrement plus lent                               |
+| **Formats de sortie** | JSON, text                                | JSON, table, SARIF, CycloneDX, etc.               |
+| **Exceptions**        | Limitées                                  | Fichier de config `.grype.yaml`                   |
+| **Coût**              | Gratuit                                   | Gratuit (open-source)                             |
+
+</div>
+---
+
+# NPM Audit & Pratique 
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## NPM Audit: Utilisation de base 
+
+Créer un projet de test
+
+```bash
+# Créer un nouveau répertoire
+mkdir tp-npm-audit
+cd tp-npm-audit
+
+# Initialiser un projet npm
+npm init -y
+
+# Installer quelques dépendances (dont certaines avec des vulnérabilités connues)
+npm install express@4.16.0
+npm install lodash@4.17.11
+npm install request@2.88.0
+```
+
+**Note :** Ces versions anciennes sont volontairement choisies pour avoir des vulnérabilités à détecter.
+
+</div>
+---
+<div style="text-align: left;">
+
+## NPM Audit: Utilisation de base 
+
+**Lancer un audit**
+
+```bash
+npm audit
+```
+
+**Sortie attendue**
+
+```bash
+# npm audit report
+
+lodash  <=4.17.20
+Severity: high
+Prototype Pollution in lodash - https://github.com/advisories/GHSA-fvqr-27wr-82fm
+Prototype Pollution in lodash - https://github.com/advisories/GHSA-p6mc-m468-83gw
+fix available via `npm audit fix`
+node_modules/lodash
+
+request  <=2.88.2
+Severity: moderate
+Server-Side Request Forgery in Request - https://github.com/advisories/GHSA-p8p7-x288-28g6
+No fix available
+node_modules/request
+
+3 vulnerabilities (1 moderate, 2 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## NPM Audit: Utilisation de base 
+
+
+**Structure du rapport :**
+
+- **Nom du package** : dépendance affectée
+- **Plage de versions vulnérables** : versions impactées
+- **Severity (sévérité)** : critical, high, moderate, low
+- **Description** : type de vulnérabilité
+- **Lien GitHub Advisory** : détails complets
+- **Fix available** : correctif disponible ou non
+
+**Niveaux de sévérité :**
+
+- **Critical** : exploitation facile avec impact majeur
+- **High** : exploitation possible avec impact significatif
+- **Moderate** : impact limité ou exploitation complexe
+- **Low** : impact minimal
+
+**Obtenir plus de détails**
+
+```bash
+# Format JSON détaillé
+npm audit --json
+
+# Format JSON avec toutes les informations
+npm audit --json > audit-report.json
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## NPM Audit: Utilisation de base 
+
+Correction des vulnérabilités
+
+Correction automatique :
+
+```bash
+# Corriger les vulnérabilités sans breaking changes
+npm audit fix
+
+# Corriger avec des breaking changes (attention !)
+npm audit fix --force
+```
+
+**Correction manuelle :**
+
+```bash
+# Voir les dépendances obsolètes
+npm outdated
+
+# Mettre à jour une dépendance spécifique
+npm update lodash
+
+# Installer une version spécifique
+npm install lodash@4.17.21
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## NPM Audit : Options avancées
+
+**Filtrer par niveau de sévérité**
+
+```bash
+# Audit avec seuil de sévérité (échoue si vulnerabilités >= moderate)
+npm audit --audit-level=moderate
+
+# Seuils possibles : low, moderate, high, critical
+npm audit --audit-level=high
+```
+
+**Audit en mode production uniquement**
+
+```bash
+# Ignorer les devDependencies
+npm audit --omit=dev
+
+# ou
+npm audit --production
+```
+
+**Générer un rapport détaillé**
+
+```bash
+# Format lisible
+npm audit > audit-report.txt
+
+# Format JSON pour automatisation
+npm audit --json > audit-report.json
+
+# Format parseable pour scripts
+npm audit --parseable
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## NPM Audit : Intégration CI/CD
+
+**Exemple pour GitLab CI**
+
+Créer un fichier .gitlab-ci.yml :
+
+```yaml
+stages:
+  - security
+
+npm-audit:
+  stage: security
+  image: node:18
+  script:
+    - npm ci
+    - npm audit --audit-level=high
+    # Alternative avec rapport JSON
+    - npm audit --json > npm-audit-report.json
+  artifacts:
+    when: always
+    reports:
+      dependency_scanning: npm-audit-report.json
+    paths:
+      - npm-audit-report.json
+  allow_failure: false  # La pipeline échoue si vulnérabilités high/critical
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## NPM Audit : Intégration CI/CD
+
+**Exemple pour GitHub Actions**
+
+Créer .github/workflows/security.yml :
+
+```yaml
+name: Security Audit
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  npm-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+      
+      - name: Generate audit report
+        if: always()
+        run: npm audit --json > npm-audit-report.json
+      
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: npm-audit-report
+          path: npm-audit-report.json
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## NPM Audit : Gestion des exceptions
+
+Parfois, une vulnérabilité ne peut pas être corrigée immédiatement (pas de patch disponible, dépendance transitoire, etc.)
+
+**Utiliser npm-audit-resolver (outil tiers)**
+
+```bash
+# Installation
+npm install -g npm-audit-resolver
+
+# Générer un fichier d'audit
+npm-audit-resolver
+
+# Résoudre interactivement les vulnérabilités
+# Créer des exceptions dans audit-resolve.json
+```
+
+**Ignorer temporairement des vulnérabilités**
+
+Note : npm ne fournit pas de mécanisme natif d'ignore. Utilisez des wrappers ou acceptez l'échec en CI.
+
+</div>
+---
+
+# Grype & Pratique 
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## Installation de Grype
+
+**Installation sur Linux**
+
+```bash
+curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+```
+
+**Installation sur macOS avec Homebrew**
+
+```bash
+brew tap anchore/grype
+brew install grype
+```
+
+**Installation sur Windows**
+
+```bash
+scoop install grype
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## Grype - Utilisation de base
+
+**Scanner un répertoire**
+
+```bash
+# Scanner le répertoire courant
+grype .
+
+# Scanner un répertoire spécifique
+grype /path/to/project
+
+# Scanner avec un format de sortie spécifique
+grype . -o table
+grype . -o json
+grype . -o sarif
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## Grype - Comprendre les résultats
+
+**Format de sortie table (par défaut)**
+
+```bash
+NAME               INSTALLED  FIXED-IN  TYPE  VULNERABILITY  SEVERITY
+lodash             4.17.11    4.17.12   npm   CVE-2019-10744 high
+minimist           1.2.0      1.2.6     npm   CVE-2021-44906 critical
+node-fetch         2.6.0      2.6.7     npm   CVE-2022-0235  high
+```
+
+**Colonnes :**
+
+- **NAME** : nom du package vulnérable
+- **INSTALLED** : version installée
+- **FIXED-IN** : version où la vulnérabilité est corrigée
+- **TYPE** : type de package (npm, deb, apk, python, java-archive, etc.)
+- **VULNERABILITY** : identifiant CVE ou GHSA
+- **SEVERITY** : critical, high, medium, low, negligible, unknown
+
+</div>
+---
+<div style="text-align: left;">
+
+## Grype - Options avancées
+
+**Filtrer par sévérité**
+
+```bash
+# Afficher uniquement les vulnérabilités high et critical
+grype . --fail-on high
+
+# Échouer uniquement sur les vulnérabilités critical
+grype . --fail-on critical
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## Grype - Options avancées
+
+**Exclure des packages**
+
+```bash
+# Ignorer certains packages
+grype . --exclude 'lodash'
+
+# Utiliser un fichier de configuration
+cat > .grype.yaml <<EOF
+ignore:
+  - vulnerability: CVE-2019-10744
+    package:
+      name: lodash
+      version: 4.17.11
+    reason: "Not exploitable in our context"
+EOF
+
+grype . -c .grype.yaml
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## Grype - Options avancées
+
+**Scanner plusieurs types d'artifacts**
+
+```bash
+# Scanner une image Docker avec son filesystem
+grype docker:nginx:latest
+
+# Scanner un fichier tar
+grype docker-archive:image.tar
+
+# Scanner un OCI directory
+grype oci-dir:./path/to/oci
+
+# Scanner un registry
+grype registry:myregistry.com/myimage:tag
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## Grype : intégration CI/CD
+
+Exemple pour GitLab CI
+
+```yaml
+stages:
+  - security
+
+grype-scan:
+  stage: security
+  image: anchore/grype:latest
+  script:
+    # Scanner le projet
+    - grype . -o json --file grype-report.json
+    
+    # Échouer si vulnérabilités high ou critical
+    - grype . --fail-on high
+  artifacts:
+    when: always
+    paths:
+      - grype-report.json
+    reports:
+      # GitLab supporte le format SARIF
+      - grype . -o sarif > grype-report.sarif
+  allow_failure: false
+```
+
+</div>
+---
+<div style="text-align: left;">
+
+## Grype : intégration CI/CD
+
+**Exemple pour GitHub Actions**
+
+```bash
+name: Grype Vulnerability Scan
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  grype-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Run Grype vulnerability scanner
+        uses: anchore/scan-action@v3
+        id: grype
+        with:
+          path: "."
+          fail-build: true
+          severity-cutoff: high
+      
+      - name: Upload Grype results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: ${{ steps.grype.outputs.sarif }}
+```
+
+</div>
+---
+
+# Exercices pratiques
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+<div style="text-align: left;">
+
+## Exercice 1 : Audit avec npm
+
+**Objectif : Identifier et corriger des vulnérabilités avec npm audit**
+
+1. Créez un nouveau projet Node.js
+2. Installez les dépendances suivantes (versions vulnérables) :
+```bash
+npm install express@4.16.0
+npm install lodash@4.17.11
+npm install minimist@1.2.0
+npm install axios@0.21.0
+```
+3. Lancez npm audit et analysez le rapport
+4. Identifiez les vulnérabilités critical et high
+5. Corrigez-les avec npm audit fix
+6. Pour celles qui ne peuvent pas être corrigées automatiquement, mettez à jour manuellement
+
+</div>
+---
+<div style="text-align: left;">
+
+## Exercice 2 : Scan multi-langage avec Grype
+
+**Objectif : Utiliser Grype pour scanner différents types de projets**
+
+1. Créez un projet contenant :
+      - Des dépendances Node.js (package.json)
+      - Des dépendances Python (requirements.txt avec des versions anciennes)
+      - Exemple : flask==1.0.0, requests==2.20.0
+2. Lancez Grype sur le projet complet
+3. Comparez les résultats avec npm audit (pour la partie Node.js)
+4. Générez un rapport JSON complet
+5. Filtrez les résultats pour afficher uniquement les vulnérabilités critical
+
+</div>
+---
+<div style="text-align: left;">
+
+## Exercice 3 : Pipeline de sécurité complète
+
+**Objectif : Intégrer npm audit et Grype dans une pipeline CI/CD**
+
+
+1. Créez un projet Node.js avec des tests
+2. Créez une pipeline GitLab CI ou GitHub Actions avec :
+      - Stage de sécurité (npm audit)
+      - Stage de sécurité (Grype)
+3. Configurez la pipeline pour échouer si des vulnérabilités high sont détectées
+4. Testez en introduisant volontairement une dépendance vulnérable
+5. Configurez des rapports en artifacts
+
+</div>

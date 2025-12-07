@@ -44,8 +44,7 @@ Vous saurez aussi :
 </div>
 ---
 
-# Partie 1
-## Le DevOps : fondations essentielles
+# Le DevOps : fondations essentielles
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 
@@ -95,8 +94,7 @@ Le DevSecOps vient simplement s’intégrer dans cette boucle en ajoutant une co
 </div>
 ---
 
-# Partie 2
-## Pourquoi intégrer la sécurité dès le départ ?
+# Pourquoi intégrer la sécurité dès le départ ?
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
@@ -161,8 +159,7 @@ Plan → Code → Build → Test → Release → Deploy → Operate → Monitor
 </div>
 ---
 
-# Partie 3
-## Les risques dans un pipeline moderne
+# Les risques dans un pipeline moderne
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
@@ -178,7 +175,7 @@ Un pipeline de développement, c’est plein de points sensibles
    - Vulnérabilités classiques (injections, mauvaises validations)
    - Failles critiques cachées dans les dépendances (bibliothèques)
 2. Les Conteneurs :
-   - Images avec packages obsolètes ou en mode root
+   - Images avec packages obsolètes ou en mode root (élévation de privilèges)
 3. L'Infrastructure-as-Code (IaC) :
    - Configurations (Terraform, YAML) qui exposent des ports ou donnent trop de permissions
 4. Le Pipeline CI/CD :
@@ -190,7 +187,7 @@ Un pipeline de développement, c’est plein de points sensibles
 
 ## Exemples réels
 
-**Log4Shell** : Un incident majeur qui montre qu'une simple dépendance peut mettre à terre toute une infrastructure 🤯
+**Log4Shell** : La vulnérabilité Log4Shell (CVE-2021-44228) a permis l'exécution de code à distance dans des millions d'applications Java
 
 **Secrets en public** : Des mots de passe qui finissent sur GitHub et provoquent des compromissions énormes
 
@@ -199,8 +196,7 @@ Aujourd'hui, **la chaîne d'approvisionnement logicielle** (nos dépendances, no
 </div>
 ---
 
-# Partie 4
-## Automatiser la sécurité
+# Automatiser la sécurité
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
@@ -296,8 +292,7 @@ Elle doit être vérifiée avec la même rigueur que le code applicatif
 </div>
 ---
 
-# Partie 5
-## Politiques de sécurité automatiques
+# Politiques de sécurité automatiques
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---
@@ -340,8 +335,7 @@ Pour garder un niveau de sécurité cohérent dans toute l’équipe, il faut d�
 </div>
 ---
 
-# Partie 6
-## Conclusion
+# Conclusion
 <!-- .slide: data-background="#009485" -->
 <!-- .slide: class="center" -->
 ---

@@ -1,0 +1,157 @@
+## Objectifs pédagogiques
+
+- Comprendre les principes du SAST (Static Application Security Testing)
+- Configurer SonarQube Cloud pour analyser votre code
+- Intégrer l'analyse statique dans une pipeline GitLab CI/CD
+- Interpréter les résultats et corriger les vulnérabilités détectées
+
+
+
+---
+
+# Sonarqube & Théorie 
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+## Qu'est-ce que le SAST ?
+
+Le SAST (Static Application Security Testing) est une méthode d'analyse de sécurité qui examine le code source sans l'exécuter.  
+Cette approche permet de détecter les vulnérabilités et les failles de sécurité dès les premières phases du développement.
+
+**Avantages du SAST :**
+
+- Détection précoce des vulnérabilités dans le cycle de développement
+- Analyse complète du code source (couverture à 100%)
+- Identification des mauvaises pratiques de codage
+- Réduction des coûts de correction (plus tôt une faille est détectée, moins elle coûte cher à corriger)
+- Conformité aux standards de sécurité (OWASP, CWE, etc.)
+
+**Limites du SAST :**
+
+- Peut générer des faux positifs
+- Ne détecte pas les vulnérabilités liées à l'exécution ou à la configuration
+- Nécessite d'être complété par d'autres approches (DAST, tests de pénétration)
+
+
+---
+
+
+## SonarQube : Présentation
+
+SonarQube est une plateforme open-source leader pour l'inspection continue de la qualité du code. 
+
+**Elle analyse le code pour détecter :**
+
+- Bugs : Erreurs impactant la fiabilité.
+- Vulnerabilities : Failles de sécurité potentielles.
+- Code Smells : Problèmes de style ou de structure qui impactent la maintenabilité, code mort, code dupliqué
+- La dette technique
+- Coverage : Pourcentage de code couvert par les tests unitaires.
+- Security Rating / Quality Gate : Le statut global qui détermine si le code est apte à être déployé.
+
+**SonarQube Cloud vs SonarQube Server :**
+
+- SonarQube Cloud : solution SaaS hébergée par SonarSource, idéale pour démarrer rapidement
+- SonarQube Self-hosted : solution auto-hébergée, offrant plus de contrôle et de personnalisation
+
+
+---
+
+
+## Intégration CI/CD
+
+L'intégration du SAST dans une pipeline CI/CD permet d'automatiser l'analyse de sécurité à chaque commit ou merge request. 
+
+Cela garantit que le code ne contenant pas de vulnérabilités critiques soit déployé en production.
+
+**Workflow typique :**
+
+1. Le développeur pousse son code sur GitLab
+2. La pipeline CI/CD se déclenche automatiquement
+3. SonarQube Scanner analyse le code
+4. Les résultats sont envoyés à SonarQube Cloud
+5. La pipeline échoue si des critères de qualité ne sont pas respectés (Quality Gate)
+6. Le développeur corrige les problèmes détectés
+
+
+---
+
+# Sonarqube & Pratique 
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+## TP - Explication globale
+
+**Configuration de SonarQube Cloud**
+
+- Étape 1 : Créer un compte et une organisation
+- Étape 2 : Créer un nouveau projet
+- Étape 3 : Générer un token d'authentification
+
+**Configuration de GitLab CI**
+
+- Étape 1 : Ajouter le token SonarQube dans GitLab
+- Étape 2 : Créer le fichier de configuration SonarQube
+- Étape 3 : Créer la pipeline GitLab CI
+
+**Exécution et validation**
+
+- Étape 1 : Déclencher la pipeline
+- Étape 2 : Consulter les résultats dans SonarCloud
+
+**Comprendre les résultats**
+
+
+---
+
+
+## TP - Exercice 1 : Configuration de base
+
+**Objectif** : Mettre en place l'analyse SonarQube sur un projet existant
+
+- Choisissez un de vos projets existants (ou créez-en un simple)
+- Configurez SonarCloud comme décrit dans la partie pratique
+- Ajoutez la pipeline GitLab CI
+- Déclenchez une première analyse
+- Consultez les résultats dans SonarCloud
+
+
+---
+
+
+## TP - Exercice 2 : Correction de vulnérabilités
+
+**Objectif** : Identifier et corriger des vulnérabilités de sécurité
+
+- Injectez volontairement des vulnérabilités dans votre code :
+    - Requête SQL non paramétrée (injection SQL)
+    - Utilisation de eval() ou exec() (injection de code)
+    - Mot de passe en dur dans le code
+- Lancez l'analyse SonarQube
+- Identifiez les vulnérabilités détectées
+- Corrigez-les en suivant les recommandations de SonarQube
+- Relancez l'analyse pour vérifier que les problèmes sont résolus
+
+
+---
+
+
+## TP - Exercice 3 : Quality Gate personnalisé
+
+**Objectif** : Créer et appliquer un Quality Gate strict
+
+- Créez un Quality Gate personnalisé avec les conditions suivantes :
+    - 0 vulnérabilités Critical ou Blocker
+    - Couverture de code minimum : 70%
+    - Duplication maximum : 5%
+    - Rating de maintenabilité : A ou B
+- Appliquez ce Quality Gate à votre projet
+- Modifiez votre pipeline pour faire échouer le build si le Quality Gate échoue
+- Testez en introduisant du code de mauvaise qualité
+

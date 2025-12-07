@@ -172,14 +172,15 @@ regexes = [
 
 **Objectifs :**
 
-1. Créer un répository, y pousser un secret
-2. Mise en place de Gitleaks sur CI/CD
-3. Mise en place d'un pre-commit hook Git
-4. Vérifier si on peut pousser un nouveau secret via un git commit/push
-
-**Spécs :**
-
-- 1 secret custom à trigger via **[[rules]]**
-- 1 faux positif à exclure via **[allowlist]**
+- Créer un dépôt et y commettre (pousser) intentionnellement deux types de secrets différents pour compromettre l'historique :
+    - Un secret standard (ex: clé AWS)
+    - Un secret au format custom (défini par une règle spécifique)
+- Mettre en place la configuration Gitleaks via un fichier .gitleaks.toml pour :
+    - Ajouter une règle personnalisée ([[rules]]) qui détecte le secret custom
+    - Ajouter une entrée à la liste blanche ([allowlist]) pour exclure un faux positif
+- Intégrer Gitleaks dans la chaîne de production :
+    - Via un pipeline CI/CD (GitLab ou GitHub Actions) en mode détection rétrospective
+    - Via un pre-commit hook Git local pour la prévention proactive (bloquer le secret avant le commit)
+- Valider que les secrets initiaux sont détectés par le CI/CD et que les tentatives de nouveaux commits secrets sont bloquées localement par le hook
 
 

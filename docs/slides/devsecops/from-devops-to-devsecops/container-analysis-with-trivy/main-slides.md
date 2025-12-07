@@ -258,8 +258,8 @@ CVE-2024-67890
 - Introduire plusieurs vulnérabilités intentionnel
 - Scan cette image en local mais aussi via CI/CD
 - Être capable de jouer avec certains params
-  - return code
-  - ignore-unfixed
-  - trivy-ignore
-  - ne pas scan les low/medium
+    - return code
+    - ignore-unfixed
+    - trivy-ignore
+    - ne pas scan les low/medium
 

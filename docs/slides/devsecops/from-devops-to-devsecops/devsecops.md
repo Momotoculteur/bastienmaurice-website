@@ -17,10 +17,15 @@
 [SLIDES EN VERSION TEXTE](./secrets-leaks-with-gitleaks/main-slides.md){ .md-button }
 { .center-text }
 
+### Analyse de Code Statique (SAST) avec SonarQube
+<iframe data-src="../static-analysis-with-sonarqube/index.html" frameborder=0 width=960 height=500></iframe>
+
+[SLIDES EN VERSION TEXTE](./static-analysis-with-sonarqube/main-slides.md){ .md-button }
+{ .center-text }
+
 ## Sécurité des dépendances
 
 ## Sécurité du pipeline
-
 
 ## Sécurité des conteneurs
 ### Analyse d'une image docker avec Trivy

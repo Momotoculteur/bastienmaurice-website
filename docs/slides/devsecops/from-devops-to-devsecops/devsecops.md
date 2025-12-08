@@ -23,13 +23,20 @@
 [SLIDES EN VERSION TEXTE](./static-analysis-with-sonarqube/main-slides.md){ .md-button }
 { .center-text }
 
-## Sécurité des dépendances
+## Sécurité des dépendances - Software Composition Analysis
 
-### Software Composition Analysis (SCA) - Grype, npm audit...
+### SCA - SelfHosted/OpenSource - Grype & NPM Audit
 <iframe data-src="../software-composition-analysis-grype-npm-audit/index.html" frameborder=0 width=960 height=500></iframe>
 
 [SLIDES EN VERSION TEXTE](./software-composition-analysis-grype-npm-audit/main-slides.md){ .md-button }
 { .center-text }
+
+### SCA - SaaS/Freetier - Snyk
+<iframe data-src="../sca-with-snyk-saas-free-tier/index.html" frameborder=0 width=960 height=500></iframe>
+
+[SLIDES EN VERSION TEXTE](./sca-with-snyk-saas-free-tier/main-slides.md){ .md-button }
+{ .center-text }
+
 
 ## Sécurité du pipeline
 

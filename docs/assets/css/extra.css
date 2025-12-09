@@ -3,6 +3,10 @@
   display: block;
 }
 
+.bold {
+  font-weight: bold;
+}
+
 /* Le conteneur qui remplace l'iframe */
 .reveal-wrapper {
   position: relative;

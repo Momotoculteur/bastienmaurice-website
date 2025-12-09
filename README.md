@@ -44,3 +44,10 @@ Embarquer du codes propres dans les slides en markdown:
 moncode()
 </code></pre>
 ```
+
+### Button center
+
+```md
+[SLIDES EN VERSION TEXTE](./sca-with-renovate-saas-and-self-hosted/main-slides.md){ .md-button }
+{ .center-text }
+```

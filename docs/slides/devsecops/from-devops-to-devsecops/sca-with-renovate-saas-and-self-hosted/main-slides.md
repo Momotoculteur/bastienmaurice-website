@@ -1,0 +1,129 @@
+## Objectifs pédagogiques
+
+
+- Comprendre les enjeux de la gestion automatisée des dépendances
+- Configurer et utiliser Renovate en mode local
+- Déployer Renovate via une solution SaaS
+- Installer et configurer Renovate en self-hosted avec Docker Compose
+- Installer et configurer Renovate en self-hosted avec Kubernetes
+
+
+
+
+---
+
+# Renovate & Théorie 
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+
+## Introduction à Renovate
+
+**Qu'est-ce que Renovate ?**
+
+Renovate est un outil **open-source** développé par Mend (anciennement WhiteSource) qui automatise la **mise à jour des dépendances** dans vos projets logiciels
+
+Il analyse votre code, détecte les dépendances obsolètes et crée **automatiquement des Pull Requests** (PR) ou Merge Requests (MR) pour les mettre à jour
+
+
+---
+
+
+## Pourquoi automatiser les mises à jour ?
+
+**Problématiques sans automatisation :**
+
+- Dépendances obsolètes accumulent des vulnérabilités de sécurité
+- Mise à jour manuelle chronophage et sujette aux oublis
+- Difficultés de migration quand les versions sont trop anciennes
+- Manque de visibilité sur l'état des dépendances
+
+**Avantages de Renovate :**
+
+- Détection automatique des nouvelles versions
+- Création de PR/MR groupées ou individuelles
+- Tests automatiques via CI/CD avant merge
+- Support multi-langages (npm, Maven, pip, Go, Docker, etc.)
+- Configuration hautement personnalisable
+
+
+---
+
+
+## Architecture et fonctionnement
+
+Renovate fonctionne selon le principe suivant :
+
+- **Scan** : Analyse les fichiers de dépendances (package.json, pom.xml, requirements.txt, etc.)
+- **Détection** : Interroge les registres (npm, Maven Central, PyPI, etc.) pour trouver les nouvelles versions
+- **Validation** : Vérifie les contraintes de version et les règles configurées
+- **Création de PR/MR** : Génère des propositions de mise à jour
+- **Tests** : Déclenche la CI/CD pour valider les changements
+
+</br></br>
+
+**Les trois modes de déploiement**
+
+| Mode         | Avantages                                 | Inconvénients                            | Cas d'usage                               |
+|--------------|--------------------------------------------|-------------------------------------------|--------------------------------------------|
+| Local        | Rapide à tester, pas d'infrastructure      | Manuel, pas d'automatisation continue     | Développement, tests, debugging            |
+| SaaS         | Aucune infrastructure à gérer, gratuit pour l'open-source | Dépendance externe, limitations potentielles | Projets publics, petites équipes |
+| Self-hosted  | Contrôle total, données internes           | Infrastructure à maintenir                | Entreprises, projets privés sensibles      |
+
+
+
+---
+
+
+## Renovate == Dependabot ?
+
+Renovate et Dependabot sont tous deux des outils d'automatisation des mises à jour de dépendances, mais ils se distinguent principalement par leur flexibilité (Renovate) et leur intégration native (Dependabot)
+
+| Caractéristique | Renovate | Dependabot |
+|-----------------|----------|------------|
+| Plateformes Supportées | Multiples (GitHub, GitLab, Bitbucket, Azure DevOps, Self-Hosted). | Principalement GitHub (intégré nativement). |
+| Niveau de Configuration | Extensif (fichiers `renovate.json`, presets partagés, expressions cron pour la planification). | Limité (fichier `dependabot.yml`, planification par intervalle basique). |
+| Regroupement des Mises à Jour (Grouping) | Avancé et intelligent. Permet de regrouper les dépendances par fonctionnalité, type ou automatiquement (ex. : `group:monorepos`). Réduit le "bruit" des PR. | Limité/Basique (souvent une PR par dépendance, même si des fonctionnalités de regroupement existent). |
+| Support Monorepo | Excellent. Conçu pour gérer les dépendances partagées entre plusieurs sous-projets dans un seul dépôt. | Limité. Peut générer de nombreuses PR redondantes. |
+| Tableau de Bord (Dashboard) | Oui : Dependency Dashboard (issue dédiée) pour vue d'ensemble et interaction manuelle. | Non : uniquement via l'onglet Sécurité/Insights de GitHub. |
+| Auto-Merge | Hautement configurable (basé sur le type de mise à jour, les résultats des tests, etc.). | Basique/Limité. |
+| Nombre de Package Managers | Très large (30+), incluant Dockerfile, Kubernetes, etc. | Plus restreint (≈14). |
+| Alertes de Sécurité | Prend en charge les alertes de vulnérabilité (peut utiliser l'API Dependabot ou OSV.dev). | Excellent et intégré (spécialité de GitHub). |
+
+
+
+---
+
+
+
+## Renovate == Dependabot ?
+
+**Choisissez Dependabot si :**
+
+- Vous utilisez exclusivement GitHub et n'avez pas l'intention d'en changer
+- Votre projet est simple (pas de monorepo complexe)
+- Vous privilégiez la simplicité et l'intégration native à toute configuration avancée. L'activation est souvent en un seul clic
+- Votre priorité principale est la détection rapide des vulnérabilités (sécurité)
+
+**Choisissez Renovate si :**
+
+- Vous utilisez GitLab, Bitbucket, Azure DevOps ou avez besoin d'une solution self-hosted
+- Vous gérez des monorepos ou des projets avec des dépendances complexes et partagées
+- Vous souhaitez réduire le nombre de Pull Requests en regroupant intelligemment les mises à jour
+- Vous avez besoin d'une configuration très précise (planification avancée par cron, règles spécifiques par dépendance, etc.)
+
+
+
+---
+
+# Renovate & Pratique 
+<!-- .slide: data-background="#009485" -->
+<!-- .slide: class="center" -->
+
+---
+
+## Utilisation des webhooks
+
+Les webhooks permettent à GitLab de déclencher Renovate instantanément au lieu d'attendre le scan planifié

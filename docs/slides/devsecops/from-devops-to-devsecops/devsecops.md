@@ -38,6 +38,14 @@
 { .center-text }
 
 
+### SCA - SaaS & SelfHosted - Renovate
+<iframe data-src="../sca-with-renovate-saas-and-self-hosted/index.html" frameborder=0 width=960 height=500></iframe>
+
+**Liens utiles**
+
+- [Slides en version texte](./sca-with-renovate-saas-and-self-hosted/main-slides.md)
+- [TP Renovate](./sca-with-renovate-saas-and-self-hosted/tp.md)
+
 ## Sécurité du pipeline
 
 ## Sécurité des conteneurs

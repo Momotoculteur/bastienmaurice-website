@@ -95,6 +95,46 @@ Cela garantit que le code ne contenant pas de vulnérabilités critiques soit d�
 ---
 <div style="text-align: left;">
 
+## Sonarlint - Qu’est-ce que SonarLint ?
+
+**Objectif** : prévenir les problèmes avant qu’ils n’entrent dans le code repository
+
+- Une extension IDE gratuite développée par SonarSource
+- Fournit un retour instantané sur la qualité et la sécurité du code
+- Fonctionne comme un linter intelligent, basé sur les règles de SonarQube / SonarCloud
+
+</div>
+---
+<div style="text-align: left;">
+
+## Sonarlint - Les bénéfices clés
+
+- Détecter les erreurs avant le commit - Feedback instantanné
+- Réduire les coûts de correction
+- Alignement avec les divers profiles SonarQube (en mode connecté vs standalone)
+- Apprend aux développeurs à appliquer de bonnes pratiques
+
+Nb: pas connecté à la quality gate
+
+</div>
+---
+<div style="text-align: left;">
+
+## Sonarlint - Workflow de développement
+
+Comment SonarLint s’intègre dans le quotidien ?
+
+1. L’écriture du code déclenche une analyse
+2. Les problèmes apparaissent immédiatement dans l’IDE
+3. Le développeur lit la règle → comprend le problème
+4. Il corrige avant de committer
+5. Le pipeline CI + SonarQube confirme la qualité du code
+
+</div>
+---
+
+<div style="text-align: left;">
+
 ## TP - Explication globale
 
 **Configuration de SonarQube Cloud**
@@ -151,7 +191,7 @@ Cela garantit que le code ne contenant pas de vulnérabilités critiques soit d�
 ---
 <div style="text-align: left;">
 
-## TP - Exercice 3 : Quality Gate personnalisé
+## TP - Exercice 3 : Quality Gate personnalisé (Sonarqube SelfHosted exclusivement)
 
 **Objectif** : Créer et appliquer un Quality Gate strict
 
@@ -163,5 +203,7 @@ Cela garantit que le code ne contenant pas de vulnérabilités critiques soit d�
 - Appliquez ce Quality Gate à votre projet
 - Modifiez votre pipeline pour faire échouer le build si le Quality Gate échoue
 - Testez en introduisant du code de mauvaise qualité
+
+Attention : Sonarqube Saas en freetier ne permet pas d'avoir une custom quality gate, à vous de trouver un moyen d'exposer votre Sonarqube Selfhosted à travers vos pipelines
 
 </div>

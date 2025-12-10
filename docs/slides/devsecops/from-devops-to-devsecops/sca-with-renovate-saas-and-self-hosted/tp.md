@@ -4,23 +4,25 @@
 
 ## Informations pratiques
 
-- **Durée :** 4 heures
-- **Type :** Travail individuel
+- **Type :** Travail individuel ou Groupe
 - **Notation :** /20
-- **Rendu :** Rapport PDF + fichiers de configuration + captures d'écran
+- **Rendu :** Rapport PDF + fichiers de configuration + captures d'écran + lien GitLab
 - **Date limite :** 1 semaine
 
 ---
 
 ## Contexte du TP
 
-Vous êtes développeur DevOps dans une entreprise qui gère plusieurs projets logiciels. La direction souhaite améliorer la gestion des dépendances pour réduire la dette technique et les vulnérabilités de sécurité. Votre mission est d'évaluer et de mettre en place l'outil Renovate selon trois approches différentes.
+Vous êtes développeur DevOps dans une entreprise qui gère plusieurs projets logiciels. La direction souhaite améliorer la gestion des dépendances pour réduire la dette technique et les vulnérabilités de sécurité. 
+
+Votre mission est d'évaluer et de mettre en place l'outil Renovate selon trois approches différentes.
 
 ---
 
 ## Prérequis techniques
 
 Avant de commencer, vérifiez que vous disposez de :
+
 - Node.js et npm
 - Docker et Docker Compose
 - Git
@@ -38,6 +40,7 @@ Vous devez d'abord tester Renovate en local sur un projet existant pour comprend
 
 **Tâche :**
 Créez un nouveau projet Node.js nommé `renovate-test-local` avec les caractéristiques suivantes :
+
 - Initialisez un dépôt Git
 - Créez un fichier `package.json` avec npm init
 - Installez **intentionnellement** des versions obsolètes des dépendances suivantes :
@@ -47,6 +50,7 @@ Créez un nouveau projet Node.js nommé `renovate-test-local` avec les caractér
   - moment version 2.29.1
 
 **À fournir dans votre rapport :**
+
 - La commande exacte utilisée pour installer ces dépendances
 - Une capture d'écran de votre fichier `package.json`
 - Le premier commit Git (capture de `git log`)
@@ -59,11 +63,13 @@ Créez un nouveau projet Node.js nommé `renovate-test-local` avec les caractér
 Installez Renovate en mode CLI sur votre machine.
 
 **Questions à répondre :**
+
 1. Quelle commande avez-vous utilisée pour installer Renovate globalement ?
 2. Comment vérifiez-vous que l'installation a réussi ?
 3. Quelle est la version de Renovate installée sur votre machine ?
 
 **À fournir :**
+
 - Les commandes exécutées
 - Une capture d'écran montrant la version installée
 
@@ -87,11 +93,13 @@ Créez deux fichiers de configuration pour Renovate :
    - Configuration optionnelle
 
 **Questions à répondre :**
+
 1. Expliquez ce que signifie "dry-run" et pourquoi c'est utile en mode local
 2. Quelle est la différence entre `renovate.json` et `config.js` ?
 3. Pourquoi le mode "local" n'a-t-il pas besoin de token d'authentification ?
 
 **À fournir :**
+
 - Le contenu complet de vos deux fichiers de configuration
 - Vos réponses aux questions
 
@@ -103,6 +111,7 @@ Créez deux fichiers de configuration pour Renovate :
 Exécutez Renovate en mode local avec le niveau de log "debug".
 
 **Questions à répondre :**
+
 1. Quelle commande complète avez-vous utilisée pour lancer Renovate ?
 2. Combien de dépendances obsolètes Renovate a-t-il détectées ?
 3. Pour chaque dépendance, indiquez :
@@ -113,6 +122,7 @@ Exécutez Renovate en mode local avec le niveau de log "debug".
 5. Y a-t-il des vulnérabilités de sécurité détectées ? Si oui, lesquelles ?
 
 **À fournir :**
+
 - Capture d'écran de l'exécution complète
 - Un tableau récapitulatif des dépendances analysées
 - Les logs les plus importants (extraits)
@@ -127,12 +137,14 @@ L'équipe souhaite automatiser complètement le processus. Vous devez configurer
 ### Question 2.1 : Mise en place du dépôt GitHub (1 point)
 
 **Tâche :**
+
 1. Créez un nouveau dépôt public sur GitHub nommé `renovate-test-saas`
 2. Créez un projet Node.js identique à la partie 1 (mêmes dépendances obsolètes)
 3. Ajoutez un fichier README.md expliquant le projet
 4. Poussez votre code sur GitHub
 
 **À fournir :**
+
 - L'URL de votre dépôt GitHub
 - Capture d'écran du dépôt sur GitHub
 
@@ -144,11 +156,13 @@ L'équipe souhaite automatiser complètement le processus. Vous devez configurer
 Installez l'application GitHub Renovate sur votre dépôt.
 
 **Questions à répondre :**
+
 1. Quelles permissions Renovate demande-t-il lors de l'installation ?
 2. Pourquoi ces permissions sont-elles nécessaires ?
 3. Combien de temps après l'installation la première PR apparaît-elle ?
 
 **À fournir :**
+
 - Capture d'écran du processus d'installation
 - Capture d'écran des permissions accordées
 
@@ -160,12 +174,14 @@ Installez l'application GitHub Renovate sur votre dépôt.
 Examinez attentivement la Pull Request d'onboarding créée automatiquement par Renovate.
 
 **Questions à répondre :**
+
 1. Quel fichier Renovate propose-t-il d'ajouter dans cette PR ?
 2. Quelle configuration par défaut est suggérée ?
 3. Listez toutes les mises à jour détectées avec leur type (major/minor/patch)
 4. Expliquez la différence entre "Renovate dashboard" et les PR de mise à jour
 
 **À fournir :**
+
 - Capture d'écran complète de la PR d'onboarding
 - Capture d'écran du "Renovate dashboard" dans les issues
 - Vos réponses détaillées
@@ -176,6 +192,7 @@ Examinez attentivement la Pull Request d'onboarding créée automatiquement par 
 
 **Tâche :**
 Avant de merger la PR d'onboarding, modifiez le fichier `renovate.json` proposé avec la configuration suivante :
+
 - Timezone: Europe/Paris
 - Planning: uniquement le dimanche après 21h
 - Labels: "dependencies" et "renovate"
@@ -184,12 +201,14 @@ Avant de merger la PR d'onboarding, modifiez le fichier `renovate.json` proposé
 - Commits sémantiques activés (conventional naming)
 
 **Questions à répondre :**
+
 1. Pourquoi est-il judicieux de planifier les scans en dehors des heures de travail ?
 2. Qu'est-ce que l'automerge et quels sont ses risques ?
 3. Proposez une stratégie pour sécuriser l'automerge (tests, conditions, etc.)
 4. Que sont les "commits sémantiques" et quel est leur intérêt ?
 
 **À fournir :**
+
 - Le contenu complet de votre `renovate.json` personnalisé
 - Capture d'écran montrant le fichier modifié dans la PR
 - Capture d'écran après avoir mergé la PR d'onboarding
@@ -205,16 +224,19 @@ L'entreprise gère des dépôts privés sensibles et souhaite héberger Renovate
 ### Question 3.1 : Préparation de l'environnement (1 point)
 
 **Tâche :**
+
 1. Créez un Personal Access Token (PAT) sur GitHub avec les permissions nécessaires
 2. Créez un nouveau dossier `renovate-selfhosted`
 3. Préparez la structure de fichiers nécessaire
 
 **Questions à répondre :**
+
 1. Quelles permissions minimales le token doit-il avoir ?
 2. Pourquoi ne doit-on jamais commiter le token dans Git ?
 3. Proposez deux méthodes pour sécuriser le stockage du token
 
 **À fournir :**
+
 - Capture d'écran de la création du token (masquez la valeur du token)
 - Liste des permissions sélectionnées
 - Structure de dossiers créée (arborescence)
@@ -225,16 +247,19 @@ L'entreprise gère des dépôts privés sensibles et souhaite héberger Renovate
 
 **Tâche :**
 Créez un fichier `docker-compose.yml` pour déployer Renovate avec les spécifications suivantes :
+
 - Image: ghcr.io/mend/renovate-ce: # Replace <X.Y.Z>
 - Variables d'environnement nécessaires (RENOVATE_PLATFORM, RENOVATE_TOKEN, etc.)
 - Montage d'un volume pour les logs
 - Attention au ports, webhook url à définir...
 
 **Questions à répondre :**
+
 1. Comment gérer & rediriger les appels du webhook entre notre Renovate qui tourne en localhost vers le Github SaaS pour la communication ? (Trigger des dependency dash, etc)
 2. Quelles sont les variables d'environnement absolument minimales et obligatoires à définir pour que l'instance de Renovate sache où chercher les dépôts et comment interagir (selon la documentation de Renovate) ? Donnez leur nom complet (ex. : RENOVATE_XXX)
 
 **À fournir :**
+
 - Le contenu complet de votre `docker-compose.yml`
 - Justification de chacun de vos choix de configuration
 
@@ -244,6 +269,7 @@ Créez un fichier `docker-compose.yml` pour déployer Renovate avec les spécifi
 
 **Tâche :**
 Créez une configuration avancée sur docker-compose incluant :
+
 - Configuration de la plateforme (GitHub)
 - Liste des repositories à scanner (votre dépôt `renovate-test-saas`)
 - Désactivation de l'autodiscovery
@@ -255,12 +281,14 @@ Créez une configuration avancée sur docker-compose incluant :
 - Activation des alertes de vulnérabilité
 
 **Questions à répondre :**
+
 1. Quelle est la différence entre `autodiscover: true` et spécifier manuellement les repositories ?
 2. Dans quel cas utiliseriez-vous l'autodiscovery ?
 3. Comment Renovate gère-t-il plusieurs dépôts avec des configurations différentes ?
 4. Expliquez le concept de "branchPrefix" et son utilité
 
 **À fournir :**
+
 - Le contenu complet et commenté de votre `docker-compose.yaml`
 - Un schéma expliquant le flux de traitement d'un repository
 
@@ -269,11 +297,13 @@ Créez une configuration avancée sur docker-compose incluant :
 ### Question 3.4 : Déploiement et tests (2 points)
 
 **Tâche :**
+
 1. Lancez Renovate avec Docker Compose
 2. Surveillez les logs pendant l'exécution
 3. Vérifiez que des PR/DependencyDashboard sont créées sur votre dépôt GitHub
 
 **Questions à répondre :**
+
 1. Quelle commande utilisez-vous pour valider votre docker-compose.yml avant de le lancer ?
 2. Comment vérifiez-vous que le conteneur est bien démarré et fonctionne ?
 3. Quelle commande permet de suivre les logs en temps réel ?
@@ -281,6 +311,7 @@ Créez une configuration avancée sur docker-compose incluant :
 5. Comment redémarrez-vous Renovate après une modification de config.js ?
 
 **À fournir :**
+
 - Contenu du fichier `docker-compose.yaml` (masquez les token/secrets)
 - Capture d'écran de `docker-compose ps`
 - Extraits significatifs des logs (connexion, scan, création de PR)
@@ -294,11 +325,13 @@ Créez une configuration avancée sur docker-compose incluant :
 Modifiez votre configuration pour que Renovate s'exécute automatiquement toutes les 6 heures au lieu d'une seule fois.
 
 **Questions à répondre :**
+
 1. Quelle approche avez-vous choisie (cron dans le conteneur, restart policy, script externe) ? Justifiez votre choix
 2. Comment vérifieriez-vous que la planification fonctionne correctement ?
 3. Proposez une solution pour recevoir des notifications en cas d'échec
 
 **À fournir :**
+
 - Le fichier docker-compose.yml modifié
 - Explication de votre implémentation
 - Logs montrant plusieurs exécutions successives
@@ -311,6 +344,7 @@ Modifiez votre configuration pour que Renovate s'exécute automatiquement toutes
 
 **Tâche :**
 Créez un tableau comparatif détaillé des trois modes d'installation selon les critères suivants :
+
 - Coût (infrastructure, maintenance)
 - Complexité de mise en place
 - Temps de configuration
@@ -325,6 +359,7 @@ Créez un tableau comparatif détaillé des trois modes d'installation selon les
 ### Question 4.2 : Retour d'expérience (1 point)
 
 **Questions à répondre :**
+
 1. Quel mode avez-vous trouvé le plus simple à mettre en place ? Pourquoi ?
 2. Quel mode avez-vous trouvé le plus complexe ? Quelles difficultés avez-vous rencontrées ?
 3. Pour votre projet personnel, quel mode choisiriez-vous ? Justifiez
@@ -338,16 +373,19 @@ Créez un tableau comparatif détaillé des trois modes d'installation selon les
 Rédigez des recommandations pour trois scénarios d'entreprise :
 
 **Scénario A :** Startup de 5 personnes, 3 projets open-source, budget limité
+
 - Quel mode recommandez-vous ?
 - Quelle configuration suggérez-vous ?
 - Justifiez votre choix
 
 **Scénario B :** PME de 50 développeurs, 30 projets privés, données sensibles
+
 - Quel mode recommandez-vous ?
 - Quelle infrastructure serait nécessaire ?
 - Quels coûts estimez-vous ?
 
 **Scénario C :** Grande entreprise bancaire, 500 développeurs, contraintes réglementaires strictes
+
 - Quel mode recommandez-vous ?
 - Quelles mesures de sécurité supplémentaires proposez-vous ?
 - Comment organiseriez-vous la gouvernance ?
@@ -359,6 +397,7 @@ Rédigez des recommandations pour trois scénarios d'entreprise :
 Vous devez rendre un **dossier compressé** contenant :
 
 ### 1. Rapport PDF (obligatoire)
+
 - Page de garde avec vos informations
 - Réponses à toutes les questions dans l'ordre
 - Captures d'écran légendées et lisibles
@@ -366,6 +405,7 @@ Vous devez rendre un **dossier compressé** contenant :
 - Analyse et conclusions personnelles
 
 ### 2. Fichiers de configuration (obligatoires)
+
 ```
 /partie1/
   ├── package.json
@@ -384,11 +424,13 @@ Vous devez rendre un **dossier compressé** contenant :
 ```
 
 ### 3. Captures d'écran (dans le rapport)
+
 - Minimum de captures d'écran pertinentes et légendées
 - Qualité suffisante pour être lisibles
 - Annotations si nécessaire
 
 ### 4. Liens
+
 - URL du/des dépôts GitHub
 - URL des PR créées par Renovate
 
@@ -410,18 +452,21 @@ Vous devez rendre un **dossier compressé** contenant :
 ## Critères d'évaluation
 
 ### Technique (60%)
+
 - Configurations fonctionnelles et correctes
 - Commandes appropriées et justifiées
 - Compréhension des concepts
 - Résolution des problèmes rencontrés
 
 ### Analyse (30%)
+
 - Qualité des réponses aux questions
 - Esprit critique et propositions
 - Comparaisons pertinentes
 - Recommandations justifiées
 
 ### Présentation (10%)
+
 - Clarté du rapport
 - Qualité des captures d'écran
 - Organisation logique
@@ -451,6 +496,7 @@ Vous devez rendre un **dossier compressé** contenant :
 - Stack Overflow
 
 **Non autorisés :**
+
 - Copier-coller de configurations complètes sans les comprendre
 - Partage de code entre étudiants
 - Utilisation d'IA générative pour les réponses (sauf recherche)
@@ -459,16 +505,16 @@ Vous devez rendre un **dossier compressé** contenant :
 
 ## Questions fréquentes
 
-**Q: Mon token GitHub ne fonctionne pas, que faire ?**
+**Q: Mon token GitHub ne fonctionne pas, que faire ?**  
 R: Vérifiez les permissions, la date d'expiration, et que vous l'avez bien copié entièrement.
 
-**Q: Renovate ne détecte aucune mise à jour en local, pourquoi ?**
+**Q: Renovate ne détecte aucune mise à jour en local, pourquoi ?**  
 R: Vérifiez que vos dépendances sont bien obsolètes et que le format de votre package.json est correct.
 
-**Q: Le conteneur Docker se ferme immédiatement, que faire ?**
+**Q: Le conteneur Docker se ferme immédiatement, que faire ?**  
 R: Consultez les logs avec `docker-compose logs`. Vérifiez votre configuration et vos variables d'environnement.
 
-**Q: Puis-je utiliser GitLab au lieu de GitHub ?**
+**Q: Puis-je utiliser GitLab au lieu de GitHub ?**  
 R: Oui, mais vous devrez adapter les configurations en conséquence.
 
 ---
@@ -476,7 +522,8 @@ R: Oui, mais vous devrez adapter les configurations en conséquence.
 ## Contact
 
 Pour toute question technique ou organisationnelle :
-- Email : [bastien_maurice@hotmail.com]
+
+- Email : bastien_maurice@hotmail.com
 
 ---
 

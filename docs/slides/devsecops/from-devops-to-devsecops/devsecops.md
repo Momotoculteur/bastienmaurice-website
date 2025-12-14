@@ -26,6 +26,10 @@
 
 ### Analyse de Code Dynamique - DAST
 #### OWASP Zap Proxy
+<iframe data-src="../dynamic-analysis-with-zap-proxy/index.html" frameborder=0 width=960 height=500></iframe>
+
+**[Slides - Zap Proxy](./dynamic-analysis-with-zap-proxy/main-slides.md)**
+
 
 ## Sécurité des dépendances - Software Composition Analysis (SCA)
 

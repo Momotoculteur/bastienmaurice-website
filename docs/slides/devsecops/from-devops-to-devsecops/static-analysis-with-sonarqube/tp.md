@@ -1,6 +1,6 @@
 # TP Noté : Analyse de qualité de code avec SonarQube
 
----
+
 
 ## Informations pratiques
 
@@ -9,7 +9,7 @@
 - **Rendu :** Rapport PDF + fichiers de configuration + captures d'écran + lien GitLab
 - **Date limite :** 1 semaine
 
----
+
 
 ## Contexte du TP
 
@@ -17,7 +17,7 @@ Vous êtes développeur dans une équipe qui souhaite améliorer la qualité et 
 
 Votre mission est de mettre en place SonarQube selon trois approches : SaaS (SonarCloud), puis Self-hosted, et enfin avec des Quality Gates personnalisés.
 
----
+
 
 ## Prérequis techniques
 
@@ -29,7 +29,7 @@ Avant de commencer, vérifiez que vous disposez de :
 - Compte SonarCloud (gratuit pour projets publics)
 - Connaissances de base en CI/CD GitLab
 
----
+
 
 ## Partie 1 : Configuration de base avec SonarCloud (6 points)
 
@@ -65,7 +65,7 @@ Si vous n'avez pas de projet, créez une application simple :
 - Extrait du README.md
 - Statistiques du projet (nombre de fichiers, lignes de code)
 
----
+
 
 ### Question 1.2 : Configuration de SonarCloud (2 points)
 
@@ -92,7 +92,7 @@ Si vous n'avez pas de projet, créez une application simple :
 - Votre organization key et project key (masquez partiellement si sensible)
 - Capture d'écran montrant les langages détectés
 
----
+
 
 ### Question 1.3 : Intégration avec GitLab CI/CD (2 points)
 
@@ -153,7 +153,7 @@ sonar.exclusions=**/node_modules/**,**/venv/**,**/*.test.js
 - Capture d'écran de la pipeline GitLab en cours d'exécution
 - Logs pertinents du job SonarQube
 
----
+
 
 ### Question 1.4 : Analyse des résultats (1 point)
 
@@ -176,7 +176,7 @@ Consultez les résultats de l'analyse dans SonarCloud.
 - Tableau récapitulatif des métriques principales
 - Analyse détaillée des 3 problèmes les plus critiques avec votre compréhension
 
----
+
 
 ## Partie 2 : Détection et correction de vulnérabilités (6 points)
 
@@ -307,7 +307,7 @@ DocumentBuilder builder = factory.newDocumentBuilder();
 - Tableau récapitulatif de toutes les vulnérabilités injectées
 - Scénarios d'exploitation pour chaque vulnérabilité
 
----
+
 
 ### Question 2.2 : Analyse SonarQube des vulnérabilités (2 points)
 
@@ -334,7 +334,7 @@ DocumentBuilder builder = factory.newDocumentBuilder();
 - Tableau comparatif : vulnérabilités injectées vs détectées
 - Analyse critique des limites de SonarQube
 
----
+
 
 ### Question 2.3 : Correction des vulnérabilités (2 points)
 
@@ -448,7 +448,7 @@ function redirect(url) {
 - Capture d'écran de la pipeline GitLab réussie
 - Analyse de l'amélioration de la qualité (Security Rating, etc.)
 
----
+
 
 ## Partie 3 : SonarQube Self-Hosted et Quality Gates personnalisés (8 points)
 
@@ -499,7 +499,7 @@ network:
 - Capture d'écran de la page de login SonarQube
 - Logs de démarrage pertinents (extraits)
 
----
+
 
 ### Question 3.2 : Configuration du projet dans SonarQube Self-Hosted (1 point)
 
@@ -522,7 +522,7 @@ network:
 - Capture d'écran du token généré (masqué partiellement)
 - Configuration du projet (captures)
 
----
+
 
 ### Question 3.3 : Exposition de SonarQube via tunnel (2 points)
 
@@ -586,7 +586,7 @@ cloudflared tunnel run sonarqube
 - Capture d'écran montrant que SonarQube est accessible via l'URL publique
 - Schéma d'architecture montrant le flux de communication : GitLab CI → Tunnel → SonarQube local
 
----
+
 
 ### Question 3.4 : Mise à jour de la pipeline GitLab (1 point)
 
@@ -637,7 +637,7 @@ sonar.login=${SONAR_TOKEN}
 - Capture d'écran de la pipeline en cours d'exécution
 - Capture d'écran des résultats dans votre SonarQube local
 
----
+
 
 ### Question 3.5 : Création d'un Quality Gate personnalisé (2 points)
 
@@ -709,7 +709,7 @@ sonarqube-quality-gate:
 - Capture d'écran d'une pipeline qui ÉCHOUE à cause du Quality Gate
 - Capture d'écran d'une pipeline qui RÉUSSIT après corrections
 
----
+
 
 ### Question 3.6 : Test du Quality Gate (bonus - 1 point)
 
@@ -769,7 +769,7 @@ def unused_variables():
 - Code corrigé
 - Capture d'écran de la pipeline réussie
 
----
+
 
 ## Partie 4 : Analyse comparative et bonnes pratiques (Bonus - 3 points)
 
@@ -779,7 +779,7 @@ def unused_variables():
 Créez un tableau comparatif détaillé entre SonarCloud et SonarQube self-hosted selon les critères suivants :
 
 | Critère | SonarCloud | SonarQube Self-Hosted |
-|---------|------------|----------------------|
+|||-|
 | Coût | | |
 | Infrastructure | | |
 | Maintenance | | |
@@ -797,7 +797,7 @@ Créez un tableau comparatif détaillé entre SonarCloud et SonarQube self-hoste
 2. Dans quel contexte recommanderiez-vous SonarQube self-hosted ?
 3. Quels sont les coûts cachés du self-hosting ?
 
----
+
 
 ### Question 4.2 : Bonnes pratiques DevSecOps (1 point)
 
@@ -809,7 +809,7 @@ Créez un tableau comparatif détaillé entre SonarCloud et SonarQube self-hoste
 4. Comment convaincre une équipe réticente d'adopter SonarQube ?
 5. Quelles métriques SonarQube devriez-vous suivre dans un dashboard d'équipe ?
 
----
+
 
 ### Question 4.3 : Retour d'expérience personnel (1 point)
 
@@ -822,7 +822,7 @@ Créez un tableau comparatif détaillé entre SonarCloud et SonarQube self-hoste
 5. Quelles limitations de SonarQube avez-vous identifiées ?
 6. Proposez 3 améliorations que vous aimeriez voir dans SonarQube
 
----
+
 
 ## Livrables attendus
 
@@ -876,21 +876,6 @@ Dans le rapport, incluez :
 - URL du projet SonarCloud
 - URL des pipelines GitLab
 
----
-
-## Barème détaillé
-
-| Partie | Points | Détail |
-|--------|--------|--------|
-| **Partie 1 - SonarCloud** | 6 | Q1.1: 1pt, Q1.2: 2pts, Q1.3: 2pts, Q1.4: 1pt |
-| **Partie 2 - Vulnérabilités** | 6 | Q2.1: 2pts, Q2.2: 2pts, Q2.3: 2pts |
-| **Partie 3 - Self-Hosted** | 8 | Q3.1: 2pts, Q3.2: 1pt, Q3.3: 2pts, Q3.4: 1pt, Q3.5: 2pts |
-| **Bonus - Q3.6 Test QG** | 1 | Test complet du Quality Gate |
-| **Bonus - Partie 4** | 3 | Q4.1: 1pt, Q4.2: 1pt, Q4.3: 1pt |
-| **Qualité du rapport** | - | Propreté, orthographe (-2pts max si insuffisant) |
-| **TOTAL** | 20 | (24 points possibles avec bonus) |
-
----
 
 ## Critères d'évaluation
 
@@ -915,7 +900,7 @@ Dans le rapport, incluez :
 - Code commenté et expliqué
 - Orthographe et syntaxe
 
----
+
 
 ## Conseils pour réussir
 
@@ -926,37 +911,6 @@ Dans le rapport, incluez :
 5. **Gardez une trace de vos commandes** : historique bash, notes
 6. **Sauvegardez régulièrement** : commitez souvent sur Git
 
----
-
-## Ressources autorisées
-
-### Documentation officielle
-
-- Documentation SonarQube : https://docs.sonarqube.org/
-- Documentation SonarCloud : https://docs.sonarcloud.io/
-- GitLab CI/CD : https://docs.gitlab.com/ee/ci/
-- OWASP Top 10 : https://owasp.org/www-project-top-ten/
-- CWE : https://cwe.mitre.org/
-
-### Outils
-
-- SonarLint (plugin IDE pour tester en local)
-- JQ pour parser le JSON
-- Postman pour tester l'API SonarQube
-
-### Recherches
-
-- Google, Stack Overflow
-- Documentation des langages (Python, JavaScript, Java, etc.)
-- Blogs techniques sur la sécurité applicative
-
-**Non autorisés :**
-
-- Copie entre étudiants
-- Utilisation d'IA générative pour générer les réponses (sauf recherche)
-- Partage de tokens ou accès aux instances SonarQube
-
----
 
 ## Questions fréquentes (FAQ)
 
@@ -1004,7 +958,6 @@ R: Solutions :
 - Cloudflare : utilisez systemd pour le maintenir actif
 - Alternativement : utilisez un VPS avec IP publique fixe
 
----
 
 ## Contact
 
@@ -1012,6 +965,5 @@ Pour toute question technique ou organisationnelle :
 
 - Email : bastien_maurice@hotmail.com
 
----
 
 **Bon courage et bonne analyse ! 🔍🛡️**

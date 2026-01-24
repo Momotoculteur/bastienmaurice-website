@@ -61,4 +61,7 @@
 
 **[Slides - Trivy](./container-analysis-with-trivy/main-slides.md)**
 
+**[TP - Trivy](./container-analysis-with-trivy/tp.md)**
+
+
 ## Sécurité de l’infrastructure

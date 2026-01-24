@@ -1,6 +1,6 @@
 # TP Noté : Automatisation des dépendances avec Renovate
 
----
+
 
 ## Informations pratiques
 
@@ -9,7 +9,7 @@
 - **Rendu :** Rapport PDF + fichiers de configuration + captures d'écran + lien GitLab
 - **Date limite :** 1 semaine
 
----
+
 
 ## Contexte du TP
 
@@ -17,7 +17,7 @@ Vous êtes développeur DevOps dans une entreprise qui gère plusieurs projets l
 
 Votre mission est d'évaluer et de mettre en place l'outil Renovate selon trois approches différentes.
 
----
+
 
 ## Prérequis techniques
 
@@ -29,7 +29,7 @@ Avant de commencer, vérifiez que vous disposez de :
 - Un compte GitHub
 - Un éditeur de code
 
----
+
 
 ## Partie 1 : Installation et utilisation locale de Renovate (6 points)
 
@@ -55,7 +55,7 @@ Créez un nouveau projet Node.js nommé `renovate-test-local` avec les caractér
 - Une capture d'écran de votre fichier `package.json`
 - Le premier commit Git (capture de `git log`)
 
----
+
 
 ### Question 1.2 : Installation de Renovate CLI (1 point)
 
@@ -73,7 +73,7 @@ Installez Renovate en mode CLI sur votre machine.
 - Les commandes exécutées
 - Une capture d'écran montrant la version installée
 
----
+
 
 ### Question 1.3 : Configuration initiale (2 points)
 
@@ -103,7 +103,7 @@ Créez deux fichiers de configuration pour Renovate :
 - Le contenu complet de vos deux fichiers de configuration
 - Vos réponses aux questions
 
----
+
 
 ### Question 1.4 : Exécution et analyse (2 points)
 
@@ -127,7 +127,7 @@ Exécutez Renovate en mode local avec le niveau de log "debug".
 - Un tableau récapitulatif des dépendances analysées
 - Les logs les plus importants (extraits)
 
----
+
 
 ## Partie 2 : Déploiement SaaS avec GitHub Application (6 points)
 
@@ -148,7 +148,7 @@ L'équipe souhaite automatiser complètement le processus. Vous devez configurer
 - L'URL de votre dépôt GitHub
 - Capture d'écran du dépôt sur GitHub
 
----
+
 
 ### Question 2.2 : Installation de l'application Renovate (1 point)
 
@@ -166,7 +166,7 @@ Installez l'application GitHub Renovate sur votre dépôt.
 - Capture d'écran du processus d'installation
 - Capture d'écran des permissions accordées
 
----
+
 
 ### Question 2.3 : Analyse de la PR d'onboarding (2 points)
 
@@ -186,7 +186,7 @@ Examinez attentivement la Pull Request d'onboarding créée automatiquement par 
 - Capture d'écran du "Renovate dashboard" dans les issues
 - Vos réponses détaillées
 
----
+
 
 ### Question 2.4 : Configuration personnalisée (2 points)
 
@@ -214,7 +214,7 @@ Avant de merger la PR d'onboarding, modifiez le fichier `renovate.json` proposé
 - Capture d'écran après avoir mergé la PR d'onboarding
 - Les nouvelles PR créées par Renovate avec votre configuration
 
----
+
 
 ## Partie 3 : Installation Self-Hosted avec Docker Compose - Gitlab (8 points)
 
@@ -241,7 +241,7 @@ L'entreprise gère des dépôts privés sensibles et souhaite héberger Renovate
 - Liste des permissions sélectionnées
 - Structure de dossiers créée (arborescence)
 
----
+
 
 ### Question 3.2 : Configuration Docker Compose (2 points)
 
@@ -263,7 +263,7 @@ Créez un fichier `docker-compose.yml` pour déployer Renovate avec les spécifi
 - Le contenu complet de votre `docker-compose.yml`
 - Justification de chacun de vos choix de configuration
 
----
+
 
 ### Question 3.3 : Configuration Renovate avancée (2 points)
 
@@ -292,7 +292,7 @@ Créez une configuration avancée sur docker-compose incluant :
 - Le contenu complet et commenté de votre `docker-compose.yaml`
 - Un schéma expliquant le flux de traitement d'un repository
 
----
+
 
 ### Question 3.4 : Déploiement et tests (2 points)
 
@@ -317,7 +317,7 @@ Créez une configuration avancée sur docker-compose incluant :
 - Extraits significatifs des logs (connexion, scan, création de PR)
 - Capture d'écran des PR créées sur GitHub avec le branchPrefix personnalisé
 
----
+
 
 ### Question 3.5 : Automatisation avec planification (1 point)
 
@@ -336,7 +336,7 @@ Modifiez votre configuration pour que Renovate s'exécute automatiquement toutes
 - Explication de votre implémentation
 - Logs montrant plusieurs exécutions successives
 
----
+
 
 ## Partie 4 : Analyse comparative et recommandations (Bonus - 3 points)
 
@@ -354,7 +354,7 @@ Créez un tableau comparatif détaillé des trois modes d'installation selon les
 - Facilité de débogage
 - Adapté pour (type de projet/entreprise)
 
----
+
 
 ### Question 4.2 : Retour d'expérience (1 point)
 
@@ -365,7 +365,7 @@ Créez un tableau comparatif détaillé des trois modes d'installation selon les
 3. Pour votre projet personnel, quel mode choisiriez-vous ? Justifiez
 4. Quels sont les principaux pièges à éviter avec Renovate ?
 
----
+
 
 ### Question 4.3 : Recommandations professionnelles (1 point)
 
@@ -390,7 +390,7 @@ Rédigez des recommandations pour trois scénarios d'entreprise :
 - Quelles mesures de sécurité supplémentaires proposez-vous ?
 - Comment organiseriez-vous la gouvernance ?
 
----
+
 
 ## Livrables attendus
 
@@ -434,20 +434,6 @@ Vous devez rendre un **dossier compressé** contenant :
 - URL du/des dépôts GitHub
 - URL des PR créées par Renovate
 
----
-
-## Barème détaillé
-
-| Partie | Points | Détail |
-|--------|--------|--------|
-| **Partie 1 - Local** | 6 | Q1.1: 1pt, Q1.2: 1pt, Q1.3: 2pts, Q1.4: 2pts |
-| **Partie 2 - SaaS** | 6 | Q2.1: 1pt, Q2.2: 1pt, Q2.3: 2pts, Q2.4: 2pts |
-| **Partie 3 - Self-hosted** | 8 | Q3.1: 1pt, Q3.2: 2pts, Q3.3: 2pts, Q3.4: 2pts, Q3.5: 1pt |
-| **Bonus - Analyse** | 3 | Q4.1: 1pt, Q4.2: 1pt, Q4.3: 1pt |
-| **Qualité du rapport** | - | Propreté, orthographe, présentation (-2pts max si insuffisant) |
-| **TOTAL** | 20 | (23 points possibles avec le bonus) |
-
----
 
 ## Critères d'évaluation
 
@@ -472,7 +458,7 @@ Vous devez rendre un **dossier compressé** contenant :
 - Organisation logique
 - Orthographe et syntaxe
 
----
+
 
 ## Conseils pour réussir
 
@@ -485,23 +471,6 @@ Vous devez rendre un **dossier compressé** contenant :
 7. **Gérez votre temps : 1h30 par partie environ**
 8. **Soignez la présentation de votre rapport**
 
----
-
-## Ressources autorisées
-
-- Documentation officielle Renovate
-- Documentation Docker et Docker Compose
-- Documentation GitHub
-- Recherches Google
-- Stack Overflow
-
-**Non autorisés :**
-
-- Copier-coller de configurations complètes sans les comprendre
-- Partage de code entre étudiants
-- Utilisation d'IA générative pour les réponses (sauf recherche)
-
----
 
 ## Questions fréquentes
 
@@ -517,7 +486,7 @@ R: Consultez les logs avec `docker-compose logs`. Vérifiez votre configuration 
 **Q: Puis-je utiliser GitLab au lieu de GitHub ?**  
 R: Oui, mais vous devrez adapter les configurations en conséquence.
 
----
+
 
 ## Contact
 
@@ -525,6 +494,5 @@ Pour toute question technique ou organisationnelle :
 
 - Email : bastien_maurice@hotmail.com
 
----
 
 **Bon courage et bon travail ! 🚀**

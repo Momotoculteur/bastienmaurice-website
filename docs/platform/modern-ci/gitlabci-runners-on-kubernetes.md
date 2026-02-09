@@ -25,6 +25,7 @@ runners:
 ```
 
 Plusieurs choses à dire ici:  
+
 - Je set `gitlabUrl` sur l'url SaaS de Gitlab, je n'ai pas de self-hosted sous la main.  
 - Le `token` à renseigner ici t'es donné via l'interface de Gitlab, quand tu vas dans les settings, dans la partie CI/CD, et que tu vas demander à register un nouveau runner.  
 - La partie config, pour le champ `image`, ce sera la base image pull pour éxecuter tes jobs, si tu ne leur spécifie par une image. Quant à `helper_image`, j'ai du l'overwrite pour forcer la version en arm64 pour tourner sur mon macbook, car de base il me pullait la version x86_64 😭

@@ -202,6 +202,10 @@ nav:
     - Modern CI:
       - Accélére tes pipelines Docker avec BuildX et BuiltKit: platform/modern-ci/buildx-and-buildkit.md
       - GitlabCI runners sous Kubernetes: platform/modern-ci/gitlabci-runners-on-kubernetes.md
+  - Infra & Cloud:
+    - Kubernetes Gateway API:
+      - Ingress Nginx EOL, état des lieux, risques et options de migration: infra-cloud/gateway-api/ingress-nginx-retirement.md
+      - Sécurise tes apps avec OAuth2 Proxy, Istio Gateway API & OIDC: infra-cloud/gateway-api/apps-secure-oauth2proxy-istio-gateway-api-oidc.md
   - Machine & Deep learning: https://deeplylearning.fr/
   - Slides Cours/TP:
       - Kubernetes: 

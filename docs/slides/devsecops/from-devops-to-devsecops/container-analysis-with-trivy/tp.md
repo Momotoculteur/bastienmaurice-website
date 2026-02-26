@@ -258,6 +258,7 @@ Votre équipe souhaite automatiser la création de tickets de suivi pour chaque 
 Maintenant que votre script fonctionne en local, vous devez l'intégrer dans votre pipeline CI/CD pour qu'il s'exécute automatiquement après chaque scan Trivy, mais uniquement lorsque le scan détecte de nouvelles vulnérabilités critiques.
 
 **Tâche**
+
 - Modifiez votre pipeline GitLab CI/CD (ou GitHub Actions) pour :
     - Exécuter Trivy et générer le rapport JSON
     - Exécuter votre script de création d'issues seulement si le job Trivy a détecté au moins une vulnérabilité CRITICAL
@@ -274,6 +275,7 @@ Maintenant que votre script fonctionne en local, vous devez l'intégrer dans vot
 4. Quelle stratégie proposez-vous pour fermer automatiquement les issues lorsqu'une vulnérabilité est corrigée (scan suivant sans la CVE) ?
 
 **À fournir**
+
 - La nouvelle version de votre fichier .gitlab-ci.yml ou .github/workflows/trivy.yml avec l'intégration du script
 - Deux captures d'écran des pipelines correspondant aux scénarios A et B, avec les logs montrant :
     - Scénario A : "Creating issue for CVE-XXXX-XXXX"

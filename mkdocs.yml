@@ -198,6 +198,7 @@ nav:
       - Définir des policies avec OpenPolicyAgent: secops/policies/define-policies-with-opa.md
     - Pentests:
       - Proxy le réseau de ton smartphone avec OWASP ZAP: secops/pentests/proxy-network-with-owasp-zap-for-mobile-apps.md
+      - OWASP Zap avec authentification via JWT (OIDC/OAuth & Kong): secops/pentests/dast/owasp-zap-authentication-jwt-oidc-oauth-kong.md
   - Platform: 
     - Modern CI:
       - Accélére tes pipelines Docker avec BuildX et BuiltKit: platform/modern-ci/buildx-and-buildkit.md
@@ -206,7 +207,9 @@ nav:
     - Kubernetes Gateway API:
       - Ingress Nginx EOL, état des lieux, risques et options de migration: infra-cloud/gateway-api/ingress-nginx-retirement.md
       - Sécurise tes apps avec OAuth2 Proxy, Istio Gateway API & OIDC: infra-cloud/gateway-api/apps-secure-oauth2proxy-istio-gateway-api-oidc.md
-  - Machine & Deep learning: https://deeplylearning.fr/
+  - Data Science: ""
+  - Fullstack: ""
+  - Sys: "" 
   - Slides Cours/TP:
       - Kubernetes: 
         - Certification KCNA: slides/kubernetes/certification-kcna/certification-kcna.md
@@ -239,6 +242,7 @@ markdown_extensions:
       generic: true
   - pymdownx.betterem:
       smart_enable: all
+  - pymdownx.blocks.caption
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details

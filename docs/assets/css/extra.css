@@ -17,12 +17,14 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 1.5em;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
   /* --- AJOUTS IMPORTANTS POUR MOBILE --- */
-  width: 100%; 
-  min-height: 200px; /* Force une hauteur minimale visible quoi qu'il arrive */
-  z-index: 1; /* S'assure qu'il n'est pas caché derrière un calque */
+  width: 100%;
+  min-height: 200px;
+  /* Force une hauteur minimale visible quoi qu'il arrive */
+  z-index: 1;
+  /* S'assure qu'il n'est pas caché derrière un calque */
 }
 
 /* L'iframe est cachée au début */
@@ -61,15 +63,15 @@
 
 /* fix desktop header */
 .md-header {
-  z-index: 100; 
+  z-index: 100;
 }
 
 /* fix side header */
 .md-sidebar {
-  z-index: 100; 
+  z-index: 100;
 }
 
 /* fix mobile header */
 .md-nav {
-  z-index: 100; 
+  z-index: 100;
 }

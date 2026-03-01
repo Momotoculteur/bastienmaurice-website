@@ -22,8 +22,6 @@ extra:
       link: https://github.com/Momotoculteur
     - icon: fontawesome/brands/youtube
       link: https://www.youtube.com/@deeplylearning5754
-    - icon: material/web
-      link: https://deeplylearning.fr/
     - icon: fontawesome/brands/gitlab
       link: https://gitlab.com/Momotoculteur
     - icon: fontawesome/brands/paypal
@@ -89,6 +87,10 @@ plugins:
   #- git-authors
   - git-revision-date-localized:
       enable_creation_date: true
+      locale: fr
+      #enable_git_follow: false
+      #fallback_to_build_date: true
+      #strict: false
       exclude:
         - index.md
   - search:
@@ -126,8 +128,6 @@ plugins:
 nav:
   - Accueil: index.md
   - CI/CD:
-      # - Comparatif des plateformes [TODO]: cicd/introduction/plateforme.md
-      # - Setup des self-hosted runners [TODO]: cicd/introduction/self-hosted-runner.md
       - Creer un micro-service:
           - Frontend: cicd/micro-service/frontend.md
           - Backend: cicd/micro-service/backend.md
@@ -147,7 +147,6 @@ nav:
           - Stage Visual regression: cicd/integration-continue/visual-regression.md
       - Deploiement continu:
           - Deploy sur Gitlab Pages son site web: cicd/deploiement-continu/deploy-gitlab-pages-static-website.md
-          #- Deploy sur AWS S3 Bucket son site web: cicd/deploiement-continu/deploy-aws-s3-bucket-static-website.md
       - Nightly:
           - Stage Load-testing: cicd/nightly/load-testing.md
           - Stage E2E-testing: cicd/nightly/e2e-testing.md
@@ -155,16 +154,13 @@ nav:
   - DevOps:
       - Tooling:
           - Monitorer son cluster Kubernetes efficacement: devops/tooling/monitoring-with-lens-and-k9s.md
-      # - Secrets:
-      # - Gère tes secrets dans Git et CI/CD via SOPS [TODO]: culture-devops/secrets/secrets-management-with-sops.md
-      # - Kubernetes, Sealed Secrets
       - Exposer des metriques:
           - Kube-state-metrics: devops/expose-metrics/kube-state-metrics.md
       - Data pipeline:
           - Logs collector & aggregator avec Vector.dev: devops/data-pipeline/logs-collector-aggregator-vector.md
           - Logs collector avec Prometheus: devops/data-pipeline/logs-collector-prometheus.md
-      - Alerting: 
-        - Introduction à Prometheus AlertManger: devops/monitoring-stack/manage-alerts-with-grafana-alert-manager.md
+      - Alerting:
+          - Introduction à Prometheus AlertManger: devops/monitoring-stack/manage-alerts-with-grafana-alert-manager.md
       - Monitoring - Logs:
           - VictoriaLogs & Intégration dans Grafana: devops/monitoring-stack/logs-with-victoria-logs.md
           - Grafana Loki: devops/monitoring-stack/logs-with-grafana-loki.md
@@ -178,46 +174,100 @@ nav:
       - GitOps:
           - ArgoCD: devops/git-ops/argo-cd.md
       - Kubernetes:
-        - Sécurise l'upgrade de ton cluster avec KubePug: devops/kubernetes/smooth-upgrade-with-kubepug.md
-        - Sécurise l'upgrade de ton cluster avec KubeNT: devops/kubernetes/smooth-upgrade-with-kubent.md
-        - Backup de vos PV/PVC via CSI Snapshot avec Velero: devops/kubernetes/pv-pvc-backup-csi-snapshot-velero.md
-  - SecOps: 
-    - Infra as Code:
-      - Trivy (anciennement TfSec): secops/infra-as-code/trivy-tfsec.md
-      - Terrascan: secops/infra-as-code/terrascan.md
-    - Cloud Provider: 
-      - Sécurise ton cloud avec Prowler: secops/cloud-provider/audit-with-prowler.md
-      - Sécurise ton cloud avec Kics: secops/cloud-provider/audit-with-kics.md
-    - Kubernetes: 
-      - Comparaison des solutions pour sécuriser ton cluster: secops/kubernetes/defense-solutions-comparison.md
-      - Détection d'actions frauduleuse avec Falco: secops/kubernetes/fraud-detection-with-falco.md
-      #- Blocage en temps réel de menace avec Tetragon(todo): secops/kubernetes/real-time-security-with-tetragon.md
-      #- Blocage en temps réel de menace avec KubeArmor(todo): secops/kubernetes/real-time-security-with-kubearmor.md
-      - Détection de point d'entrée avec KubeHound: secops/kubernetes/kubehound.md
-    - Policies:
-      - Définir des policies avec OpenPolicyAgent: secops/policies/define-policies-with-opa.md
-    - Pentests:
-      - Proxy le réseau de ton smartphone avec OWASP ZAP: secops/pentests/proxy-network-with-owasp-zap-for-mobile-apps.md
-  - Platform: 
-    - Modern CI:
-      - Accélére tes pipelines Docker avec BuildX et BuiltKit: platform/modern-ci/buildx-and-buildkit.md
-      - GitlabCI runners sous Kubernetes: platform/modern-ci/gitlabci-runners-on-kubernetes.md
+          - Sécurise l'upgrade de ton cluster avec KubePug: devops/kubernetes/smooth-upgrade-with-kubepug.md
+          - Sécurise l'upgrade de ton cluster avec KubeNT: devops/kubernetes/smooth-upgrade-with-kubent.md
+          - Backup de vos PV/PVC via CSI Snapshot avec Velero: devops/kubernetes/pv-pvc-backup-csi-snapshot-velero.md
+  - SecOps:
+      - Infra as Code:
+          - Trivy (anciennement TfSec): secops/infra-as-code/trivy-tfsec.md
+          - Terrascan: secops/infra-as-code/terrascan.md
+      - Cloud Provider:
+          - Sécurise ton cloud avec Prowler: secops/cloud-provider/audit-with-prowler.md
+          - Sécurise ton cloud avec Kics: secops/cloud-provider/audit-with-kics.md
+      - Kubernetes:
+          - Comparaison des solutions pour sécuriser ton cluster: secops/kubernetes/defense-solutions-comparison.md
+          - Détection d'actions frauduleuse avec Falco: secops/kubernetes/fraud-detection-with-falco.md
+          #- Blocage en temps réel de menace avec Tetragon(todo): secops/kubernetes/real-time-security-with-tetragon.md
+          #- Blocage en temps réel de menace avec KubeArmor(todo): secops/kubernetes/real-time-security-with-kubearmor.md
+          - Détection de point d'entrée avec KubeHound: secops/kubernetes/kubehound.md
+      - Policies:
+          - Définir des policies avec OpenPolicyAgent: secops/policies/define-policies-with-opa.md
+      - Pentests:
+          - Proxy le réseau de ton smartphone avec OWASP ZAP: secops/pentests/proxy-network-with-owasp-zap-for-mobile-apps.md
+          - OWASP Zap avec authentification via JWT (OIDC/OAuth & Kong): secops/pentests/dast/owasp-zap-authentication-jwt-oidc-oauth-kong.md
+  - Platform:
+      - Modern CI:
+          - Accélére tes pipelines Docker avec BuildX et BuiltKit: platform/modern-ci/buildx-and-buildkit.md
+          - GitlabCI runners sous Kubernetes: platform/modern-ci/gitlabci-runners-on-kubernetes.md
+  - Data science:
+      - Theorie:
+          - Deep vs Machine learning: datascience/theorie/deep-vs-machine-learning/main.md
+          - L’explosion du deep learning: datascience/theorie/deep-learning-explosion/main.md
+          - Les différents types d’apprentissage: datascience/theorie/learning-types/main.md
+          - Fonctionnement du neurone artificiel: datascience/theorie/artificial-neurons-work/main.md
+          - Découpage des datasets: datascience/theorie/dataset-split/main.md
+          - Descente de gradient: datascience/theorie/gradient-descent/main.md
+          - Fonction d'activation: datascience/theorie/activation-function/main.md
+          - Fonctions de perte/coût (loss function): datascience/theorie/loss-and-cost-function/main.md
+          - Régularisation du réseau: datascience/theorie/network-regulation/main.md
+          - Comprendre overfitting et underfitting: datascience/theorie/overfitting-and-underfitting/main.md
+          - Réglages des hyper-paramètres: datascience/theorie/hyper-parameters-fitting/main.md
+          - Convolution, Pooling & Classification;: datascience/theorie/convolution-pooling-classification/main.md
+          - Différences entre classification d'image, localisation/détection & segmentation d'objets: datascience/theorie/classification-localization-detection-objects-segmentation/main.md
+          - Data augmentation: datascience/theorie/data-augmentation/main.md
+          - Réaliser son propre générateur de données: datascience/theorie/data-generator/main.md
+          - Transfer learning: datascience/theorie/transfer-learning/main.md
+          - Charger & entrainer le réseau sur des images - fit() vs fit_generator(): datascience/pratique/load-train-neural-network-images-fit-vs-fit-generator/main.md
+          - Conversion d'un audio en spectre: datascience/theorie/audio-to-spectrogram/main.md
+          - Composition et conversion d'une image: datascience/theorie/image-composition-and-conversion/main.md
+      - Pratique:
+          - Classification d'images: datascience/pratique/image-classification/main.md
+          - Classification d'images multi labels/classes: datascience/pratique/multi-classes-labels-image-classification/main.md
+          - Reconnaissance vocale de mots clés: datascience/pratique/voice-recognition/main.md
+          - Détecteur de harcèlement: datascience/pratique/harassment-detector/main.md
+          - Radar automatique part.1 - Constitution du dataset de la plaque d'immatriculation: datascience/pratique/automatic-licence-plate-detector-part1-dataset/main.md
+          - Segmentation sémantique d'images: datascience/pratique/semantic-segmentation-images/main.md
   - Infra & Cloud:
-    - Kubernetes Gateway API:
-      - Ingress Nginx EOL, état des lieux, risques et options de migration: infra-cloud/gateway-api/ingress-nginx-retirement.md
-      - Sécurise tes apps avec OAuth2 Proxy, Istio Gateway API & OIDC: infra-cloud/gateway-api/apps-secure-oauth2proxy-istio-gateway-api-oidc.md
-  - Machine & Deep learning: https://deeplylearning.fr/
+      - Kubernetes Gateway API:
+          - Ingress Nginx EOL, état des lieux, risques et options de migration: infra-cloud/gateway-api/ingress-nginx-retirement.md
+          - Sécurise tes apps avec OAuth2 Proxy, Istio Gateway API & OIDC: infra-cloud/gateway-api/apps-secure-oauth2proxy-istio-gateway-api-oidc.md
+  - Fullstack:
+      - Electron:
+          - 00 - Présentation du framework: fullstack/electron/00-framework-presentation/main.md
+          - 01 - Fenêtre principale, frameless bar, hot reload: fullstack/electron/01-frameless-main-window-hot-reload/main.md
+          - 02 - Barre d'outils, API d'Electron et Angular: fullstack/electron/02-api-angular-toolbox/main.md
+          - 03 - File explorer, NodeJS et IPC: fullstack/electron/03-file-explorer-nodejs-ipc/main.md
+          - 04 - Réaliser un simple IDE-like: fullstack/electron/04-simple-ide/main.md
+          - 05 - Light/Dark theme, Prog réactive via Observer-able pattern avec RxJS: fullstack/electron/05-observer-observable-pattern-rxjs-light-dark-theme/main.md
+          - 06 - Build, package, et distribution: fullstack/electron/06-builder-bundler/main.md
+          - 07 - Migrer vers Typescript via TSC: fullstack/electron/07-add-typescript-transpiler-tsc/main.md
+          - 08 - Tests unitaires et end-to-end avec Spectron & Jest: fullstack/electron/08-unit-tests-end-to-end-spectron-jest/main.md
+      - Angular:
+          - Intégration d'une carte choroplèthe via Leaflet: fullstack/angular/leaflet-map/main.md
+          - Intégration de Plotly.js: fullstack/angular/plotly-js/main.md
+      - React: 
+          - Dark, Light & Custom thème avec React/Material Ui: fullstack/react/dark-light-theme/main.md
+      - React Native: 
+          - 00 - Présentation de ReactNative & Expo: fullstack/react-native/00-framework-presentation/main.md
+          - 01 - Environnement, prérequis & Hello world !: fullstack/react-native/01-minimal-hello-world/main.md
+          - 02 - Builder & générer les .apk & .ipa: fullstack/react-native/02-build-apk-ipa-apps/main.md
+          - 03 - Tab navigator, police, status bar & archi: fullstack/react-native/03-navigation-police-toolbar/main.md 
+          - 04 - Stack navigator: fullstack/react-native/04-stack-navigation/main.md
+          - 05 - Stockage de données simples (AsyncStorage): fullstack/react-native/05-simple-data-async-storage/main.md
+          - 06 - Stockage de données complexes (SQLite): fullstack/react-native/06-complex-data-storage-sqlite/main.md
+  - Sys:
+      - macOS Catalina sans macbook, gratuit & fluide: sys/macos-catalina-free-emulator/main.md
   - Slides Cours/TP:
-      - Kubernetes: 
-        - Certification KCNA: slides/kubernetes/certification-kcna/certification-kcna.md
-      - Testing: 
-        - Load testing avec Grafana K6: slides/tests/load-testing/grafana-k6.md
+      - Kubernetes:
+          - Certification KCNA: slides/kubernetes/certification-kcna/certification-kcna.md
+      - Testing:
+          - Load testing avec Grafana K6: slides/tests/load-testing/grafana-k6.md
       - Continuous Integration/Continuous Delivery:
-        - Pipeline complète avec GitlabCI : slides/continuous-integration-continuous-delivery/gitlabci-pipeline/gitlabci-pipeline.md
+          - Pipeline complète avec GitlabCI: slides/continuous-integration-continuous-delivery/gitlabci-pipeline/gitlabci-pipeline.md
       - Monitoring & Alerting - TP:
-        - Créer une stack d'observabilité : slides/monitoring-alerting/full-stack-observability/full-stack-observability.md
+          - Créer une stack d'observabilité: slides/monitoring-alerting/full-stack-observability/full-stack-observability.md
       - DevSecOps:
-        - From DevOps to DevSecOps: slides/devsecops/from-devops-to-devsecops/devsecops.md
+          - From DevOps to DevSecOps: slides/devsecops/from-devops-to-devsecops/devsecops.md
   - Blog:
       - blog/index.md
 
@@ -239,6 +289,7 @@ markdown_extensions:
       generic: true
   - pymdownx.betterem:
       smart_enable: all
+  - pymdownx.blocks.caption
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details

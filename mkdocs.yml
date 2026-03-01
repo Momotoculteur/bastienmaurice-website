@@ -208,12 +208,14 @@ nav:
           - Découpage des datasets: datascience/theorie/dataset-split/main.md
           - Descente de gradient: datascience/theorie/gradient-descent/main.md
           - Fonction d'activation: datascience/theorie/activation-function/main.md
+          - Fonctions de perte/coût (loss function): datascience/theorie/loss-and-cost-function/main.md
           - Régularisation du réseau: datascience/theorie/network-regulation/main.md
           - Comprendre overfitting et underfitting: datascience/theorie/overfitting-and-underfitting/main.md
           - Réglages des hyper-paramètres: datascience/theorie/hyper-parameters-fitting/main.md
           - Convolution, Pooling & Classification;: datascience/theorie/convolution-pooling-classification/main.md
           - Différences entre classification d'image, localisation/détection & segmentation d'objets: datascience/theorie/classification-localization-detection-objects-segmentation/main.md
           - Data augmentation: datascience/theorie/data-augmentation/main.md
+          - Réaliser son propre générateur de données: datascience/theorie/data-generator/main.md
           - Transfer learning: datascience/theorie/transfer-learning/main.md
           - Charger & entrainer le réseau sur des images - fit() vs fit_generator(): datascience/pratique/load-train-neural-network-images-fit-vs-fit-generator/main.md
           - Conversion d'un audio en spectre: datascience/theorie/audio-to-spectrogram/main.md
@@ -224,6 +226,7 @@ nav:
           - Reconnaissance vocale de mots clés: datascience/pratique/voice-recognition/main.md
           - Détecteur de harcèlement: datascience/pratique/harassment-detector/main.md
           - Radar automatique part.1 - Constitution du dataset de la plaque d'immatriculation: datascience/pratique/automatic-licence-plate-detector-part1-dataset/main.md
+          - Segmentation sémantique d'images: datascience/pratique/semantic-segmentation-images/main.md
   - Infra & Cloud:
       - Kubernetes Gateway API:
           - Ingress Nginx EOL, état des lieux, risques et options de migration: infra-cloud/gateway-api/ingress-nginx-retirement.md
@@ -242,6 +245,16 @@ nav:
       - Angular:
           - Intégration d'une carte choroplèthe via Leaflet: fullstack/angular/leaflet-map/main.md
           - Intégration de Plotly.js: fullstack/angular/plotly-js/main.md
+      - React: 
+          - Dark, Light & Custom thème avec React/Material Ui: fullstack/react/dark-light-theme/main.md
+      - React Native: 
+          - 00 - Présentation de ReactNative & Expo: fullstack/react-native/00-framework-presentation/main.md
+          - 01 - Environnement, prérequis & Hello world !: fullstack/react-native/01-minimal-hello-world/main.md
+          - 02 - Builder & générer les .apk & .ipa: fullstack/react-native/02-build-apk-ipa-apps/main.md
+          - 03 - Tab navigator, police, status bar & archi: fullstack/react-native/03-navigation-police-toolbar/main.md 
+          - 04 - Stack navigator: fullstack/react-native/04-stack-navigation/main.md
+          - 05 - Stockage de données simples (AsyncStorage): fullstack/react-native/05-simple-data-async-storage/main.md
+          - 06 - Stockage de données complexes (SQLite): fullstack/react-native/06-complex-data-storage-sqlite/main.md
   - Sys:
       - macOS Catalina sans macbook, gratuit & fluide: sys/macos-catalina-free-emulator/main.md
   - Slides Cours/TP:
